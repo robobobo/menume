@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class MenuSection extends Model
 {
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'establishment_id'
+        'name', 'menu_id'
     ];
 
     /**
@@ -31,23 +31,8 @@ class Menu extends Model
     protected $casts = [
     ];
 
-    public function establishment()
+    public function menu()
     {
-        return $this->belongsTo('App\Establishment');
-    }
-
-    public function menuItems()
-    {
-        return $this->hasMany('App\MenuItem');
-    }
-
-    public function menuSections()
-    {
-        return $this->hasMany('App\MenuSection');
-    }
-
-    public function link()
-    {
-        return $this->hasOne('App\Link');
+        return $this->belongsTo('App\Menu', 'menu_id', 'id');
     }
 }
