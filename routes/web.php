@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/menus','menuController@index')->name('menus');
+Route::get('/menu/{menu}','menuController@show')->name('menu.show');

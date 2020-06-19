@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\MenuItem;
+use App\MenuSection;
+use App\Establishment;
+
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -15,6 +19,8 @@ class MenuController extends Controller
     public function index()
     {
         //
+        $menus = Menu::all();
+        return view('menu.index')->with('menus',$menus);
     }
 
     /**
@@ -46,7 +52,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        //
+        return view('menu.show')->with('menu',$menu);
     }
 
     /**
