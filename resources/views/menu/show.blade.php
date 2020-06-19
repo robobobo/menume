@@ -16,6 +16,6 @@
     @foreach ($menu->menuItems as $item)
         {{$item->name}}<br>
         {{$item->description}}<br>
-        {{$item->price}}<hr>
+        &euro;{{$item->price}}<hr>
     @endforeach
 @stop
