@@ -21,8 +21,7 @@
             <div class="card">
                 <div class="card-image px-1 py-1">
                 <figure class="image is-square">
-                    {{ QrCode::size(200)->generate(route('menu.show',$menu),"../public/qrcodes/code_{$menu->id}.svg") }}
-                    <img src="/qrcodes/code_{{$menu->id}}.svg" alt="QR Code for {$menu->establishment->name}">
+                    <img src="{{$menu->qrCodeURL()}}" alt="QR Code for {{$menu->establishment->name}}">
                 </figure>
                 </div>
                 <div class="card-content">

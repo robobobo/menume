@@ -12,7 +12,7 @@ class Link extends Model
      * @var array
      */
     protected $fillable = [
-        'qr_code_url', 'menu_id', 'url'
+        'qr_code_url', 'menu_id', 'url','path'
     ];
 
     /**
