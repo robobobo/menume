@@ -13,7 +13,7 @@ class AddPathToLink extends Migration
      */
     public function up()
     {
-        Schema::table('Links', function (Blueprint $table) {
+        Schema::table('links', function (Blueprint $table) {
             //
             $table->text('path')->nullable;
         });
@@ -26,7 +26,7 @@ class AddPathToLink extends Migration
      */
     public function down()
     {
-        Schema::table('Links', function (Blueprint $table) {
+        Schema::table('links', function (Blueprint $table) {
             //
             $table->dropColumn('path');
         });
