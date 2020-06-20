@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-image px-1 py-1">
                 <figure class="image is-square">
-                    <img src="{{$menu->qrCodeURL()}}" alt="QR Code for {{$menu->establishment->name}}">
+                    <img src="{{asset('storage/'.$menu->qrCodeURL())}}" alt="QR Code for {{$menu->establishment->name}}">
                 </figure>
                 </div>
                 <div class="card-content">

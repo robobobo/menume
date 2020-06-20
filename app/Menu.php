@@ -59,9 +59,9 @@ class Menu extends Model
     {
         if($this->link()->exists() && $this->link->qr_code_url != "")
         {
-            return "/storage/".$this->link->path;
+            return $this->link->path;
         }else{
-            return "/storage/".$this->generateQRCodeURL();
+            return $this->generateQRCodeURL();
         }
     }
 
@@ -70,10 +70,13 @@ class Menu extends Model
     {
         $code = QrCode::size($size)->format($format)->generate(route('menu.show',$this));
         
-        $path = "qrcodes/{$this->id}x{$size}.{$format}";
+        $path = "{$this->id}x{$size}.{$format}";
+        $code = QrCode::size(200)->generate(route('menu.show',$this));
+
+        /*probably need to setup S3 here*/
         Storage::disk('public')->put($path,$code);
 
-        $this->link()->save(new Link(['qr_code_url'=>Storage::disk('public')->url($path), 'path'=>$path]));
+        $this->link()->save(new Link(['qr_code_url'=>$path, 'path'=>$path]));
 
         return $this->link->path;
 
