@@ -16,8 +16,9 @@
 
 <section class="section py-4 has-background-light">
   <div class="container">
-      <h3 class="is-size-3 pb-5">Starters</h3>
-    @foreach ($menu->menuItems as $item)
+    @foreach($menu->menuSections as $section)
+      <h3 class="is-size-3 pb-5">{{$section->name}}</h3>
+      @foreach($section->items as $item)
       <div class="columns is-mobile menu-item is-vcentered has-background-white">
         <div class="column is-four-fifths">
           <strong>{{$item->name}}</strong><br>
@@ -27,20 +28,8 @@
           &euro;{{number_format($item->price,2)}}
         </div>
       </div>
-        @endforeach
-        <h3 class="is-size-3 pb-5">Mains</h3>
-    @foreach ($menu->menuItems as $item)
-      <div class="columns is-mobile menu-item is-vcentered has-background-white">
-        <div class="column is-four-fifths">
-          <strong>{{$item->name}}</strong><br>
-          {{$item->description}}
-        </div>
-        <div class="column is-one-fifth">
-          &euro;{{number_format($item->price,2)}}
-        </div>
-      </div>
-        @endforeach
+      @endforeach
+    @endforeach
   </div>
 </section>
-
 @stop
