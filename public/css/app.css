@@ -12493,7 +12493,48 @@ a.has-text-danger-dark:focus {
   padding: 3rem 1.5rem 6rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .menu-item {
   border-bottom: 1px solid #e8ebeb;
+}
+
+.horizontal-menu-nav {
+  list-style: none;
+  overflow: auto;
+  white-space: nowrap;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background: #00d1b2;
+}
+
+.horizontal-menu-nav li {
+  display: inline-block;
+  color: white;
+}
+
+.horizontal-menu-nav li a,
+.horizontal-menu-nav li a:visited {
+  color: white;
+}
+
+.horizontal-menu-nav li a.active,
+.horizontal-menu-nav li a:visited.active {
+  color: #0a0a0a;
+}
+
+/* A little hack for scrolling to an anchor and it not being hidden by a fixed nav 
+https://css-tricks.com/hash-tag-links-padding/ */
+
+.anchor-header::before {
+  display: block;
+  content: " ";
+  margin-top: -45px;
+  height: 45px;
+  visibility: hidden;
+  pointer-events: none;
 }
 

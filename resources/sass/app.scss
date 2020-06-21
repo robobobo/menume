@@ -1,6 +1,39 @@
 //Bulma
 @import '~bulma/bulma';
 
+html {
+    scroll-behavior: smooth;
+  }
+
 .menu-item{
     border-bottom:1px solid #e8ebeb;
 }
+
+.horizontal-menu-nav{
+    list-style: none;
+    overflow: auto;
+    white-space: nowrap;
+    position: sticky;
+    top:0;
+    background:$primary;
+    li{
+        display: inline-block;
+        color:$white;
+        a,a:visited{
+            color:$white;
+            &.active{
+                color:$black;
+            }
+        }
+    }
+}
+/* A little hack for scrolling to an anchor and it not being hidden by a fixed nav 
+https://css-tricks.com/hash-tag-links-padding/ */
+.anchor-header::before { 
+    display: block; 
+    content: " "; 
+    margin-top: -45px; 
+    height: 45px; 
+    visibility: hidden; 
+    pointer-events: none;
+  }
