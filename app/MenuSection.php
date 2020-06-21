@@ -35,4 +35,9 @@ class MenuSection extends Model
     {
         return $this->belongsTo('App\Menu', 'menu_id', 'id');
     }
+
+    public function items()
+    {
+        return $this->hasMany('App\MenuItem','menu_section_id','id');
+    }
 }

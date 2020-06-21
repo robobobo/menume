@@ -12493,3 +12493,7 @@ a.has-text-danger-dark:focus {
   padding: 3rem 1.5rem 6rem;
 }
 
+.menu-item {
+  border-bottom: 1px solid #e8ebeb;
+}
+

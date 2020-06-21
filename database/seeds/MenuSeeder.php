@@ -14,7 +14,9 @@ class MenuSeeder extends Seeder
         $menus = Menu::all();
         foreach ($menus as $menu ) {
             $menu->menuSections()->saveMany(factory('App\MenuSection',rand(3,5))->make());
-            $menu->menuItems()->saveMany(factory('App\MenuItem',rand(8,20))->make());
+            foreach($menu->menuSections as $section) {
+                $section->items()->saveMany(factory('App\MenuItem',rand(8,20))->make());
+            }
         }
     }
 }

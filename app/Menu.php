@@ -42,7 +42,7 @@ class Menu extends Model
 
     public function menuItems()
     {
-        return $this->hasMany('App\MenuItem');
+        return $this->hasManyThrough('App\MenuItem','App\MenuSection');
     }
 
     public function menuSections()

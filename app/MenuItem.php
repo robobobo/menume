@@ -12,7 +12,7 @@ class MenuItem extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'menu_id', 'description', 'price'
+        'name', 'menu_id', 'menu_section_id', 'description', 'price'
     ];
 
     /**
@@ -34,5 +34,10 @@ class MenuItem extends Model
     public function menu()
     {
         return $this->belongsTo('App\Menu');
+    }
+
+    public function menuSection()
+    {
+        return $this->belongsTo('App\MenuSection');
     }
 }
