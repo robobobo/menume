@@ -43,6 +43,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
    let mainNav = document.getElementById("menu-horizontal-nav");
    let mainNavLinks = document.querySelectorAll("[data-sticky-nav__item");
    let mainSections = document.querySelectorAll("[data-sticky-nav__content-area]");
+
+   for(const navLink of mainNavLinks) {
+      navLink.addEventListener("click", function(event){
+          //scrolls the nav bar to be in the right place
+          mainNav.scrollLeft += (navLink.getBoundingClientRect().left - 20);     
+      });
+   }
    
    let lastId;
    let cur = [];
@@ -68,9 +75,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
              item.classList.remove("active");
            });
            // Add current to new target
-           link.classList.add("active");
-          //  and scrolls the nav bar to be in the right place
-           mainNav.scrollLeft += (link.getBoundingClientRect().left - 20);          
+           link.classList.add("active");              
          }
        }
      })  
