@@ -12,7 +12,7 @@ class Establishment extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'currency'
     ];
 
     /**
