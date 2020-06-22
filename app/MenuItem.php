@@ -12,7 +12,7 @@ class MenuItem extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'menu_id', 'menu_section_id', 'description', 'price'
+        'name', 'menu_id', 'menu_section_id', 'description', 'price', 'position'
     ];
 
     /**

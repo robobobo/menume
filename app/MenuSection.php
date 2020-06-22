@@ -12,7 +12,7 @@ class MenuSection extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'menu_id'
+        'name', 'menu_id', 'position'
     ];
 
     /**
@@ -38,6 +38,6 @@ class MenuSection extends Model
 
     public function items()
     {
-        return $this->hasMany('App\MenuItem','menu_section_id','id');
+        return $this->hasMany('App\MenuItem','menu_section_id','id')->orderBy('position','asc');
     }
 }

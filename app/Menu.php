@@ -47,7 +47,7 @@ class Menu extends Model
 
     public function menuSections()
     {
-        return $this->hasMany('App\MenuSection');
+        return $this->hasMany('App\MenuSection')->orderBy('position','asc');
     }
 
     public function link()
