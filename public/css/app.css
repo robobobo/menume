@@ -12538,3 +12538,11 @@ https://css-tricks.com/hash-tag-links-padding/ */
   pointer-events: none;
 }
 
+.is-absolute {
+  position: absolute;
+}
+
+#menu-edit-button {
+  right: 0;
+}
+

@@ -63,7 +63,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        //
+        return view('menu.edit')->with('menu',$menu);
     }
 
     /**

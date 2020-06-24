@@ -5,7 +5,10 @@
 
 <section class="section py-1 has-background-dark">
   <div class="container has-text-centered">
-    <h3 class="title py-1 has-text-light">{{$menu->establishment->name}}</h3>
+    <h3 class="title py-1 has-text-light">
+      {{$menu->establishment->name}}
+      <a href="{{route('menu.edit',$menu)}}" class="button is-link is-absolute" id="menu-edit-button">Edit</a>
+    </h3>
   </div>
 </section>
 <section class="section py-4">

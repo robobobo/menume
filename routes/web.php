@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::get('/menus','MenuController@index')->name('menus');
 Route::get('/menu/{menu}','MenuController@show')->name('menu.show');
+Route::get('/menu/{menu}/edit','MenuController@edit')->name('menu.edit');
