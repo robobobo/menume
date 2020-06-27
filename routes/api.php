@@ -26,4 +26,13 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
     Route::get('menu-section/{menuSection}','MenuSectionController@show');
     Route::post('menu-section/{menuSection}/update','MenuSectionController@update');
 
+    Route::get('menu-items','MenuItemController@index');
+    Route::post('menu-items','MenuItemController@bulkUpdate');
+
+    Route::get('menu-item/{menuItem}','MenuItemController@show');
+    Route::post('menu-item/{menuItem}/update','MenuItemController@update');
+
+    Route::get('menu/{menu}','MenuController@show');
+    
+
 });

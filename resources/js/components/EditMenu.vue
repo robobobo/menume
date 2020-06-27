@@ -1,63 +1,108 @@
 <template>
-         <div class="field is-grouped">
-            <p class="control">
-              <button class="button is-link" v-on:click="updateSectionOrder()">
-                Save changes
-              </button>
-            </p>
-            <p class="control">
-              <button class="button" v-on:click="toggleMenuSections()">Hide Menu Items</button>
-            </p>
-            <p class="control">
-              <button class="button is-danger">
-                Cancel
-              </button>
-            </p>
+          <div class="container">
+            <div class="field is-grouped">
+                <p class="control">
+                <button class="button is-link" v-on:click="updateMenuData()">
+                    Save changes
+                </button>
+                </p>
+                <p class="control">
+                <button class="button" v-on:click="toggleMenuSections()">Hide Menu Items</button>
+                </p>
+                <p class="control">
+                <button class="button is-danger">
+                    Cancel
+                </button>
+                </p>
+            </div>
+                 <nested-draggable :menu="menu" v-if="menuLoaded"/>
           </div>
 </template>
 
 <script>
+// import draggable from 'vuedraggable'
+import nestedDraggable from "./NestedDraggable";
+
+
 export default {
+    components: {
+            nestedDraggable,
+    },
+    props: ['menu_id'],
+    name: "edit-menu",
     data: function() {
         return {
-            menuSections: [],
-            menuItems: [],
+            menu: [],
+            sortableMenu: null,
+            // menuItems: [],
+            // menuSerialized: [],
+            menuItemsSerialized: [],
             menuSectionsSerialized: [],
             showMenuSections: true,
+            menuLoaded: false,
         }
     },
-
+    computed: {
+        menuSections() {
+            let sections = [];
+            let position = 1;
+            this.menu.forEach(element => {
+                sections.push({
+                    'id' : element.id,
+                    'name' : element.name,
+                    'position' : position,
+                });
+                position++;
+            });
+            return sections;
+        },
+        menuItems() {
+            let items = [];
+            this.menu.forEach(section => {
+                 for(var i in section.menu_items) {
+                    if(section.menu_items[i].type == 'menu_item') {
+                        items.push({
+                            id: section.menu_items[i].id,
+                            position:parseInt(i)+1,
+                            menu_section_id:section.id,
+                            name: section.menu_items[i].name,
+                            description: section.menu_items[i].description,
+                        });
+                    }
+                }
+            });
+            return items;
+        }
+    },
     mounted: function() {
-        this.menuSectionsSerialized = this.serializeMenuOrder();
-        this.updateSectionOrder();
+        // this.sortableMenu = document.getElementById('sortableMenu');
+        // this.menuSerialized = this.serializeMenu(sortableMenu);
+        // this.serializeMenuSectionsAndItems();
+        this.loadMenu(this.menu_id);
+        console.log(this.menu);
     },
 
     methods: {
-        serializeMenuOrder: function() {
-            const nestedQuery = '.nested-sortable';
-            const identifier = 'sortableId';
-            const root = document.getElementById('sortableMenu');
-            const sortable = root;
-            var serialized = [];
-            var children = [].slice.call(sortable.children);
-            for (var i in children) {
-                var nested = children[i].querySelector(nestedQuery);
-                serialized.push({
-                id: children[i].dataset[identifier],
-                position: parseInt(i)+1,
-                type : children[i].dataset['sortableType'],
-                // children: nested ? serialize(nested) : []
-                });
-            }
-            console.log("called")
-            return serialized
+        loadMenu: function(id) {
+            axios.get('/api/v1/menu/'+id)
+             .then( response => {
+                /*draggable needs an array to be passed to it*/
+                 this.menu = response.data.data.menu_sections;
+             })
+            .catch( error => {
+                 console.log(error);
+             })
+             .finally( () => this.menuLoaded = true);
+         },
+        updateMenuData: function() {
+            this.updateSectionOrder(this.menuSections);
+            this.updateMenuItemOrder(this.menuItems);
         },
+        updateSectionOrder: function(menuSections) {
 
-        updateSectionOrder: function() {
-            console.log("update order");
-            this.menuSectionsSerialized = this.serializeMenuOrder();
+            console.log("update section order");
             axios.post('/api/v1/menu-sections',{
-                "sections": this.menuSectionsSerialized
+                "sections": menuSections
             })
             .then(function(response){
                 console.log(response);
@@ -66,17 +111,16 @@ export default {
                 console.log(error);
             });
         },
+        updateMenuItemOrder: function (menuItems) {
+            console.log(menuItems);
+            axios.post('/api/v1/menu-items',{
+                "items": menuItems 
+            })
+
+        },
 
         toggleMenuSections: function() {
-            let visible = this.showMenuSections;
-            [].forEach.call(document.querySelectorAll('.menu-items'), function (el) {
-                if(visible){
-                    el.style.display = 'none';
-                }else{
-                    el.style.display = 'block'
-                }
-             });
-             if(visible){
+             if(this.showMenuSections){
                  this.showMenuSections = false;
              }else{
                  this.showMenuSections = true;

@@ -10,7 +10,6 @@ class MenuSectionController extends Controller
     //
     public function index(Request $request)
     {
-        return $request;
         $menuSections = MenuSection::all();
         return response()->json($menuSections,200);
     }
@@ -32,8 +31,8 @@ class MenuSectionController extends Controller
     {
         foreach($request->input('sections') as $menuSectionData)
         {
-            $menuSection = MenuSection::findOrFail($menuSectionData['id']);
-            $menuSection->update($menuSectionData);
+                $menuSection = MenuSection::findOrFail($menuSectionData['id']);
+                $menuSection->update($menuSectionData);
         }
         return response()->json(['message'=>'ok'],200);
     }

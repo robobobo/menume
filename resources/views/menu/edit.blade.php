@@ -16,10 +16,10 @@
   </div>
 </section>
 <div id="app">
-  <edit-menu></edit-menu>
+  <edit-menu :menu_id='{{$menu->id}}'></edit-menu>
 </div>
 
-<div id="sortableMenu" class="container has-background-light nested-sortable">
+{{-- <div id="sortableMenu" class="container has-background-light nested-sortable">
     @foreach($menu->menuSections as $section)
         <div data-sortable-id="{{$section->id}}" data-sortable-type="section" class="menu-section mx-2 my-2 pb-5 has-background-info">
             <h3 id="section_{{$section->id}}" class="is-size-3 pb-5 px-3">{{$section->name}}</h3>
@@ -38,7 +38,7 @@
             </div>
         </div>     
     @endforeach
-  </div>
+  </div> --}}
 
 @stop
 <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
@@ -55,24 +55,24 @@ for (var i = 0; i < nestedSortables.length; i++) {
 		fallbackOnBody: true,
 		swapThreshold: 0.65,
         dataIdAttr: 'data-id',
-        onEnd: function (/**Event*/evt) {
-            var itemEl = evt.item;  // dragged HTMLElement
-            evt.to;    // target list
-            evt.from;  // previous list
-            evt.oldIndex;  // element's old index within old parent
-            evt.newIndex;  // element's new index within new parent
-            evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-            evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-            evt.clone // the clone element
-            evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-            // console.log(evt);
-        },
-        store: {
-            set: function (sortable) {
-                // console.log(sortable.toArray())
-                console.log(serialize(root))
-            }
-        }
+        // onEnd: function (/**Event*/evt) {
+        //     var itemEl = evt.item;  // dragged HTMLElement
+        //     evt.to;    // target list
+        //     evt.from;  // previous list
+        //     evt.oldIndex;  // element's old index within old parent
+        //     evt.newIndex;  // element's new index within new parent
+        //     evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+        //     evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+        //     evt.clone // the clone element
+        //     evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+        //     // console.log(evt);
+        // },
+        // store: {
+        //     set: function (sortable) {
+        //         // console.log(sortable.toArray())
+        //         console.log(serialize(root))
+        //     }
+        // }
 	});
 }
 
