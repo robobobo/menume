@@ -7,7 +7,7 @@
                 </button>
                 </p>
                 <p class="control">
-                <button class="button" v-on:click="toggleMenuSections()">Hide Menu Items</button>
+                <button class="button" v-on:click="toggleMenuSections()"><span v-if="showMenuSections">Hide Menu Items</span><span v-else>Show Menu Items </span></button>
                 </p>
                 <p class="control">
                 <button class="button is-danger">
@@ -15,7 +15,9 @@
                 </button>
                 </p>
             </div>
-                 <nested-draggable :menu="menu" v-if="menuLoaded"/>
+                <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
+                    <nested-draggable :menu="menu" v-if="menuLoaded"/>
+                </div>
           </div>
 </template>
 
