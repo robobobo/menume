@@ -1,6 +1,6 @@
 <template>
           <div class="container">
-            <div class="field is-grouped">
+            <div class="field is-grouped pb-2">
                 <p class="control">
                 <button class="button is-link" v-on:click="updateMenuData()">
                     Save changes
@@ -15,8 +15,16 @@
                 </button>
                 </p>
             </div>
+            <transition name="slide-fade">
+            <div class="notification is-success" v-show="updateSuccess">
+                <button class="delete"></button>
+                Your menu has been updated successfully! 
+            </div>
+            </transition>
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
-                    <nested-draggable :menu="menu" v-if="menuLoaded"/>
+              
+                     <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
+                    <nested-draggable :menu="menu" :open-edit-modal="showModal" v-if="menuLoaded"/>
                 </div>
           </div>
 </template>
@@ -24,11 +32,13 @@
 <script>
 // import draggable from 'vuedraggable'
 import nestedDraggable from "./NestedDraggable";
+import modalEditor from './ModalEditor';
 
 
 export default {
     components: {
             nestedDraggable,
+            modalEditor,
     },
     props: ['menu_id'],
     name: "edit-menu",
@@ -42,6 +52,10 @@ export default {
             menuSectionsSerialized: [],
             showMenuSections: true,
             menuLoaded: false,
+            isModalVisible: false,
+            modalData: null,
+            modalDataClone: null,//used if we need to revert changes
+            updateSuccess: false,
         }
     },
     computed: {
@@ -81,7 +95,6 @@ export default {
         // this.menuSerialized = this.serializeMenu(sortableMenu);
         // this.serializeMenuSectionsAndItems();
         this.loadMenu(this.menu_id);
-        console.log(this.menu);
     },
 
     methods: {
@@ -99,9 +112,11 @@ export default {
         updateMenuData: function() {
             this.updateSectionOrder(this.menuSections);
             this.updateMenuItemOrder(this.menuItems);
+            this.updateSuccess = true;
+            setTimeout(() => this.updateSuccess = false, 2000);
+
         },
         updateSectionOrder: function(menuSections) {
-
             console.log("update section order");
             axios.post('/api/v1/menu-sections',{
                 "sections": menuSections
@@ -127,6 +142,22 @@ export default {
              }else{
                  this.showMenuSections = true;
              }
+        },
+         showModal(el) {
+            this.modalData = el;
+            /*clone it in the event we need to revert on cancel*/
+            this.modalDataClone = Object.assign({},el);
+            this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        },
+        cancelModal(){
+            // revert back to the original cloned data
+            this.modalData.name = this.modalDataClone.name;
+            this.modalData.description = this.modalDataClone.description
+            this.modalData.price = this.modalDataClone.price
+            this.isModalVisible = false;
         }
     }
 }

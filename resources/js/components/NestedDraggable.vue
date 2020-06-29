@@ -15,22 +15,39 @@
     <div v-for="section in menu" :key="section.id" class="menu-section mx-2 my-2 pb-5 has-background-info has-icons-left">
         
         <template v-if="section.type == 'menu_section'">
-            <h3 class="is-size-3 pb-5 px-3"> <div class="drag-handle px-1 py-1 mt-3">
+          <div class="columns px-3">
+            <div class="column is-1 drag-handle">
                     <i class="fa fa-arrows-alt"></i>
-                </div>{{ section.name }}</h3>
-            <nested-draggable :showMenuSections="showMenuSections" :menu="section.menu_items" :sectionType="'menu_items'" />
+            </div>
+            <div class="columm is-8">
+              <h3 class="is-size-3">{{section.name}}</h3>
+            </div>
+             <div class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)">
+                    <i class="fa fa-edit"></i>
+              </div>
+              <div class="column is-1 has-text-centered has-text-danger">
+                <i class="fa fa-trash"></i>
+              </div>
+          </div>
+            <nested-draggable :showMenuSections="showMenuSections" :menu="section.menu_items" :open-edit-modal="openEditModal" :sectionType="'menu_items'" />
         </template>
         <template v-else>
             <div class="columns is-mobile menu-item is-vcentered has-background-white mx-0">
-                <div class="drag-handle px-4 py-4">
+                <div class="drag-handle column is-1 has-text-centered">
                     <i class="fa fa-arrows-alt"></i>
                 </div>
-                <div class="column is-four-fifths">
+                <div class="column is-8">
                     <strong>{{section.name}}</strong><br>
                     {{section.description}}
                   </div>
-                  <div class="column is-one-fifth">
+                  <div class="column is-1">
                     &euro;{{section.price}}
+                  </div>
+                  <div class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)">
+                    <i class="fa fa-edit"></i>
+                  </div>
+                  <div class="column is-1 has-text-centered has-text-danger">
+                    <i class="fa fa-trash"></i>
                   </div>
             </div>
         </template>
@@ -51,6 +68,9 @@ export default {
     sectionType: {
         type: String
     },
+    openEditModal: {
+        type: Function
+    }
   },
   components: {
     draggable
@@ -72,7 +92,7 @@ methods: {
             ie. menu items to menu item sections, menu sections to menu section sections
         */
         return (evt.draggedContext.element.type === evt.relatedContext.element.type);
-    }
+    },
 }
 };
 </script>
@@ -88,7 +108,7 @@ methods: {
   background: #c8ebfb;
 }
 .drag-handle {
-  float: left;
+  /* float: left; */
   cursor: pointer;
 }
 
