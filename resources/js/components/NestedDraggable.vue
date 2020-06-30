@@ -12,20 +12,23 @@
     >
     <transition-group type="transition" >
 
-    <div v-for="section in menu" :key="section.id" class="menu-section mx-2 my-2 pb-5 has-background-info has-icons-left">
+    <div v-for="section in menu" :key="section.id" class="section menu-section mx-2 my-2 has-background-light has-icons-left">
         
         <template v-if="section.type == 'menu_section'">
-          <div class="columns px-3">
-            <div class="column is-1 drag-handle">
+          <div class="columns is-mobile menu-header is-vcentered">
+            <div class="column is-1 drag-handle py-1">
                     <i class="fa fa-arrows-alt"></i>
             </div>
-            <div class="columm is-8">
+            <div class="column is-8 py-1">
               <h3 class="is-size-3">{{section.name}}</h3>
             </div>
-             <div class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)">
+             <div class="column is-1 has-text-centered has-text-primary py-1" @click="openEditModal(section)">
                     <i class="fa fa-edit"></i>
               </div>
-              <div class="column is-1 has-text-centered has-text-danger">
+              <div class="column is-1 has-text-centered has-text-primary py-1" @click="addNewItem(section)">
+                <i class="fa fa-plus"></i>
+              </div>
+              <div class="column is-1 has-text-centered has-text-danger py-1">
                 <i class="fa fa-trash"></i>
               </div>
           </div>
@@ -46,7 +49,7 @@
                   <div class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)">
                     <i class="fa fa-edit"></i>
                   </div>
-                  <div class="column is-1 has-text-centered has-text-danger">
+                  <div class="column is-1 has-text-centered has-text-danger" @click="addNewItem(section)">
                     <i class="fa fa-trash"></i>
                   </div>
             </div>
@@ -93,6 +96,12 @@ methods: {
         */
         return (evt.draggedContext.element.type === evt.relatedContext.element.type);
     },
+    addNewItem: function(section)
+    {
+      console.log("addng this section", section);
+      console.log(this.menu)
+      this.menu.push(section);
+    }
 }
 };
 </script>

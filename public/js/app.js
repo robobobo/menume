@@ -2169,6 +2169,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2205,6 +2208,11 @@ __webpack_require__.r(__webpack_exports__);
           ie. menu items to menu item sections, menu sections to menu section sections
       */
       return evt.draggedContext.element.type === evt.relatedContext.element.type;
+    },
+    addNewItem: function addNewItem(section) {
+      console.log("addng this section", section);
+      console.log(this.menu);
+      this.menu.push(section);
     }
   }
 });
@@ -24592,45 +24600,68 @@ var render = function() {
             {
               key: section.id,
               staticClass:
-                "menu-section mx-2 my-2 pb-5 has-background-info has-icons-left"
+                "section menu-section mx-2 my-2 has-background-light has-icons-left"
             },
             [
               section.type == "menu_section"
                 ? [
-                    _c("div", { staticClass: "columns px-3" }, [
-                      _c("div", { staticClass: "column is-1 drag-handle" }, [
-                        _c("i", { staticClass: "fa fa-arrows-alt" })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "columm is-8" }, [
-                        _c("h3", { staticClass: "is-size-3" }, [
-                          _vm._v(_vm._s(section.name))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "column is-1 has-text-centered has-text-primary",
-                          on: {
-                            click: function($event) {
-                              return _vm.openEditModal(section)
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "columns is-mobile menu-header is-vcentered"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "column is-1 drag-handle py-1" },
+                          [_c("i", { staticClass: "fa fa-arrows-alt" })]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "column is-8 py-1" }, [
+                          _c("h3", { staticClass: "is-size-3" }, [
+                            _vm._v(_vm._s(section.name))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "column is-1 has-text-centered has-text-primary py-1",
+                            on: {
+                              click: function($event) {
+                                return _vm.openEditModal(section)
+                              }
                             }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa fa-edit" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "column is-1 has-text-centered has-text-danger"
-                        },
-                        [_c("i", { staticClass: "fa fa-trash" })]
-                      )
-                    ]),
+                          },
+                          [_c("i", { staticClass: "fa fa-edit" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "column is-1 has-text-centered has-text-primary py-1",
+                            on: {
+                              click: function($event) {
+                                return _vm.addNewItem(section)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-plus" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "column is-1 has-text-centered has-text-danger py-1"
+                          },
+                          [_c("i", { staticClass: "fa fa-trash" })]
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("nested-draggable", {
                       attrs: {
@@ -24694,7 +24725,12 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "column is-1 has-text-centered has-text-danger"
+                              "column is-1 has-text-centered has-text-danger",
+                            on: {
+                              click: function($event) {
+                                return _vm.addNewItem(section)
+                              }
+                            }
                           },
                           [_c("i", { staticClass: "fa fa-trash" })]
                         )

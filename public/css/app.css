@@ -12475,7 +12475,7 @@ a.has-text-danger-dark:focus {
 }
 
 .section {
-  padding: 3rem 1.5rem;
+  padding: 1rem 0.5rem;
 }
 
 @media screen and (min-width: 1024px) {
@@ -18649,5 +18649,14 @@ https://css-tricks.com/hash-tag-links-padding/ */
 
 #menuEditor.hide-menu-items .menu_items {
   display: none;
+}
+
+#menuEditor .menu-header {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+#menuEditor .menu-section {
+  padding: 0.5rem !important;
 }
 

@@ -1,4 +1,5 @@
 //Bulma
+$section-padding: 1rem 0.5rem;
 @import '~bulma/bulma';
 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
@@ -53,5 +54,12 @@ https://css-tricks.com/hash-tag-links-padding/ */
         .menu_items{
             display: none;
         }
+    }
+    .menu-header{
+        margin-bottom: 0 !important;
+        margin-top:0 !important;
+    }
+    .menu-section{
+        padding: 0.5rem !important;
     }
 }
