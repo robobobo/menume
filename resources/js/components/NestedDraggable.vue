@@ -16,7 +16,7 @@
         
         <template v-if="section.type == 'menu_section'">
           <div class="columns is-mobile menu-header is-vcentered">
-            <div class="column is-1 drag-handle py-1">
+            <div class="column is-1 drag-handle py-1 has-text-centered">
                     <i class="fa fa-arrows-alt"></i>
             </div>
             <div class="column is-8 py-1">
@@ -24,9 +24,6 @@
             </div>
              <div class="column is-1 has-text-centered has-text-primary py-1" @click="openEditModal(section)">
                     <i class="fa fa-edit"></i>
-              </div>
-              <div class="column is-1 has-text-centered has-text-primary py-1" @click="addNewItem(section)">
-                <i class="fa fa-plus"></i>
               </div>
               <div class="column is-1 has-text-centered has-text-danger py-1">
                 <i class="fa fa-trash"></i>

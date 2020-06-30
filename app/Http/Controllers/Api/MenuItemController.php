@@ -18,6 +18,24 @@ class MenuItemController extends Controller
         return response()->json(new MenuItemCollectionResource($menuItems),200);
     }
 
+    /*TODO set this up someday https://laravel.com/docs/master/validation#creating-form-requests */
+    public function create(Request $request)
+    {
+  
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'menu_section_id' => 'required|exists:menu_sections,id',
+            'menu_id' => 'exists:menus,id'
+        ]);
+        
+        /*its passed validation if it got here*/
+        $menuItem = MenuItem::create($request->input());
+        return $menuItem;
+
+    }
+
     public function show(MenuItem $menuItem)
     {
         return response()->json(new MenuItemResource($menuItem),200);

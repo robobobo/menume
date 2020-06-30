@@ -1,5 +1,7 @@
 <template>
           <div class="container">
+              <notifications position="top left" />
+
             <div class="field is-grouped pb-2">
                 <p class="control">
                 <button class="button is-link" v-on:click="updateMenuData()">
@@ -14,6 +16,11 @@
                     Cancel
                 </button>
                 </p>
+                <p class="control">
+                <button class="button is-primary" v-on:click="addNewItem()">
+                    Add New Item
+                </button>
+                </p>
             </div>
             <transition name="slide-fade">
             <div class="notification is-success" v-show="updateSuccess">
@@ -22,7 +29,7 @@
             </div>
             </transition>
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
-              
+                        <new-item-modal v-show="isAddNewItemModalVisible" @close="closeEditModal"/>
                      <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
                     <nested-draggable :menu="menu" :open-edit-modal="showModal" v-if="menuLoaded"/>
                 </div>
@@ -56,6 +63,7 @@ export default {
             modalData: null,
             modalDataClone: null,//used if we need to revert changes
             updateSuccess: false,
+            isAddNewItemModalVisible: false,
         }
     },
     computed: {
@@ -152,12 +160,18 @@ export default {
         closeModal() {
             this.isModalVisible = false;
         },
+        addNewItem() {
+            this.isAddNewItemModalVisible = true;
+        },
         cancelModal(){
             // revert back to the original cloned data
             this.modalData.name = this.modalDataClone.name;
             this.modalData.description = this.modalDataClone.description
             this.modalData.price = this.modalDataClone.price
             this.isModalVisible = false;
+        },
+        closeEditModal() {
+            this.isAddNewItemModalVisible = false;
         }
     }
 }

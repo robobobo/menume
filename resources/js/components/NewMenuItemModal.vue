@@ -1,0 +1,127 @@
+<script>
+  export default {
+    name: 'new-item-modal',
+    props: ['sections'],
+    data: function() {
+        return {
+            item: {
+                name: '',
+                description: '',
+                price: null,
+                type: '',
+                menu_section_id:2,
+                menu_id:1,
+            },
+            formLoading: false,
+        }
+    },
+    methods: {
+      close() {
+        this.$emit('close');
+      },
+      save() {
+          console.log(this.item);
+          axios.post("/api/v1/menu-item",this.item)
+          .then( result =>{
+              console.log(result);
+              Vue.notify({
+                title: 'Success!',
+                text: 'Your new menu item was saved!'
+            })
+              this.close();
+          })
+          .catch( error => {
+              console.log(error.response.data.errors);
+          });
+      }
+    },
+
+  };
+</script>
+<template>
+<transition name="slide-fade">
+<div class="modal is-active" role="dialog">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <slot name="body">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+          Add New Menu Item
+
+          </p>
+          </header>
+        <div class="card-content">
+          <div class="field">
+            <label for="" class="label">Name</label>
+            <div class="control">
+              <input type="text" class="input" v-model="item.name" placeholder="Avocado poached eggs">
+            </div>
+          </div>
+          <div class="field">
+            <label for="" class="label">Description</label>
+            <div class="control">
+              <textarea v-model="item.description" placeholder="Two free range golden yolk eggs, perfectly poached on fresh sourdough bread" id="" rows="3" class="textarea">
+              </textarea>
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <label class="checkbox pr-2">
+              <input type="checkbox">
+              Gluten Free
+            </label>
+            <label class="checkbox pr-2">
+              <input type="checkbox">
+              Vegetarian
+            </label>
+            <label class="checkbox pr-2">
+              <input type="checkbox">
+              Vegan
+            </label>
+            <label class="checkbox pr-2">
+              <input type="checkbox">
+              Lactose
+            </label>
+          </div>
+          <div class="field">
+            <label for="" class="label">Price</label>
+            <div class="control has-icons-left">
+              <input type="number" class="input" v-model="item.price">
+              <span class="icon is-left">
+                <i class="fas fa-euro-sign"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link" @click="save">Save</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light" @click="close">Cancel</button>
+            </div>
+        </div>
+
+
+        </div>
+</div>
+    </slot>
+  </div>
+  <button class="modal-close is-large" @click="close" aria-label="close"></button>
+</div>
+</transition>
+</template>
+<style>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

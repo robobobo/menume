@@ -31,7 +31,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
 
     Route::get('menu-item/{menuItem}','MenuItemController@show');
     Route::post('menu-item/{menuItem}/update','MenuItemController@update');
-
+    Route::post('menu-item','MenuItemController@create');
+    
     Route::get('menu/{menu}','MenuController@show');
     
 

@@ -16,6 +16,7 @@
   </div>
 </section>
 <div id="app">
+  
   <edit-menu :menu_id='{{$menu->id}}'></edit-menu>
 </div>
 
