@@ -1,7 +1,7 @@
 <script>
   export default {
     name: 'new-item-modal',
-    props: ['sections'],
+    props: ['menu','menuDetails'],
     data: function() {
         return {
             item: {
@@ -9,11 +9,14 @@
                 description: '',
                 price: null,
                 type: '',
-                menu_section_id:2,
-                menu_id:1,
+                menu_section_id: null,
+                menu_id:null,
             },
             formLoading: false,
         }
+    },
+    mounted: function() {
+      this.item.menu_id = this.menuDetails.menu_id;
     },
     methods: {
       close() {
@@ -28,6 +31,7 @@
                 title: 'Success!',
                 text: 'Your new menu item was saved!'
             })
+           this.$emit('addNewItem',result.data);
               this.close();
           })
           .catch( error => {
@@ -52,6 +56,19 @@
           </p>
           </header>
         <div class="card-content">
+          <div class="field">
+            <label for="" class="label">Select Section</label>
+            <div class="control">
+              <div class="select">
+              <select v-model="item.menu_section_id">
+                  <option disabled value="">Please select one</option>
+                <option v-for="section in menu" v-bind:key="section.id" v-bind:value="section.id">
+                  {{section.name}}
+                </option>
+              </select>
+            </div>
+            </div>
+          </div>
           <div class="field">
             <label for="" class="label">Name</label>
             <div class="control">

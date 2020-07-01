@@ -29,7 +29,7 @@
             </div>
             </transition>
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
-                        <new-item-modal v-show="isAddNewItemModalVisible" @close="closeEditModal"/>
+                        <new-item-modal v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails"/>
                      <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
                     <nested-draggable :menu="menu" :open-edit-modal="showModal" v-if="menuLoaded"/>
                 </div>
@@ -52,6 +52,7 @@ export default {
     data: function() {
         return {
             menu: [],
+            menuDetails: [],
             sortableMenu: null,
             // menuItems: [],
             // menuSerialized: [],
@@ -91,6 +92,7 @@ export default {
                             menu_section_id:section.id,
                             name: section.menu_items[i].name,
                             description: section.menu_items[i].description,
+                            price: section.menu_items[i].price,
                         });
                     }
                 }
@@ -111,6 +113,12 @@ export default {
              .then( response => {
                 /*draggable needs an array to be passed to it*/
                  this.menu = response.data.data.menu_sections;
+                 this.menuDetails = {
+                     'establishment_id' : response.data.data.establishment_id,
+                     'establishment_name' : response.data.data.establishment_name,
+                     'menu_id' : response.data.data.id,
+                     'name' : response.data.data.name,
+                 }
              })
             .catch( error => {
                  console.log(error);
@@ -142,6 +150,17 @@ export default {
                 "items": menuItems 
             })
 
+        },
+
+        updateMenu: function(item)
+        {
+            console.log("add this to the menu",item);
+            /*this gives us the index of the menu section so we know where to add it*/
+            let index = this.menu.findIndex(x => x.id == item.menu_section_id)
+            item.type="menu_item";
+            /*add it to the beginning of the list so we can see it!*/
+            this.menu[index].menu_items.unshift(item);
+            console.log(index);
         },
 
         toggleMenuSections: function() {

@@ -1961,6 +1961,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       menu: [],
+      menuDetails: [],
       sortableMenu: null,
       // menuItems: [],
       // menuSerialized: [],
@@ -2000,7 +2001,8 @@ __webpack_require__.r(__webpack_exports__);
               position: parseInt(i) + 1,
               menu_section_id: section.id,
               name: section.menu_items[i].name,
-              description: section.menu_items[i].description
+              description: section.menu_items[i].description,
+              price: section.menu_items[i].price
             });
           }
         }
@@ -2021,6 +2023,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/v1/menu/' + id).then(function (response) {
         /*draggable needs an array to be passed to it*/
         _this.menu = response.data.data.menu_sections;
+        _this.menuDetails = {
+          'establishment_id': response.data.data.establishment_id,
+          'establishment_name': response.data.data.establishment_name,
+          'menu_id': response.data.data.id,
+          'name': response.data.data.name
+        };
       })["catch"](function (error) {
         console.log(error);
       })["finally"](function () {
@@ -2052,6 +2060,19 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/v1/menu-items', {
         "items": menuItems
       });
+    },
+    updateMenu: function updateMenu(item) {
+      console.log("add this to the menu", item);
+      /*this gives us the index of the menu section so we know where to add it*/
+
+      var index = this.menu.findIndex(function (x) {
+        return x.id == item.menu_section_id;
+      });
+      item.type = "menu_item";
+      /*add it to the beginning of the list so we can see it!*/
+
+      this.menu[index].menu_items.unshift(item);
+      console.log(index);
     },
     toggleMenuSections: function toggleMenuSections() {
       if (this.showMenuSections) {
@@ -2215,9 +2236,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkMove: function checkMove(evt) {
+      console.log("checking move", evt.draggedContext.element.type, evt.relatedContext.element.type);
       /* makes sure we are only dragging the correct elements to the correct areas 
           ie. menu items to menu item sections, menu sections to menu section sections
       */
+
       return evt.draggedContext.element.type === evt.relatedContext.element.type;
     },
     addNewItem: function addNewItem(section) {
@@ -2241,7 +2264,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'new-item-modal',
-  props: ['sections'],
+  props: ['menu', 'menuDetails'],
   data: function data() {
     return {
       item: {
@@ -2249,11 +2272,14 @@ __webpack_require__.r(__webpack_exports__);
         description: '',
         price: null,
         type: '',
-        menu_section_id: 2,
-        menu_id: 1
+        menu_section_id: null,
+        menu_id: null
       },
       formLoading: false
     };
+  },
+  mounted: function mounted() {
+    this.item.menu_id = this.menuDetails.menu_id;
   },
   methods: {
     close: function close() {
@@ -2269,6 +2295,8 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Success!',
           text: 'Your new menu item was saved!'
         });
+
+        _this.$emit('addNewItem', result.data);
 
         _this.close();
       })["catch"](function (error) {
@@ -2330,7 +2358,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
@@ -24424,17 +24452,20 @@ var render = function() {
           attrs: { id: "menuEditor" }
         },
         [
-          _c("new-item-modal", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isAddNewItemModalVisible,
-                expression: "isAddNewItemModalVisible"
-              }
-            ],
-            on: { close: _vm.closeEditModal }
-          }),
+          _vm.menuLoaded
+            ? _c("new-item-modal", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.isAddNewItemModalVisible,
+                    expression: "isAddNewItemModalVisible"
+                  }
+                ],
+                attrs: { menu: _vm.menu, "menu-details": _vm.menuDetails },
+                on: { close: _vm.closeEditModal, addNewItem: _vm.updateMenu }
+              })
+            : _vm._e(),
           _vm._v(" "),
           _c("modal-editor", {
             directives: [
@@ -24914,6 +24945,72 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-content" }, [
+                _c("div", { staticClass: "field" }, [
+                  _c("label", { staticClass: "label", attrs: { for: "" } }, [
+                    _vm._v("Select Section")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "control" }, [
+                    _c("div", { staticClass: "select" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.item.menu_section_id,
+                              expression: "item.menu_section_id"
+                            }
+                          ],
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.item,
+                                "menu_section_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { disabled: "", value: "" } }, [
+                            _vm._v("Please select one")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.menu, function(section) {
+                            return _c(
+                              "option",
+                              {
+                                key: section.id,
+                                domProps: { value: section.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\r\n                  " +
+                                    _vm._s(section.name) +
+                                    "\r\n                "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
                 _c("div", { staticClass: "field" }, [
                   _c("label", { staticClass: "label", attrs: { for: "" } }, [
                     _vm._v("Name")

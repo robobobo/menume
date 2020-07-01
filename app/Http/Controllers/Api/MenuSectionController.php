@@ -32,7 +32,7 @@ class MenuSectionController extends Controller
         foreach($request->input('sections') as $menuSectionData)
         {
                 $menuSection = MenuSection::findOrFail($menuSectionData['id']);
-                $menuSection->update($menuSectionData);
+                 $menuSection->update($menuSectionData);
         }
         return response()->json(['message'=>'ok'],200);
     }
