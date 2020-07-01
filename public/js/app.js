@@ -2094,6 +2094,22 @@ __webpack_require__.r(__webpack_exports__);
     addNewItem: function addNewItem() {
       this.isAddNewItemModalVisible = true;
     },
+    removeItem: function removeItem(item) {
+      console.log("remove the item", item);
+      /*find the section index*/
+
+      var index = this.menu.findIndex(function (x) {
+        return x.id == item.menu_section_id;
+      });
+      /*now find the index of the menu item*/
+
+      var menuIndex = this.menu[index].menu_items.findIndex(function (y) {
+        return y.id == item.id;
+      });
+      /*and now lets remove it from the array*/
+
+      this.menu[index].menu_items.splice(menuIndex, 1);
+    },
     cancelModal: function cancelModal() {
       // revert back to the original cloned data
       this.modalData.name = this.modalDataClone.name;
@@ -2218,6 +2234,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     openEditModal: {
       type: Function
+    },
+    removeItem: {
+      type: Function
     }
   },
   components: {
@@ -2243,10 +2262,24 @@ __webpack_require__.r(__webpack_exports__);
 
       return evt.draggedContext.element.type === evt.relatedContext.element.type;
     },
-    addNewItem: function addNewItem(section) {
-      console.log("addng this section", section);
-      console.log(this.menu);
-      this.menu.push(section);
+    deleteItem: function deleteItem(section) {
+      var _this = this;
+
+      if (confirm("Are you sure you want to delete this?")) {
+        console.log("delete", section);
+        axios["delete"]("/api/v1/menu-item/" + section.id).then(function (response) {
+          console.log("item deleted");
+
+          _this.removeItem(section);
+
+          Vue.notify({
+            title: 'Deleted!',
+            text: 'The menu item was deleted!'
+          });
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     }
   }
 });
@@ -24480,11 +24513,14 @@ var render = function() {
             on: { close: _vm.closeModal, cancel: _vm.cancelModal }
           }),
           _vm._v(" "),
-          _vm.menuLoaded
-            ? _c("nested-draggable", {
-                attrs: { menu: _vm.menu, "open-edit-modal": _vm.showModal }
-              })
-            : _vm._e()
+          _c("nested-draggable", {
+            attrs: {
+              menu: _vm.menu,
+              "open-edit-modal": _vm.showModal,
+              "remove-item": _vm.removeItem,
+              "v-if": _vm.menuLoaded
+            }
+          })
         ],
         1
       )
@@ -24827,6 +24863,7 @@ var render = function() {
                         showMenuSections: _vm.showMenuSections,
                         menu: section.menu_items,
                         "open-edit-modal": _vm.openEditModal,
+                        "remove-item": _vm.removeItem,
                         sectionType: "menu_items"
                       }
                     })
@@ -24887,7 +24924,7 @@ var render = function() {
                               "column is-1 has-text-centered has-text-danger",
                             on: {
                               click: function($event) {
-                                return _vm.addNewItem(section)
+                                return _vm.deleteItem(section)
                               }
                             }
                           },

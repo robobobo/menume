@@ -57,4 +57,13 @@ class MenuItemController extends Controller
         }
         return response()->json(['message'=>'ok'],200);
     }
+
+    public function delete(MenuItem $menuItem)
+    {
+        if($menuItem->delete()){
+            return response()->json(['message'=>'deleted'],200);
+        }else{
+            return response()->json(['message'=>'Not found, could not delete'],404);
+        }
+    }
 }

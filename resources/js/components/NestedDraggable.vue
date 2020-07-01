@@ -29,7 +29,7 @@
                 <i class="fa fa-trash"></i>
               </div>
           </div>
-            <nested-draggable :showMenuSections="showMenuSections" :menu="section.menu_items" :open-edit-modal="openEditModal" :sectionType="'menu_items'" />
+            <nested-draggable :showMenuSections="showMenuSections" :menu="section.menu_items" :open-edit-modal="openEditModal" :remove-item="removeItem" :sectionType="'menu_items'" />
         </template>
         <template v-else>
             <div class="columns is-mobile menu-item is-vcentered has-background-white mx-0">
@@ -46,7 +46,7 @@
                   <div class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)">
                     <i class="fa fa-edit"></i>
                   </div>
-                  <div class="column is-1 has-text-centered has-text-danger" @click="addNewItem(section)">
+                  <div class="column is-1 has-text-centered has-text-danger" @click="deleteItem(section)">
                     <i class="fa fa-trash"></i>
                   </div>
             </div>
@@ -70,7 +70,10 @@ export default {
     },
     openEditModal: {
         type: Function
-    }
+    },
+    removeItem: {
+      type: Function
+    },
   },
   components: {
     draggable
@@ -94,11 +97,23 @@ methods: {
         */
         return (evt.draggedContext.element.type === evt.relatedContext.element.type);
     },
-    addNewItem: function(section)
-    {
-      console.log("addng this section", section);
-      console.log(this.menu)
-      this.menu.push(section);
+    deleteItem: function(section) {
+      if(confirm("Are you sure you want to delete this?")){
+        console.log("delete",section);
+        axios.delete("/api/v1/menu-item/"+section.id)
+        .then(response =>{
+          console.log("item deleted");
+          this.removeItem(section);
+          Vue.notify({
+            title: 'Deleted!',
+            text: 'The menu item was deleted!'
+          })
+        })
+        .catch(error =>{
+          console.log(error);
+        });
+
+      }
     }
 }
 };

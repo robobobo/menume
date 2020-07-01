@@ -30,7 +30,7 @@
               Vue.notify({
                 title: 'Success!',
                 text: 'Your new menu item was saved!'
-            })
+              })
            this.$emit('addNewItem',result.data);
               this.close();
           })

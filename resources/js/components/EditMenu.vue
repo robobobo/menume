@@ -31,7 +31,7 @@
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
                         <new-item-modal v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails"/>
                      <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
-                    <nested-draggable :menu="menu" :open-edit-modal="showModal" v-if="menuLoaded"/>
+                    <nested-draggable :menu="menu" :open-edit-modal="showModal" :remove-item="removeItem" :v-if="menuLoaded"/>
                 </div>
           </div>
 </template>
@@ -181,6 +181,16 @@ export default {
         },
         addNewItem() {
             this.isAddNewItemModalVisible = true;
+        },
+        removeItem(item) {
+            console.log("remove the item",item)
+            /*find the section index*/
+            let index = this.menu.findIndex(x => x.id == item.menu_section_id)
+            /*now find the index of the menu item*/
+            let menuIndex = this.menu[index].menu_items.findIndex(y => y.id == item.id)
+            /*and now lets remove it from the array*/
+            this.menu[index].menu_items.splice(menuIndex,1);
+
         },
         cancelModal(){
             // revert back to the original cloned data
