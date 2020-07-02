@@ -10,7 +10,6 @@ Vue.component('modal-editor',require('./components/ModalEditor.vue').default);
 Vue.component('new-item-modal',require('./components/NewMenuItemModal.vue').default);
 Vue.use(Notifications)
 
-
 const app = new Vue({
     el: '#app',
 });

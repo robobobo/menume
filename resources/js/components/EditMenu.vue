@@ -1,10 +1,9 @@
 <template>
           <div class="container">
               <notifications position="top left" />
-
             <div class="field is-grouped pb-2">
                 <p class="control">
-                <button class="button is-link" v-on:click="updateMenuData()">
+                <button class="button is-success" v-on:click="updateMenuData()">
                     Save changes
                 </button>
                 </p>
@@ -29,9 +28,9 @@
             </div>
             </transition>
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
-                        <new-item-modal v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails"/>
+                    <new-item-modal ref="newItemModal" v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails" :current-section="currentSection" :modal-open="isAddNewItemModalVisible"/>
                      <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
-                    <nested-draggable :menu="menu" :open-edit-modal="showModal" :remove-item="removeItem" :v-if="menuLoaded"/>
+                    <nested-draggable :menu="menu" :open-edit-modal="showModal" :remove-item="removeItem" :add-new-item="addNewItem" :v-if="menuLoaded"/>
                 </div>
           </div>
 </template>
@@ -65,6 +64,7 @@ export default {
             modalDataClone: null,//used if we need to revert changes
             updateSuccess: false,
             isAddNewItemModalVisible: false,
+            currentSection: [],//use for deterimining which section we are adding an item to
         }
     },
     computed: {
@@ -179,8 +179,15 @@ export default {
         closeModal() {
             this.isModalVisible = false;
         },
-        addNewItem() {
+        addNewItem(section) {
+            // console.log(section);
+            this.currentSection = section;
+            this.$refs.newItemModal.setSectionId(section);
             this.isAddNewItemModalVisible = true;
+        },
+        openAddNewItemModal()
+        {
+
         },
         removeItem(item) {
             console.log("remove the item",item)

@@ -1947,7 +1947,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 // import draggable from 'vuedraggable'
 
 
@@ -1974,7 +1973,9 @@ __webpack_require__.r(__webpack_exports__);
       modalDataClone: null,
       //used if we need to revert changes
       updateSuccess: false,
-      isAddNewItemModalVisible: false
+      isAddNewItemModalVisible: false,
+      currentSection: [] //use for deterimining which section we are adding an item to
+
     };
   },
   computed: {
@@ -2091,9 +2092,13 @@ __webpack_require__.r(__webpack_exports__);
     closeModal: function closeModal() {
       this.isModalVisible = false;
     },
-    addNewItem: function addNewItem() {
+    addNewItem: function addNewItem(section) {
+      // console.log(section);
+      this.currentSection = section;
+      this.$refs.newItemModal.setSectionId(section);
       this.isAddNewItemModalVisible = true;
     },
+    openAddNewItemModal: function openAddNewItemModal() {},
     removeItem: function removeItem(item) {
       console.log("remove the item", item);
       /*find the section index*/
@@ -2220,6 +2225,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2236,6 +2244,9 @@ __webpack_require__.r(__webpack_exports__);
       type: Function
     },
     removeItem: {
+      type: Function
+    },
+    addNewItem: {
       type: Function
     }
   },
@@ -2297,7 +2308,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'new-item-modal',
-  props: ['menu', 'menuDetails'],
+  props: ['menu', 'menuDetails', 'currentSection', 'modalOpen'],
   data: function data() {
     return {
       item: {
@@ -2315,6 +2326,9 @@ __webpack_require__.r(__webpack_exports__);
     this.item.menu_id = this.menuDetails.menu_id;
   },
   methods: {
+    setSectionId: function setSectionId(section) {
+      this.item.menu_section_id = section.id;
+    },
     close: function close() {
       this.$emit('close');
     },
@@ -2391,7 +2405,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
@@ -24409,7 +24423,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "button is-link",
+              staticClass: "button is-success",
               on: {
                 click: function($event) {
                   return _vm.updateMenuData()
@@ -24495,7 +24509,13 @@ var render = function() {
                     expression: "isAddNewItemModalVisible"
                   }
                 ],
-                attrs: { menu: _vm.menu, "menu-details": _vm.menuDetails },
+                ref: "newItemModal",
+                attrs: {
+                  menu: _vm.menu,
+                  "menu-details": _vm.menuDetails,
+                  "current-section": _vm.currentSection,
+                  "modal-open": _vm.isAddNewItemModalVisible
+                },
                 on: { close: _vm.closeEditModal, addNewItem: _vm.updateMenu }
               })
             : _vm._e(),
@@ -24518,6 +24538,7 @@ var render = function() {
               menu: _vm.menu,
               "open-edit-modal": _vm.showModal,
               "remove-item": _vm.removeItem,
+              "add-new-item": _vm.addNewItem,
               "v-if": _vm.menuLoaded
             }
           })
@@ -24854,6 +24875,19 @@ var render = function() {
                               "column is-1 has-text-centered has-text-danger py-1"
                           },
                           [_c("i", { staticClass: "fa fa-trash" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "column is-1 has-text-centered py-1",
+                            on: {
+                              click: function($event) {
+                                return _vm.addNewItem(section)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-plus" })]
                         )
                       ]
                     ),

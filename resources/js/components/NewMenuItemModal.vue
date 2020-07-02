@@ -1,7 +1,7 @@
 <script>
   export default {
     name: 'new-item-modal',
-    props: ['menu','menuDetails'],
+    props: ['menu','menuDetails','currentSection','modalOpen'],
     data: function() {
         return {
             item: {
@@ -19,6 +19,9 @@
       this.item.menu_id = this.menuDetails.menu_id;
     },
     methods: {
+      setSectionId: function(section) {
+        this.item.menu_section_id = section.id;
+      },
       close() {
         this.$emit('close');
       },
@@ -117,8 +120,6 @@
               <button class="button is-link is-light" @click="close">Cancel</button>
             </div>
         </div>
-
-
         </div>
 </div>
     </slot>

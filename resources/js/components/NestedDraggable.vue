@@ -28,6 +28,9 @@
               <div class="column is-1 has-text-centered has-text-danger py-1">
                 <i class="fa fa-trash"></i>
               </div>
+              <div class="column is-1 has-text-centered py-1" @click="addNewItem(section)">
+                <i class="fa fa-plus"></i>
+              </div>
           </div>
             <nested-draggable :showMenuSections="showMenuSections" :menu="section.menu_items" :open-edit-modal="openEditModal" :remove-item="removeItem" :sectionType="'menu_items'" />
         </template>
@@ -74,6 +77,9 @@ export default {
     removeItem: {
       type: Function
     },
+    addNewItem: {
+      type: Function
+    }
   },
   components: {
     draggable
