@@ -28,7 +28,16 @@
             </div>
             </transition>
                 <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
-                    <new-item-modal ref="newItemModal" v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails" :current-section="currentSection" :modal-open="isAddNewItemModalVisible"/>
+                    <b-modal :active.sync="isAddNewItemModalVisible"
+                        has-modal-card
+                        trap-focus
+                        :destroy-on-hide="false"
+                        animation="slide-fade"
+                        aria-role="dialog"
+                        aria-modal>
+                    <new-item-form @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails" :current-section="currentSection"></new-item-form>
+                    </b-modal>
+                    <!-- <new-item-modal ref="newItemModal" v-show="isAddNewItemModalVisible" v-if="menuLoaded" @close="closeEditModal" @addNewItem="updateMenu" :menu="menu" :menu-details="menuDetails" :current-section="currentSection" :modal-open="isAddNewItemModalVisible"/> -->
                      <modal-editor v-show="isModalVisible" @close="closeModal" @cancel="cancelModal" :section="modalData"/>
                     <nested-draggable :menu="menu" :open-edit-modal="showModal" :remove-item="removeItem" :add-new-item="addNewItem" :v-if="menuLoaded"/>
                 </div>
@@ -65,6 +74,7 @@ export default {
             updateSuccess: false,
             isAddNewItemModalVisible: false,
             currentSection: [],//use for deterimining which section we are adding an item to
+            isComponentModalActive: false,
         }
     },
     computed: {
@@ -182,12 +192,15 @@ export default {
         addNewItem(section) {
             // console.log(section);
             this.currentSection = section;
-            this.$refs.newItemModal.setSectionId(section);
+            // this.$refs.newItemModal.setSectionId(section);
             this.isAddNewItemModalVisible = true;
         },
         openAddNewItemModal()
         {
-
+            this.$buefy.modal.open({
+                parent: this,
+                component: newItemForm, 
+            });
         },
         removeItem(item) {
             console.log("remove the item",item)

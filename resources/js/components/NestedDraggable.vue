@@ -97,7 +97,6 @@ export default {
 },
 methods: {
     checkMove: function(evt) {
-      console.log("checking move",evt.draggedContext.element.type,evt.relatedContext.element.type);
         /* makes sure we are only dragging the correct elements to the correct areas 
             ie. menu items to menu item sections, menu sections to menu section sections
         */
