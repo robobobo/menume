@@ -33,10 +33,10 @@
           axios.post("/api/v1/menu-item",this.item)
           .then( result =>{
               console.log(result);
-              Vue.notify({
-                title: 'Success!',
-                text: 'Your new menu item was saved!'
-              })
+             this.$buefy.toast.open({
+              message: "Item has been added!",
+              type: "is-success"
+            });
            this.$emit('addNewItem',result.data);
               this.close();
           })
