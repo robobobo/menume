@@ -25090,3 +25090,7 @@ https://css-tricks.com/hash-tag-links-padding/ */
   padding: 0.5rem !important;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+

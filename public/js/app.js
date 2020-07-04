@@ -11989,13 +11989,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// import draggable from 'vuedraggable'
- // import modalEditor from "./ModalEditor";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    nestedDraggable: _NestedDraggable__WEBPACK_IMPORTED_MODULE_0__["default"] // modalEditor
-
+    nestedDraggable: _NestedDraggable__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: ["menu_id"],
   name: "edit-menu",
@@ -12004,17 +12035,18 @@ __webpack_require__.r(__webpack_exports__);
       menu: [],
       menuDetails: [],
       sortableMenu: null,
-      // menuItems: [],
-      // menuSerialized: [],
       menuItemsSerialized: [],
       menuSectionsSerialized: [],
       showMenuSections: true,
       menuLoaded: false,
       isModalVisible: false,
+      isSaving: false,
+      isLoading: true,
       modalData: null,
       modalDataClone: null,
       //used if we need to revert changes
       isAddNewItemModalVisible: false,
+      isAddNewSectionModalVisible: false,
       isEditItemModalVisible: false,
       currentSection: [],
       //use for deterimining which section we are adding an item to
@@ -12055,9 +12087,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    // this.sortableMenu = document.getElementById('sortableMenu');
-    // this.menuSerialized = this.serializeMenu(sortableMenu);
-    // this.serializeMenuSectionsAndItems();
     this.loadMenu(this.menu_id);
   },
   methods: {
@@ -12076,45 +12105,84 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       })["finally"](function () {
-        return _this.menuLoaded = true;
+        _this.menuLoaded = true;
+        _this.isLoading = false;
       });
     },
     updateMenuData: function updateMenuData() {
-      this.updateSectionOrder(this.menuSections);
-      this.updateMenuItemOrder(this.menuItems);
-      this.$buefy.toast.open({
-        message: "Your menu has been updated!",
-        type: "is-success"
+      var _this2 = this;
+
+      this.isSaving = true;
+      this.isLoading = true;
+      this.updateSectionOrder(this.menuSections).then(function (response) {
+        console.log("response", response);
+
+        _this2.updateMenuItemOrder(_this2.menuItems).then(function (response) {
+          console.log("response 2", response);
+
+          _this2.$buefy.toast.open({
+            message: "Your menu has been updated!",
+            type: "is-success"
+          });
+
+          _this2.isSaving = false;
+          _this2.isLoading = false;
+        }, function (error) {
+          console.log("error 2", error);
+
+          _this2.$buefy.toast.open({
+            message: "There was a problem updating your menu :(",
+            type: "is-warning"
+          });
+
+          _this2.isSaving = false;
+          _this2.isLoading = false;
+        });
+      }, function (error) {
+        console.log("error", error);
       });
     },
     updateSectionOrder: function updateSectionOrder(menuSections) {
-      console.log("update section order");
-      axios.post("/api/v1/menu-sections", {
-        sections: menuSections
-      }).then(function (response) {
-        console.log(response);
-      })["catch"](function (error) {
-        console.log(error);
+      var updatePromise = new Promise(function (resolve, reject) {
+        axios.post("/api/v1/menu-sections", {
+          sections: menuSections
+        }).then(function (response) {
+          resolve(response); // console.log(response);
+        })["catch"](function (error) {
+          // console.log(error);
+          reject(error);
+        });
       });
+      return updatePromise;
     },
     updateMenuItemOrder: function updateMenuItemOrder(menuItems) {
-      console.log(menuItems);
-      axios.post("/api/v1/menu-items", {
-        items: menuItems
+      // console.log(menuItems);
+      var updatePromise = new Promise(function (resolve, reject) {
+        axios.post("/api/v1/menu-items", {
+          items: menuItems
+        }).then(function (response) {
+          resolve(response);
+        })["catch"](function (error) {
+          reject(error);
+        });
       });
+      return updatePromise;
     },
     updateMenu: function updateMenu(item) {
       console.log("add this to the menu", item);
-      /*this gives us the index of the menu section so we know where to add it*/
 
-      var index = this.menu.findIndex(function (x) {
-        return x.id == item.menu_section_id;
-      });
-      item.type = "menu_item";
-      /*add it to the beginning of the list so we can see it!*/
+      if (item.type == 'menu_section') {
+        this.menu.unshift(item);
+      } else {
+        /*this gives us the index of the menu section so we know where to add it*/
+        var index = this.menu.findIndex(function (x) {
+          return x.id == item.menu_section_id;
+        });
+        item.type = "menu_item";
+        /*add it to the beginning of the list so we can see it!*/
 
-      this.menu[index].menu_items.unshift(item);
-      console.log(index);
+        this.menu[index].menu_items.unshift(item);
+      }
     },
     toggleMenuSections: function toggleMenuSections() {
       if (this.showMenuSections) {
@@ -12138,6 +12206,9 @@ __webpack_require__.r(__webpack_exports__);
       this.currentSection = section; // this.$refs.newItemModal.setSectionId(section);
 
       this.isAddNewItemModalVisible = true;
+    },
+    addNewSection: function addNewSection() {
+      this.isAddNewSectionModalVisible = true;
     },
     openEditItemModal: function openEditItemModal(section) {
       this.modalData = section;
@@ -12166,7 +12237,19 @@ __webpack_require__.r(__webpack_exports__);
       });
       /*and now lets remove it from the array*/
 
-      this.menu[index].menu_items.splice(menuIndex, 1);
+      if (index > -1) {
+        this.menu[index].menu_items.splice(menuIndex, 1);
+      }
+    },
+    removeSection: function removeSection(section) {
+      console.log("remove section", section);
+      var index = this.menu.findIndex(function (x) {
+        return x.id == section.id;
+      });
+
+      if (index > -1) {
+        this.menu.splice(index, 1);
+      }
     },
     cancelEditModal: function cancelEditModal() {
       // revert back to the original cloned data
@@ -12178,6 +12261,7 @@ __webpack_require__.r(__webpack_exports__);
     closeEditModal: function closeEditModal() {
       this.isAddNewItemModalVisible = false;
       this.isEditItemModalVisible = false;
+      this.isAddNewSectionModalVisible = false;
     }
   }
 });
@@ -12298,6 +12382,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -12314,6 +12413,9 @@ __webpack_require__.r(__webpack_exports__);
       type: Function
     },
     removeItem: {
+      type: Function
+    },
+    removeSection: {
       type: Function
     },
     addNewItem: {
@@ -12357,6 +12459,28 @@ __webpack_require__.r(__webpack_exports__);
             _this.removeItem(section);
 
             _this.$buefy.toast.open("Item was deleted!");
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        }
+      });
+    },
+    deleteSection: function deleteSection(section) {
+      var _this2 = this;
+
+      this.$buefy.dialog.confirm({
+        title: "Deleting Section",
+        message: "Are you sure you want to <b>delete</b> this entire section? This will also delete all the items in this section as well. This action <b>cannot</b> be undone.",
+        confirmText: "Delete Item",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: function onConfirm() {
+          axios["delete"]("/api/v1/menu-section/" + section.id).then(function (response) {
+            console.log("section deleted");
+
+            _this2.removeSection(section);
+
+            _this2.$buefy.toast.open("Section was deleted!");
           })["catch"](function (error) {
             console.log(error);
           });
@@ -12422,6 +12546,60 @@ __webpack_require__.r(__webpack_exports__);
         _this.$emit('addNewItem', result.data);
 
         _this.close();
+      })["catch"](function (error) {
+        console.log(error.response.data.errors);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "new-section-form",
+  props: ["menu"],
+  data: function data() {
+    return {
+      section: {
+        name: "",
+        description: "",
+        type: "menu_section",
+        menu_id: null
+      },
+      formLoading: false
+    };
+  },
+  mounted: function mounted() {
+    this.section.menu_id = this.menu.menu_id;
+  },
+  methods: {
+    close: function close() {
+      this.$emit("close");
+    },
+    save: function save() {
+      var _this = this;
+
+      console.log(this.section);
+      axios.post("/api/v1/menu-section", this.section).then(function (result) {
+        console.log(result);
+
+        _this.$buefy.toast.open({
+          message: "Section has been added!",
+          type: "is-success"
+        });
+
+        _this.$emit("addNewItem", result.data.data);
+
+        _this.$emit("close");
       })["catch"](function (error) {
         console.log(error.response.data.errors);
       });
@@ -27891,6 +28069,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all .3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Enter and leave animations can use different */\r\n/* durations and timing functions.              */\n.slide-fade-enter-active {\r\n  transition: all 0.3s ease;\n}\n.slide-fade-leave-active {\r\n  transition: all 0.3s ease;\n}\n.slide-fade-enter, .slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
@@ -49298,6 +49495,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -49897,138 +50124,223 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "field is-grouped pb-2" }, [
-      _c("p", { staticClass: "control" }, [
-        _c(
-          "button",
-          {
-            staticClass: "button is-success",
-            on: {
-              click: function($event) {
-                return _vm.updateMenuData()
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("div", { staticClass: "field is-grouped pb-2" }, [
+        _c("p", { staticClass: "control" }, [
+          _c(
+            "button",
+            {
+              staticClass: "button is-success",
+              class: { "is-loading": _vm.isSaving },
+              attrs: { disabled: _vm.isSaving },
+              on: {
+                click: function($event) {
+                  return _vm.updateMenuData()
+                }
               }
-            }
-          },
-          [_vm._v("Save changes")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "control" }, [
-        _c(
-          "button",
-          {
-            staticClass: "button",
-            on: {
-              click: function($event) {
-                return _vm.toggleMenuSections()
-              }
-            }
-          },
-          [
-            _vm.showMenuSections
-              ? _c("span", [_vm._v("Hide Menu Items")])
-              : _c("span", [_vm._v("Show Menu Items")])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("p", { staticClass: "control" }, [
-        _c(
-          "button",
-          {
-            staticClass: "button is-primary",
-            on: {
-              click: function($event) {
-                return _vm.addNewItem()
-              }
-            }
-          },
-          [_vm._v("Add New Item")]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        class: { "hide-menu-items": !_vm.showMenuSections },
-        attrs: { id: "menuEditor" }
-      },
-      [
-        _c(
-          "b-modal",
-          {
-            attrs: {
-              active: _vm.isAddNewItemModalVisible,
-              "has-modal-card": "",
-              "trap-focus": "",
-              "destroy-on-hide": true,
-              animation: "slide-fade",
-              "aria-role": "dialog",
-              "aria-modal": ""
             },
-            on: {
-              "update:active": function($event) {
-                _vm.isAddNewItemModalVisible = $event
+            [_vm._v("Save changes")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "control" }, [
+          _c(
+            "button",
+            {
+              staticClass: "button",
+              on: {
+                click: function($event) {
+                  return _vm.toggleMenuSections()
+                }
               }
-            }
-          },
-          [
-            _c("new-item-form", {
+            },
+            [
+              _vm.showMenuSections
+                ? _c("span", [_vm._v("Hide Menu Items")])
+                : _c("span", [_vm._v("Show Menu Items")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("p", { staticClass: "control" }, [
+          _c(
+            "button",
+            {
+              staticClass: "button is-primary",
+              on: {
+                click: function($event) {
+                  return _vm.addNewItem()
+                }
+              }
+            },
+            [_vm._v("Add New Item")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "control" }, [
+          _c(
+            "button",
+            {
+              staticClass: "button is-primary",
+              on: {
+                click: function($event) {
+                  return _vm.addNewSection()
+                }
+              }
+            },
+            [_vm._v("Add New Section")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "control" }, [
+          _c(
+            "a",
+            {
+              staticClass: "button is-secondary",
+              attrs: { href: "/menu/" + _vm.menu_id, target: "_blank" }
+            },
+            [
+              _c("span", [_vm._v("View Menu")]),
+              _vm._v(" "),
+              _c("b-icon", {
+                attrs: {
+                  pack: "fa",
+                  icon: "external-link-alt",
+                  size: "is-small"
+                }
+              })
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          class: { "hide-menu-items": !_vm.showMenuSections },
+          attrs: { id: "menuEditor" }
+        },
+        [
+          _c(
+            "b-modal",
+            {
               attrs: {
-                menu: _vm.menu,
-                "menu-details": _vm.menuDetails,
-                "current-section": _vm.currentSection
+                active: _vm.isAddNewItemModalVisible,
+                "has-modal-card": "",
+                "trap-focus": "",
+                "destroy-on-hide": true,
+                animation: "slide-fade",
+                "aria-role": "dialog",
+                "aria-modal": ""
               },
-              on: { close: _vm.closeEditModal, addNewItem: _vm.updateMenu }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-modal",
-          {
-            attrs: {
-              active: _vm.isEditItemModalVisible,
-              "has-modal-card": "",
-              "trap-focus": "",
-              "destroy-on-hide": false,
-              animation: "slide-fade",
-              "aria-role": "dialog",
-              "aria-modal": ""
-            },
-            on: {
-              "update:active": function($event) {
-                _vm.isEditItemModalVisible = $event
+              on: {
+                "update:active": function($event) {
+                  _vm.isAddNewItemModalVisible = $event
+                }
               }
+            },
+            [
+              _c("new-item-form", {
+                attrs: {
+                  menu: _vm.menu,
+                  "menu-details": _vm.menuDetails,
+                  "current-section": _vm.currentSection
+                },
+                on: { close: _vm.closeEditModal, addNewItem: _vm.updateMenu }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-modal",
+            {
+              attrs: {
+                active: _vm.isAddNewSectionModalVisible,
+                "has-modal-card": "",
+                "trap-focus": "",
+                "destroy-on-hide": true,
+                animation: "slide-fade",
+                "aria-role": "dialog",
+                "aria-modal": ""
+              },
+              on: {
+                "update:active": function($event) {
+                  _vm.isAddNewSectionModalVisible = $event
+                }
+              }
+            },
+            [
+              _c("new-section-form", {
+                attrs: { menu: _vm.menuDetails },
+                on: { close: _vm.closeEditModal, addNewItem: _vm.updateMenu }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-modal",
+            {
+              attrs: {
+                active: _vm.isEditItemModalVisible,
+                "has-modal-card": "",
+                "trap-focus": "",
+                "destroy-on-hide": false,
+                animation: "slide-fade",
+                "aria-role": "dialog",
+                "aria-modal": ""
+              },
+              on: {
+                "update:active": function($event) {
+                  _vm.isEditItemModalVisible = $event
+                }
+              }
+            },
+            [
+              _c("edit-item-form", {
+                attrs: { section: _vm.modalData },
+                on: { close: _vm.closeEditModal, cancel: _vm.cancelEditModal }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("nested-draggable", {
+            attrs: {
+              menu: _vm.menu,
+              "open-edit-modal": _vm.openEditItemModal,
+              "remove-item": _vm.removeItem,
+              "remove-section": _vm.removeSection,
+              "add-new-item": _vm.addNewItem,
+              "v-if": _vm.menuLoaded
             }
-          },
-          [
-            _c("edit-item-form", {
-              attrs: { section: _vm.modalData },
-              on: { close: _vm.closeEditModal, cancel: _vm.cancelEditModal }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("nested-draggable", {
-          attrs: {
-            menu: _vm.menu,
-            "open-edit-modal": _vm.openEditItemModal,
-            "remove-item": _vm.removeItem,
-            "add-new-item": _vm.addNewItem,
-            "v-if": _vm.menuLoaded
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-loading", {
+        attrs: {
+          "is-full-page": true,
+          active: _vm.isLoading,
+          "can-cancel": false
+        },
+        on: {
+          "update:active": function($event) {
+            _vm.isLoading = $event
           }
-        })
-      ],
-      1
-    )
-  ])
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -50096,76 +50408,90 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "field" }, [
-          _c("label", { staticClass: "label", attrs: { for: "" } }, [
-            _vm._v("Description")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "control" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.section.description,
-                  expression: "section.description"
-                }
-              ],
-              staticClass: "textarea",
-              attrs: { id: "", rows: "3" },
-              domProps: { value: _vm.section.description },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+        _vm.section.type == "menu_item"
+          ? _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label", attrs: { for: "" } }, [
+                _vm._v("Description")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "control" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.section.description,
+                      expression: "section.description"
+                    }
+                  ],
+                  staticClass: "textarea",
+                  attrs: { id: "", rows: "3" },
+                  domProps: { value: _vm.section.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.section, "description", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.section, "description", $event.target.value)
-                }
-              }
-            })
-          ])
-        ]),
+                })
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _vm._m(1),
+        _vm.section.type == "menu_item"
+          ? _c("div", { staticClass: "field is-grouped" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4)
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "field" }, [
-          _c("label", { staticClass: "label", attrs: { for: "" } }, [
-            _vm._v("Price")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "control has-icons-left" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.section.price,
-                  expression: "section.price"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "number" },
-              domProps: { value: _vm.section.price },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+        _vm.section.type == "menu_item"
+          ? _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label", attrs: { for: "" } }, [
+                _vm._v("Price")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "control has-icons-left" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.section.price,
+                      expression: "section.price"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: { type: "number" },
+                  domProps: { value: _vm.section.price },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.section, "price", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.section, "price", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm._m(2)
-          ])
-        ]),
+                }),
+                _vm._v(" "),
+                _vm._m(5)
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "field is-grouped" }, [
           _c("div", { staticClass: "control" }, [
             _c(
               "button",
               { staticClass: "button is-primary", on: { click: _vm.close } },
-              [_vm._v("Save")]
+              [_vm._v("Done")]
             )
           ]),
           _vm._v(" "),
@@ -50197,26 +50523,36 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field is-grouped" }, [
-      _c("label", { staticClass: "checkbox pr-2" }, [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n            Gluten Free\n          ")
-      ]),
-      _vm._v(" "),
-      _c("label", { staticClass: "checkbox pr-2" }, [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n            Vegetarian\n          ")
-      ]),
-      _vm._v(" "),
-      _c("label", { staticClass: "checkbox pr-2" }, [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n            Vegan\n          ")
-      ]),
-      _vm._v(" "),
-      _c("label", { staticClass: "checkbox pr-2" }, [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("\n            Lactose\n          ")
-      ])
+    return _c("label", { staticClass: "checkbox pr-2" }, [
+      _c("input", { attrs: { type: "checkbox" } }),
+      _vm._v("\n            Gluten Free\n          ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "checkbox pr-2" }, [
+      _c("input", { attrs: { type: "checkbox" } }),
+      _vm._v("\n            Vegetarian\n          ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "checkbox pr-2" }, [
+      _c("input", { attrs: { type: "checkbox" } }),
+      _vm._v("\n            Vegan\n          ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "checkbox pr-2" }, [
+      _c("input", { attrs: { type: "checkbox" } }),
+      _vm._v("\n            Lactose\n          ")
     ])
   },
   function() {
@@ -50303,7 +50639,12 @@ var render = function() {
                             staticClass:
                               "column is-1 drag-handle py-1 has-text-centered"
                           },
-                          [_c("i", { staticClass: "fa fa-arrows-alt" })]
+                          [
+                            _c("b-icon", {
+                              attrs: { pack: "fa", icon: "arrows-alt" }
+                            })
+                          ],
+                          1
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "column is-8 py-1" }, [
@@ -50316,36 +50657,57 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "column is-1 has-text-centered has-text-primary py-1",
+                              "column is-1 has-text-centered has-text-primary py-1 cursor-pointer",
                             on: {
                               click: function($event) {
                                 return _vm.openEditModal(section)
                               }
                             }
                           },
-                          [_c("i", { staticClass: "fa fa-edit" })]
+                          [
+                            _c("b-icon", {
+                              attrs: { pack: "fa", icon: "edit" }
+                            })
+                          ],
+                          1
                         ),
                         _vm._v(" "),
                         _c(
                           "div",
                           {
                             staticClass:
-                              "column is-1 has-text-centered has-text-danger py-1"
+                              "column is-1 has-text-centered has-text-danger py-1",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteSection(section)
+                              }
+                            }
                           },
-                          [_c("i", { staticClass: "fa fa-trash" })]
+                          [
+                            _c("b-icon", {
+                              attrs: { pack: "fa", icon: "trash" }
+                            })
+                          ],
+                          1
                         ),
                         _vm._v(" "),
                         _c(
                           "div",
                           {
-                            staticClass: "column is-1 has-text-centered py-1",
+                            staticClass:
+                              "column is-1 has-text-centered py-1 cursor-pointer",
                             on: {
                               click: function($event) {
                                 return _vm.addNewItem(section)
                               }
                             }
                           },
-                          [_c("i", { staticClass: "fa fa-plus" })]
+                          [
+                            _c("b-icon", {
+                              attrs: { pack: "fa", icon: "plus" }
+                            })
+                          ],
+                          1
                         )
                       ]
                     ),
@@ -50374,7 +50736,12 @@ var render = function() {
                             staticClass:
                               "drag-handle column is-1 has-text-centered"
                           },
-                          [_c("i", { staticClass: "fa fa-arrows-alt" })]
+                          [
+                            _c("b-icon", {
+                              attrs: { pack: "fa", icon: "arrows-alt" }
+                            })
+                          ],
+                          1
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "column is-8" }, [
@@ -50396,7 +50763,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "column is-1 has-text-centered has-text-primary",
+                              "column is-1 has-text-centered has-text-primary cursor-pointer",
                             on: {
                               click: function($event) {
                                 return _vm.openEditModal(section)
@@ -50415,7 +50782,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "column is-1 has-text-centered has-text-danger",
+                              "column is-1 has-text-centered has-text-danger cursor-pointer",
                             on: {
                               click: function($event) {
                                 return _vm.deleteItem(section)
@@ -50698,6 +51065,101 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "icon is-left" }, [
       _c("i", { staticClass: "fas fa-euro-sign" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-card" }, [
+    _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label", attrs: { for: "" } }, [
+            _vm._v("Section Name")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.section.name,
+                  expression: "section.name"
+                }
+              ],
+              staticClass: "input",
+              attrs: {
+                type: "text",
+                placeholder: "eg. Starters and Appetizers"
+              },
+              domProps: { value: _vm.section.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.section, "name", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field is-grouped" }, [
+          _c("div", { staticClass: "control" }, [
+            _c(
+              "button",
+              { staticClass: "button is-primary", on: { click: _vm.save } },
+              [_vm._v("Save")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c(
+              "button",
+              {
+                staticClass: "button is-link is-light",
+                on: { click: _vm.close }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("header", { staticClass: "card-header" }, [
+      _c("p", { staticClass: "card-header-title" }, [
+        _vm._v("Add New Menu Section")
+      ])
     ])
   }
 ]
@@ -66160,13 +66622,13 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // import
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_1__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheck"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheckCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faInfoCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationTriangle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleRight"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleLeft"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEye"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEyeSlash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faUpload"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faTrash"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_1__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheck"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheckCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faInfoCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationTriangle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleRight"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleLeft"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEye"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEyeSlash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faUpload"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faTrash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faPlus"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowsAlt"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExternalLinkAlt"]);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component('edit-menu', __webpack_require__(/*! ./components/EditMenu.vue */ "./resources/js/components/EditMenu.vue")["default"]);
 Vue.component('nested-draggable', __webpack_require__(/*! ./components/NestedDraggable.vue */ "./resources/js/components/NestedDraggable.vue")["default"]); // Vue.component('modal-editor', require('./components/ModalEditor.vue').default);
 
-Vue.component('edit-item-form', __webpack_require__(/*! ./components/EditMenuItemForm.vue */ "./resources/js/components/EditMenuItemForm.vue")["default"]); // Vue.component('new-item-modal', require('./components/NewMenuItemModal.vue').default);
-
+Vue.component('edit-item-form', __webpack_require__(/*! ./components/EditMenuItemForm.vue */ "./resources/js/components/EditMenuItemForm.vue")["default"]);
+Vue.component('new-section-form', __webpack_require__(/*! ./components/NewMenuSectionForm.vue */ "./resources/js/components/NewMenuSectionForm.vue")["default"]);
 Vue.component('new-item-form', __webpack_require__(/*! ./components/NewMenuItemForm.vue */ "./resources/js/components/NewMenuItemForm.vue")["default"]);
 Vue.component('vue-fontawesome', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"]); // Vue.use(Notifications)
 
@@ -66537,6 +66999,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuItemForm_vue_vue_type_template_id_7b6b97ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuItemForm_vue_vue_type_template_id_7b6b97ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/NewMenuSectionForm.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/NewMenuSectionForm.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewMenuSectionForm.vue?vue&type=template&id=12e61556& */ "./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556&");
+/* harmony import */ var _NewMenuSectionForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewMenuSectionForm.vue?vue&type=script&lang=js& */ "./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _NewMenuSectionForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/NewMenuSectionForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./NewMenuSectionForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./NewMenuSectionForm.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./NewMenuSectionForm.vue?vue&type=template&id=12e61556& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewMenuSectionForm.vue?vue&type=template&id=12e61556&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewMenuSectionForm_vue_vue_type_template_id_12e61556___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

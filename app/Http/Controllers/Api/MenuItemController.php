@@ -24,7 +24,7 @@ class MenuItemController extends Controller
   
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
             'menu_section_id' => 'required|exists:menu_sections,id',
             'menu_id' => 'exists:menus,id'

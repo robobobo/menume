@@ -20,22 +20,34 @@
         <template v-if="section.type == 'menu_section'">
           <div class="columns is-mobile menu-header is-vcentered">
             <div class="column is-1 drag-handle py-1 has-text-centered">
-              <i class="fa fa-arrows-alt"></i>
+             <b-icon
+                pack="fa"
+                icon="arrows-alt">
+            </b-icon>
             </div>
             <div class="column is-8 py-1">
               <h3 class="is-size-3">{{section.name}}</h3>
             </div>
             <div
-              class="column is-1 has-text-centered has-text-primary py-1"
+              class="column is-1 has-text-centered has-text-primary py-1 cursor-pointer"
               @click="openEditModal(section)"
             >
-              <i class="fa fa-edit"></i>
+              <b-icon
+                pack="fa"
+                icon="edit">
+            </b-icon>
             </div>
-            <div class="column is-1 has-text-centered has-text-danger py-1">
-              <i class="fa fa-trash"></i>
+            <div class="column is-1 has-text-centered has-text-danger py-1" @click="deleteSection(section)">
+              <b-icon
+                pack="fa"
+                icon="trash">
+            </b-icon>
             </div>
-            <div class="column is-1 has-text-centered py-1" @click="addNewItem(section)">
-              <i class="fa fa-plus"></i>
+            <div class="column is-1 has-text-centered py-1 cursor-pointer" @click="addNewItem(section)">
+              <b-icon
+                pack="fa"
+                icon="plus">
+            </b-icon>
             </div>
           </div>
           <nested-draggable
@@ -49,7 +61,10 @@
         <template v-else>
           <div class="columns is-mobile menu-item is-vcentered has-background-white mx-0">
             <div class="drag-handle column is-1 has-text-centered">
-              <i class="fa fa-arrows-alt"></i>
+              <b-icon
+                pack="fa"
+                icon="arrows-alt">
+            </b-icon>
             </div>
             <div class="column is-8">
               <strong>{{section.name}}</strong>
@@ -58,14 +73,14 @@
             </div>
             <div class="column is-1">&euro;{{section.price}}</div>
             <div
-              class="column is-1 has-text-centered has-text-primary" @click="openEditModal(section)"
+              class="column is-1 has-text-centered has-text-primary cursor-pointer" @click="openEditModal(section)"
             >
            <b-icon
                 pack="fa"
                 icon="edit">
             </b-icon>
             </div>
-            <div class="column is-1 has-text-centered has-text-danger" @click="deleteItem(section)">
+            <div class="column is-1 has-text-centered has-text-danger cursor-pointer" @click="deleteItem(section)">
               <b-icon pack="fa" icon="trash"></b-icon>
             </div>
           </div>
@@ -91,6 +106,9 @@ export default {
       type: Function
     },
     removeItem: {
+      type: Function
+    },
+    removeSection: {
       type: Function
     },
     addNewItem: {
@@ -139,6 +157,29 @@ export default {
             .catch(error => {
               console.log(error);
             })
+      });
+    },
+    deleteSection: function(section) {
+      this.$buefy.dialog.confirm({
+        title: "Deleting Section",
+        message:
+          "Are you sure you want to <b>delete</b> this entire section? This will also delete all the items in this section as well. This action <b>cannot</b> be undone.",
+        confirmText: "Delete Item",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+
+          axios
+            .delete("/api/v1/menu-section/" + section.id)
+            .then(response => {
+              console.log("section deleted");
+              this.removeSection(section);
+              this.$buefy.toast.open("Section was deleted!");
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        }
       });
     }
   }

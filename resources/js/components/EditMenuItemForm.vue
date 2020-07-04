@@ -28,13 +28,13 @@ export default {
               <input type="text" class="input" v-model="section.name" />
             </div>
           </div>
-          <div class="field">
+          <div class="field"  v-if="section.type == 'menu_item'">
             <label for class="label">Description</label>
             <div class="control">
               <textarea v-model="section.description" id rows="3" class="textarea"></textarea>
             </div>
           </div>
-          <div class="field is-grouped">
+          <div class="field is-grouped" v-if="section.type == 'menu_item'">
             <label class="checkbox pr-2">
               <input type="checkbox" />
               Gluten Free
@@ -52,7 +52,7 @@ export default {
               Lactose
             </label>
           </div>
-          <div class="field">
+          <div class="field" v-if="section.type == 'menu_item'">
             <label for class="label">Price</label>
             <div class="control has-icons-left">
               <input type="number" class="input" v-model="section.price" />
@@ -63,7 +63,7 @@ export default {
           </div>
           <div class="field is-grouped">
             <div class="control">
-              <button class="button is-primary" @click="close">Save</button>
+              <button class="button is-primary" @click="close">Done</button>
             </div>
             <div class="control">
               <button class="button is-link is-light" @click="cancel">Cancel</button>

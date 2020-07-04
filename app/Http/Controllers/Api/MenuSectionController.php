@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 use App\MenuSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\MenuSection as MenuSectionResource;
+
 
 class MenuSectionController extends Controller
 {
@@ -26,6 +28,17 @@ class MenuSectionController extends Controller
         return response()->json(['message'=>'ok'],200);
     }
 
+    public function create(Request $request) 
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'menu_id' => 'exists:menus,id'
+        ]);
+        
+        /*its passed validation if it got here*/
+        $menuSection = MenuSection::create($request->input());
+        return new MenuSectionResource($menuSection);
+    }
     /* TODO Lots of validation to come of course.. */
     public function bulkUpdate(Request $request)
     {
@@ -35,5 +48,13 @@ class MenuSectionController extends Controller
                  $menuSection->update($menuSectionData);
         }
         return response()->json(['message'=>'ok'],200);
+    }
+
+    public function delete(MenuSection $menuSection) {
+        if($menuSection->delete()){
+            return response()->json(['message'=>'deleted'],200);
+        }else{
+            return response()->json(['message'=>'Not found, could not delete'],404);
+        }
     }
 }

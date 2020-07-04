@@ -2,7 +2,12 @@
   <div class="container">
     <div class="field is-grouped pb-2">
       <p class="control">
-        <button class="button is-success" v-on:click="updateMenuData()">Save changes</button>
+        <button
+          class="button is-success"
+          :class="{'is-loading': isSaving}"
+          :disabled=isSaving
+          v-on:click="updateMenuData()"
+        >Save changes</button>
       </p>
       <p class="control">
         <button class="button" v-on:click="toggleMenuSections()">
@@ -15,6 +20,17 @@
       </p>
       <p class="control">
         <button class="button is-primary" v-on:click="addNewItem()">Add New Item</button>
+      </p>
+       <p class="control">
+        <button class="button is-primary" v-on:click="addNewSection()">Add New Section</button>
+      </p>
+      <p class="control">
+        <a :href="'/menu/'+menu_id" target="_blank" class="button is-secondary"><span>View Menu</span> <b-icon
+                pack="fa"
+                icon="external-link-alt"
+                size="is-small">
+            </b-icon>
+            </a>
       </p>
     </div>
     <div id="menuEditor" :class="{'hide-menu-items' : !showMenuSections}">
@@ -36,6 +52,21 @@
         ></new-item-form>
       </b-modal>
       <b-modal
+        :active.sync="isAddNewSectionModalVisible"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="true"
+        animation="slide-fade"
+        aria-role="dialog"
+        aria-modal
+      >
+        <new-section-form
+          @close="closeEditModal"
+          @addNewItem="updateMenu"
+          :menu="menuDetails"
+        ></new-section-form>
+      </b-modal>
+      <b-modal
         :active.sync="isEditItemModalVisible"
         has-modal-card
         trap-focus
@@ -50,22 +81,22 @@
         :menu="menu"
         :open-edit-modal="openEditItemModal"
         :remove-item="removeItem"
+        :remove-section="removeSection"
         :add-new-item="addNewItem"
         :v-if="menuLoaded"
       />
     </div>
+      <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
+
   </div>
 </template>
 
 <script>
-// import draggable from 'vuedraggable'
 import nestedDraggable from "./NestedDraggable";
-// import modalEditor from "./ModalEditor";
 
 export default {
   components: {
-    nestedDraggable,
-    // modalEditor
+    nestedDraggable
   },
   props: ["menu_id"],
   name: "edit-menu",
@@ -74,16 +105,17 @@ export default {
       menu: [],
       menuDetails: [],
       sortableMenu: null,
-      // menuItems: [],
-      // menuSerialized: [],
       menuItemsSerialized: [],
       menuSectionsSerialized: [],
       showMenuSections: true,
       menuLoaded: false,
       isModalVisible: false,
+      isSaving: false,
+      isLoading: true,
       modalData: null,
       modalDataClone: null, //used if we need to revert changes
       isAddNewItemModalVisible: false,
+      isAddNewSectionModalVisible: false,
       isEditItemModalVisible: false,
       currentSection: [], //use for deterimining which section we are adding an item to
       isComponentModalActive: false
@@ -123,9 +155,6 @@ export default {
     }
   },
   mounted: function() {
-    // this.sortableMenu = document.getElementById('sortableMenu');
-    // this.menuSerialized = this.serializeMenu(sortableMenu);
-    // this.serializeMenuSectionsAndItems();
     this.loadMenu(this.menu_id);
   },
 
@@ -146,44 +175,89 @@ export default {
         .catch(error => {
           console.log(error);
         })
-        .finally(() => (this.menuLoaded = true));
+        .finally(() => {
+          this.menuLoaded = true;
+          this.isLoading = false;
+          });
     },
     updateMenuData: function() {
-      this.updateSectionOrder(this.menuSections);
-      this.updateMenuItemOrder(this.menuItems);
-      this.$buefy.toast.open({
-        message: "Your menu has been updated!",
-        type: "is-success"
-      });
+      this.isSaving = true;
+      this.isLoading = true;
+      this.updateSectionOrder(this.menuSections).then(
+        response => {
+          console.log("response", response);
+          this.updateMenuItemOrder(this.menuItems).then(
+            response => {
+              console.log("response 2", response);
+              this.$buefy.toast.open({
+                message: "Your menu has been updated!",
+                type: "is-success"
+              });
+              this.isSaving = false;
+              this.isLoading = false;
+            },
+            error => {
+              console.log("error 2", error);
+              this.$buefy.toast.open({
+                message: "There was a problem updating your menu :(",
+                type: "is-warning"
+              });
+              this.isSaving = false;
+              this.isLoading = false;
+            }
+          );
+        },
+        error => {
+          console.log("error", error);
+        }
+      );
     },
     updateSectionOrder: function(menuSections) {
-      console.log("update section order");
-      axios
-        .post("/api/v1/menu-sections", {
-          sections: menuSections
-        })
-        .then(function(response) {
-          console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      var updatePromise = new Promise(function(resolve, reject) {
+        axios
+          .post("/api/v1/menu-sections", {
+            sections: menuSections
+          })
+          .then(function(response) {
+            resolve(response);
+            // console.log(response);
+          })
+          .catch(function(error) {
+            // console.log(error);
+            reject(error);
+          });
+      });
+      return updatePromise;
     },
     updateMenuItemOrder: function(menuItems) {
-      console.log(menuItems);
-      axios.post("/api/v1/menu-items", {
-        items: menuItems
+      // console.log(menuItems);
+      var updatePromise = new Promise(function(resolve, reject) {
+        axios
+          .post("/api/v1/menu-items", {
+            items: menuItems
+          })
+          .then(response => {
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
       });
+      return updatePromise;
     },
 
     updateMenu: function(item) {
       console.log("add this to the menu", item);
-      /*this gives us the index of the menu section so we know where to add it*/
-      let index = this.menu.findIndex(x => x.id == item.menu_section_id);
-      item.type = "menu_item";
-      /*add it to the beginning of the list so we can see it!*/
-      this.menu[index].menu_items.unshift(item);
-      console.log(index);
+      if(item.type == 'menu_section')
+      {
+        this.menu.unshift(item);
+      }else{
+        /*this gives us the index of the menu section so we know where to add it*/
+        let index = this.menu.findIndex(x => x.id == item.menu_section_id);
+        item.type = "menu_item";
+        /*add it to the beginning of the list so we can see it!*/
+        this.menu[index].menu_items.unshift(item);
+      }
     },
 
     toggleMenuSections: function() {
@@ -208,6 +282,9 @@ export default {
       // this.$refs.newItemModal.setSectionId(section);
       this.isAddNewItemModalVisible = true;
     },
+    addNewSection() {
+      this.isAddNewSectionModalVisible = true;
+    },
     openEditItemModal(section) {
       this.modalData = section;
       /*clone it in the event we need to revert on cancel*/
@@ -229,7 +306,17 @@ export default {
         y => y.id == item.id
       );
       /*and now lets remove it from the array*/
-      this.menu[index].menu_items.splice(menuIndex, 1);
+      if(index > -1){
+        this.menu[index].menu_items.splice(menuIndex, 1);
+      }
+    },
+    removeSection(section)
+    {
+      console.log("remove section", section);
+      let index = this.menu.findIndex(x => x.id == section.id);
+      if(index > -1){
+        this.menu.splice(index,1);
+      }
     },
     cancelEditModal() {
       // revert back to the original cloned data
@@ -241,6 +328,7 @@ export default {
     closeEditModal() {
       this.isAddNewItemModalVisible = false;
       this.isEditItemModalVisible = false;
+      this.isAddNewSectionModalVisible = false;
     }
   }
 };

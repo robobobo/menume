@@ -22,9 +22,11 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
 
     Route::get('menu-sections','MenuSectionController@index');
     Route::post('menu-sections','MenuSectionController@bulkUpdate');
+    Route::post('menu-section','MenuSectionController@create');
     
     Route::get('menu-section/{menuSection}','MenuSectionController@show');
     Route::post('menu-section/{menuSection}/update','MenuSectionController@update');
+    Route::delete('menu-section/{menuSection}','MenuSectionController@delete');
 
     Route::get('menu-items','MenuItemController@index');
     Route::post('menu-items','MenuItemController@bulkUpdate');
