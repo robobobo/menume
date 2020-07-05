@@ -12398,6 +12398,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -12442,7 +12446,14 @@ __webpack_require__.r(__webpack_exports__);
       /* makes sure we are only dragging the correct elements to the correct areas 
             ie. menu items to menu item sections, menu sections to menu section sections
         */
-      return evt.draggedContext.element.type === evt.relatedContext.element.type;
+      // if we are dragging to a drop zone we assume that's allowed...
+      if (evt.related.className.includes("drop-zone") && evt.draggedContext.element.type == 'menu_item') {
+        return true;
+      } else if (evt.draggedContext.element.type === evt.relatedContext.element.type) {
+        return true;
+      }
+
+      return false;
     },
     deleteItem: function deleteItem(section) {
       var _this = this;
@@ -28050,7 +28061,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.flip-list-move {\r\n  transition: transform 0.5s;\n}\n.no-move {\r\n  transition: transform 0s;\n}\n.ghost {\r\n  opacity: 0.5;\r\n  background: #c8ebfb;\n}\n.drag-handle {\r\n  /* float: left; */\r\n  cursor: pointer;\n}\nh3 .drag-handle {\r\n  font-size: 20px !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.flip-list-move {\r\n  transition: transform 0.5s;\n}\n.no-move {\r\n  transition: transform 0s;\n}\n.ghost {\r\n  opacity: 0.5;\r\n  background: #c8ebfb;\n}\n.drag-handle {\r\n  /* float: left; */\r\n  cursor: pointer;\n}\n.drop-zone{\r\n  border:2px dashed #000;\r\n  background:rgba(255, 255, 255, 0.68)\n}\nh3 .drag-handle {\r\n  font-size: 20px !important;\n}\r\n", ""]);
 
 // exports
 
@@ -50616,195 +50627,223 @@ var render = function() {
       _c(
         "transition-group",
         { attrs: { type: "transition" } },
-        _vm._l(_vm.menu, function(section) {
-          return _c(
-            "div",
-            {
-              key: section.id,
-              staticClass:
-                "section menu-section mx-2 my-2 has-background-light has-icons-left"
-            },
-            [
-              section.type == "menu_section"
-                ? [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "columns is-mobile menu-header is-vcentered"
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 drag-handle py-1 has-text-centered"
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "arrows-alt" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "column is-8 py-1" }, [
-                          _c("h3", { staticClass: "is-size-3" }, [
-                            _vm._v(_vm._s(section.name))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 has-text-centered has-text-primary py-1 cursor-pointer",
-                            on: {
-                              click: function($event) {
-                                return _vm.openEditModal(section)
-                              }
-                            }
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "edit" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 has-text-centered has-text-danger py-1",
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteSection(section)
-                              }
-                            }
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "trash" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 has-text-centered py-1 cursor-pointer",
-                            on: {
-                              click: function($event) {
-                                return _vm.addNewItem(section)
-                              }
-                            }
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "plus" }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("nested-draggable", {
-                      attrs: {
-                        showMenuSections: _vm.showMenuSections,
-                        menu: section.menu_items,
-                        "open-edit-modal": _vm.openEditModal,
-                        "remove-item": _vm.removeItem,
-                        sectionType: "menu_items"
-                      }
-                    })
-                  ]
-                : [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "columns is-mobile menu-item is-vcentered has-background-white mx-0"
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "drag-handle column is-1 has-text-centered"
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "arrows-alt" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "column is-8" }, [
-                          _c("strong", [_vm._v(_vm._s(section.name))]),
+        [
+          _vm._l(_vm.menu, function(section) {
+            return _c(
+              "div",
+              {
+                key: section.id,
+                staticClass:
+                  "section menu-section mx-2 my-2 has-background-light has-icons-left"
+              },
+              [
+                section.type == "menu_section"
+                  ? [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "columns is-mobile menu-header is-vcentered"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 drag-handle py-1 has-text-centered"
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "arrows-alt" }
+                              })
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
-                          _c("br"),
-                          _vm._v(
-                            "\n            " +
-                              _vm._s(section.description) +
-                              "\n          "
+                          _c("div", { staticClass: "column is-8 py-1" }, [
+                            _c("h3", { staticClass: "is-size-3" }, [
+                              _vm._v(_vm._s(section.name))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 has-text-centered has-text-primary py-1 cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.openEditModal(section)
+                                }
+                              }
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "edit" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 has-text-centered has-text-danger py-1",
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteSection(section)
+                                }
+                              }
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "trash" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 has-text-centered py-1 cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.addNewItem(section)
+                                }
+                              }
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "plus" }
+                              })
+                            ],
+                            1
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "column is-1" }, [
-                          _vm._v("€" + _vm._s(section.price))
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 has-text-centered has-text-primary cursor-pointer",
-                            on: {
-                              click: function($event) {
-                                return _vm.openEditModal(section)
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("nested-draggable", {
+                        attrs: {
+                          showMenuSections: _vm.showMenuSections,
+                          menu: section.menu_items,
+                          "open-edit-modal": _vm.openEditModal,
+                          "remove-item": _vm.removeItem,
+                          sectionType: "menu_items"
+                        }
+                      })
+                    ]
+                  : [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "columns is-mobile menu-item is-vcentered has-background-white mx-0"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "drag-handle column is-1 has-text-centered"
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "arrows-alt" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "column is-8" }, [
+                            _c("strong", [_vm._v(_vm._s(section.name))]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(section.description) +
+                                "\n          "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "column is-1" }, [
+                            _vm._v("€" + _vm._s(section.price))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 has-text-centered has-text-primary cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.openEditModal(section)
+                                }
                               }
-                            }
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "edit" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "column is-1 has-text-centered has-text-danger cursor-pointer",
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteItem(section)
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "edit" }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "column is-1 has-text-centered has-text-danger cursor-pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteItem(section)
+                                }
                               }
-                            }
-                          },
-                          [
-                            _c("b-icon", {
-                              attrs: { pack: "fa", icon: "trash" }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    )
-                  ]
-            ],
-            2
-          )
-        }),
-        0
+                            },
+                            [
+                              _c("b-icon", {
+                                attrs: { pack: "fa", icon: "trash" }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      )
+                    ]
+              ],
+              2
+            )
+          }),
+          _vm._v(" "),
+          _vm.menu.length < 1
+            ? _c(
+                "div",
+                {
+                  key: Math.floor(Math.random() * (9999 - 8888 + 1)) + 8888,
+                  staticClass: "section menu-section mx-2 my-2 drop-zone"
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "columns is-mobile menu-item is-vcentered has-text-centered mx-0"
+                    },
+                    [
+                      _c("div", { staticClass: "column" }, [
+                        _c("h1", { staticClass: "has-text-centered" }, [
+                          _vm._v("Drag a menu item here")
+                        ])
+                      ])
+                    ]
+                  )
+                ]
+              )
+            : _vm._e()
+        ],
+        2
       )
     ],
     1

@@ -20,10 +20,7 @@
         <template v-if="section.type == 'menu_section'">
           <div class="columns is-mobile menu-header is-vcentered">
             <div class="column is-1 drag-handle py-1 has-text-centered">
-             <b-icon
-                pack="fa"
-                icon="arrows-alt">
-            </b-icon>
+              <b-icon pack="fa" icon="arrows-alt"></b-icon>
             </div>
             <div class="column is-8 py-1">
               <h3 class="is-size-3">{{section.name}}</h3>
@@ -32,25 +29,22 @@
               class="column is-1 has-text-centered has-text-primary py-1 cursor-pointer"
               @click="openEditModal(section)"
             >
-              <b-icon
-                pack="fa"
-                icon="edit">
-            </b-icon>
+              <b-icon pack="fa" icon="edit"></b-icon>
             </div>
-            <div class="column is-1 has-text-centered has-text-danger py-1" @click="deleteSection(section)">
-              <b-icon
-                pack="fa"
-                icon="trash">
-            </b-icon>
+            <div
+              class="column is-1 has-text-centered has-text-danger py-1"
+              @click="deleteSection(section)"
+            >
+              <b-icon pack="fa" icon="trash"></b-icon>
             </div>
-            <div class="column is-1 has-text-centered py-1 cursor-pointer" @click="addNewItem(section)">
-              <b-icon
-                pack="fa"
-                icon="plus">
-            </b-icon>
+            <div
+              class="column is-1 has-text-centered py-1 cursor-pointer"
+              @click="addNewItem(section)"
+            >
+              <b-icon pack="fa" icon="plus"></b-icon>
             </div>
           </div>
-          
+
           <nested-draggable
             :showMenuSections="showMenuSections"
             :menu="section.menu_items"
@@ -62,10 +56,7 @@
         <template v-else>
           <div class="columns is-mobile menu-item is-vcentered has-background-white mx-0">
             <div class="drag-handle column is-1 has-text-centered">
-              <b-icon
-                pack="fa"
-                icon="arrows-alt">
-            </b-icon>
+              <b-icon pack="fa" icon="arrows-alt"></b-icon>
             </div>
             <div class="column is-8">
               <strong>{{section.name}}</strong>
@@ -74,18 +65,31 @@
             </div>
             <div class="column is-1">&euro;{{section.price}}</div>
             <div
-              class="column is-1 has-text-centered has-text-primary cursor-pointer" @click="openEditModal(section)"
+              class="column is-1 has-text-centered has-text-primary cursor-pointer"
+              @click="openEditModal(section)"
             >
-           <b-icon
-                pack="fa"
-                icon="edit">
-            </b-icon>
+              <b-icon pack="fa" icon="edit"></b-icon>
             </div>
-            <div class="column is-1 has-text-centered has-text-danger cursor-pointer" @click="deleteItem(section)">
+            <div
+              class="column is-1 has-text-centered has-text-danger cursor-pointer"
+              @click="deleteItem(section)"
+            >
               <b-icon pack="fa" icon="trash"></b-icon>
             </div>
           </div>
         </template>
+      </div>
+      <!-- needs a key for animation effects -->
+      <div
+        class="section menu-section mx-2 my-2 drop-zone"
+        :key="Math.floor(Math.random() * (9999 - 8888 + 1)) + 8888" 
+        v-if="menu.length < 1"
+      >
+        <div class="columns is-mobile menu-item is-vcentered has-text-centered mx-0">
+          <div class="column">
+            <h1 class="has-text-centered">Drag a menu item here</h1>
+          </div>
+        </div>
       </div>
     </transition-group>
   </draggable>
@@ -135,9 +139,15 @@ export default {
       /* makes sure we are only dragging the correct elements to the correct areas 
             ie. menu items to menu item sections, menu sections to menu section sections
         */
-      return (
+      // if we are dragging to a drop zone we assume that's allowed...
+      if (evt.related.className.includes("drop-zone") && evt.draggedContext.element.type == 'menu_item') {
+        return true;
+      } else if (
         evt.draggedContext.element.type === evt.relatedContext.element.type
-      );
+      ) {
+        return true;
+      }
+      return false;
     },
     deleteItem: function(section) {
       this.$buefy.dialog.confirm({
@@ -169,7 +179,6 @@ export default {
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-
           axios
             .delete("/api/v1/menu-section/" + section.id)
             .then(response => {
@@ -179,7 +188,7 @@ export default {
             })
             .catch(error => {
               console.log(error);
-            })
+            });
         }
       });
     }
@@ -200,6 +209,10 @@ export default {
 .drag-handle {
   /* float: left; */
   cursor: pointer;
+}
+.drop-zone{
+  border:2px dashed #000;
+  background:rgba(255, 255, 255, 0.68)
 }
 
 h3 .drag-handle {
