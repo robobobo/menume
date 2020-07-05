@@ -50,6 +50,7 @@
             </b-icon>
             </div>
           </div>
+          
           <nested-draggable
             :showMenuSections="showMenuSections"
             :menu="section.menu_items"

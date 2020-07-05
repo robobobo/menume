@@ -42,4 +42,20 @@ class MenuSection extends Model
     {
         return $this->hasMany('App\MenuItem','menu_section_id','id')->orderBy('position','asc');
     }
+
+     /**
+   * Allows us to soft delete items
+   *
+   * @return void
+   */
+   protected static function boot() 
+   {
+     parent::boot();
+
+     static::deleting(function($sections) {
+        foreach ($sections->items()->get() as $item) {
+           $item->delete();
+        }
+     });
+   }
 }
