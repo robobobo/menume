@@ -18,13 +18,14 @@ class EstablishmentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Launches the onboarding flow for creating a new establishment
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         //
+        return view('establishment.onboard');
     }
 
     /**

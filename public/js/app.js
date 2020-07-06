@@ -12295,6 +12295,154 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GetStarted.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "get-started",
+  data: function data() {
+    return {
+      establishment: {
+        name: "",
+        currency: "EUR",
+        contact_person: "",
+        email_address: "",
+        contact_number: "",
+        address_1: "",
+        address_2: "",
+        town_city: "",
+        postcode: "",
+        county: "",
+        country: ""
+      },
+      activeStep: 0,
+      showSocial: false,
+      isAnimated: true,
+      isRounded: true,
+      isStepsClickable: false,
+      hasNavigation: true,
+      customNavigation: false,
+      isProfileSuccess: false,
+      prevIcon: "chevron-left",
+      nextIcon: "chevron-right",
+      labelPosition: "bottom",
+      mobileMode: "minimalist"
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NestedDraggable.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NestedDraggable.vue?vue&type=script&lang=js& ***!
@@ -50582,6 +50730,422 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    [
+      _c(
+        "b-steps",
+        {
+          class: "pt-5",
+          attrs: {
+            animated: _vm.isAnimated,
+            rounded: _vm.isRounded,
+            "has-navigation": _vm.hasNavigation,
+            "label-position": _vm.labelPosition,
+            "mobile-mode": _vm.mobileMode
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "navigation",
+              fn: function(ref) {
+                var previous = ref.previous
+                var next = ref.next
+                return [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        outlined: "",
+                        "icon-pack": "fa",
+                        "icon-left": "angle-left",
+                        disabled: previous.disabled
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return previous.action($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Previous")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        outlined: "",
+                        type: "is-success",
+                        "icon-pack": "fa",
+                        "icon-right": "angle-right",
+                        disabled: next.disabled
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return next.action($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Next")]
+                  )
+                ]
+              }
+            }
+          ]),
+          model: {
+            value: _vm.activeStep,
+            callback: function($$v) {
+              _vm.activeStep = $$v
+            },
+            expression: "activeStep"
+          }
+        },
+        [
+          _c(
+            "b-step-item",
+            {
+              attrs: {
+                step: "1",
+                label: "Details",
+                clickable: _vm.isStepsClickable
+              }
+            },
+            [
+              _c("h1", { staticClass: "title has-text-centered" }, [
+                _vm._v("Your Details")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
+                _vm._v(
+                  "We just need some basic details from you to get started"
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c("div", { staticClass: "column" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "column is-three-fifths" }, [
+                  _c(
+                    "section",
+                    [
+                      _c(
+                        "b-field",
+                        {
+                          attrs: {
+                            label: "What's the name of your establishment?"
+                          }
+                        },
+                        [
+                          _c("b-input", {
+                            attrs: { placeholder: "eg. Fine Oak Cafe" },
+                            model: {
+                              value: _vm.establishment.name,
+                              callback: function($$v) {
+                                _vm.$set(_vm.establishment, "name", $$v)
+                              },
+                              expression: "establishment.name"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        {
+                          attrs: {
+                            label: "Contact email address",
+                            message: "Make sure you have access to this inbox"
+                          }
+                        },
+                        [
+                          _c("b-input", {
+                            attrs: {
+                              type: "email",
+                              placeholder: "info@fineoakcafe.com"
+                            },
+                            model: {
+                              value: _vm.establishment.email_address,
+                              callback: function($$v) {
+                                _vm.$set(
+                                  _vm.establishment,
+                                  "email_address",
+                                  $$v
+                                )
+                              },
+                              expression: "establishment.email_address"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        {
+                          attrs: {
+                            label: "Contact Person",
+                            message: "Could be the owner,manager, probably you!"
+                          }
+                        },
+                        [
+                          _c("b-input", {
+                            model: {
+                              value: _vm.establishment.contact_name,
+                              callback: function($$v) {
+                                _vm.$set(_vm.establishment, "contact_name", $$v)
+                              },
+                              expression: "establishment.contact_name"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        { attrs: { label: "Currency" } },
+                        [
+                          _c(
+                            "b-select",
+                            {
+                              attrs: { placeholder: "Select a currency" },
+                              model: {
+                                value: _vm.establishment.currency,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.establishment, "currency", $$v)
+                                },
+                                expression: "establishment.currency"
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "EUR" } }, [
+                                _vm._v("Euro")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "GBP" } }, [
+                                _vm._v("Pound Sterling")
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        { attrs: { grouped: "" } },
+                        [
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Address 1" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.address_1,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.establishment,
+                                      "address_1",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "establishment.address_1"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Address 2" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.address_2,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.establishment,
+                                      "address_2",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "establishment.address_2"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        { attrs: { grouped: "" } },
+                        [
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Town/City" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.town_city,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.establishment,
+                                      "town_city",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "establishment.town_city"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Eircode" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.postcode,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.establishment, "postcode", $$v)
+                                  },
+                                  expression: "establishment.postcode"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-field",
+                        { attrs: { grouped: "" } },
+                        [
+                          _c(
+                            "b-field",
+                            { attrs: { label: "County" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.county,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.establishment, "county", $$v)
+                                  },
+                                  expression: "establishment.county"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Country" } },
+                            [
+                              _c("b-input", {
+                                model: {
+                                  value: _vm.establishment.country,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.establishment, "country", $$v)
+                                  },
+                                  expression: "establishment.country"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "column" })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-step-item",
+            {
+              attrs: {
+                step: "2",
+                label: "Menus",
+                clickable: _vm.isStepsClickable,
+                type: { "is-success": _vm.isProfileSuccess }
+              }
+            },
+            [
+              _c("h1", { staticClass: "title has-text-centered" }, [
+                _vm._v("Your Menus")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
+                _vm._v("You can have multiple menus or just one!")
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-step-item",
+            {
+              attrs: {
+                step: 3,
+                label: "Wrapping Up",
+                clickable: _vm.isStepsClickable
+              }
+            },
+            [
+              _c("h1", { staticClass: "title has-text-centered" }, [
+                _vm._v("Your QR Codes")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
+                _vm._v("Bet you didn't think it would be that easy did you?")
+              ])
+            ]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NestedDraggable.vue?vue&type=template&id=3af0d3bb&":
 /*!******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NestedDraggable.vue?vue&type=template&id=3af0d3bb& ***!
@@ -50821,7 +51385,7 @@ var render = function() {
             ? _c(
                 "div",
                 {
-                  key: Math.floor(Math.random() * (9999 - 8888 + 1)) + 8888,
+                  key: Math.floor(Math.random() * (99999 - 88888 + 1)) + 88888,
                   staticClass: "section menu-section mx-2 my-2 drop-zone"
                 },
                 [
@@ -66670,6 +67234,7 @@ Vue.component('nested-draggable', __webpack_require__(/*! ./components/NestedDra
 Vue.component('edit-item-form', __webpack_require__(/*! ./components/EditMenuItemForm.vue */ "./resources/js/components/EditMenuItemForm.vue")["default"]);
 Vue.component('new-section-form', __webpack_require__(/*! ./components/NewMenuSectionForm.vue */ "./resources/js/components/NewMenuSectionForm.vue")["default"]);
 Vue.component('new-item-form', __webpack_require__(/*! ./components/NewMenuItemForm.vue */ "./resources/js/components/NewMenuItemForm.vue")["default"]);
+Vue.component('get-started', __webpack_require__(/*! ./components/GetStarted.vue */ "./resources/js/components/GetStarted.vue")["default"]);
 Vue.component('vue-fontawesome', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"]); // Vue.use(Notifications)
 
 Vue.use(buefy__WEBPACK_IMPORTED_MODULE_0__["default"], {
@@ -66865,6 +67430,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditMenuItemForm_vue_vue_type_template_id_63332aea___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditMenuItemForm_vue_vue_type_template_id_63332aea___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/GetStarted.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/GetStarted.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GetStarted.vue?vue&type=template&id=14050b76& */ "./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76&");
+/* harmony import */ var _GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GetStarted.vue?vue&type=script&lang=js& */ "./resources/js/components/GetStarted.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/GetStarted.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/GetStarted.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/GetStarted.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GetStarted.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./GetStarted.vue?vue&type=template&id=14050b76& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

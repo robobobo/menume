@@ -20,6 +20,7 @@ Vue.component('nested-draggable', require('./components/NestedDraggable.vue').de
 Vue.component('edit-item-form', require('./components/EditMenuItemForm.vue').default);
 Vue.component('new-section-form', require('./components/NewMenuSectionForm.vue').default);
 Vue.component('new-item-form', require('./components/NewMenuItemForm.vue').default);
+Vue.component('get-started',require('./components/GetStarted.vue').default);
 Vue.component('vue-fontawesome', FontAwesomeIcon);
 
 // Vue.use(Notifications)

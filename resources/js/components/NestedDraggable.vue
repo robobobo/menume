@@ -82,7 +82,7 @@
       <!-- needs a key for animation effects -->
       <div
         class="section menu-section mx-2 my-2 drop-zone"
-        :key="Math.floor(Math.random() * (9999 - 8888 + 1)) + 8888" 
+        :key="Math.floor(Math.random() * (99999 - 88888 + 1)) + 88888" 
         v-if="menu.length < 1"
       >
         <div class="columns is-mobile menu-item is-vcentered has-text-centered mx-0">
