@@ -25094,3 +25094,25 @@ https://css-tricks.com/hash-tag-links-padding/ */
   cursor: pointer;
 }
 
+.box.outlined {
+  border: 2px solid #00d1b2;
+}
+
+.menu-select-tile.active .box,
+.menu-select-tile:hover .box {
+  background: #00d1b2;
+}
+
+.menu-select-tile.active .box h1,
+.menu-select-tile.active .box h2,
+.menu-select-tile:hover .box h1,
+.menu-select-tile:hover .box h2 {
+  color: #fff;
+}
+
+.divider {
+  width: 100%;
+  background: #363636;
+  height: 1px;
+}
+

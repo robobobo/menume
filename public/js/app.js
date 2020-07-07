@@ -12408,6 +12408,158 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12425,6 +12577,13 @@ __webpack_require__.r(__webpack_exports__);
         county: "",
         country: ""
       },
+      menus: [{
+        name: "",
+        startTime: null,
+        endTime: null,
+        allDay: true
+      }],
+      menuMode: null,
       activeStep: 0,
       showSocial: false,
       isAnimated: true,
@@ -12438,6 +12597,20 @@ __webpack_require__.r(__webpack_exports__);
       labelPosition: "bottom",
       mobileMode: "minimalist"
     };
+  },
+  methods: {
+    addNewMenu: function addNewMenu() {
+      this.menus.push({
+        name: "",
+        allDay: false
+      });
+    },
+    removeMenu: function removeMenu(index) {
+      this.menus.splice(index, 1);
+    },
+    setMenuMode: function setMenuMode(mode) {
+      this.menuMode = mode;
+    }
   }
 });
 
@@ -28174,6 +28347,25 @@ Object(_chunk_cca88db8_js__WEBPACK_IMPORTED_MODULE_2__["u"])(Plugin);
 
 /* harmony default export */ __webpack_exports__["default"] = (Plugin);
 
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".delete-menu-icon {\n  right: -50px;\n  top: 5px;\n}", ""]);
+
+// exports
 
 
 /***/ }),
@@ -49565,6 +49757,36 @@ Sortable.mount(Remove, Revert);
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./GetStarted.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EditMenuItemForm.vue?vue&type=style&index=0&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EditMenuItemForm.vue?vue&type=style&index=0&lang=css& ***!
@@ -50766,44 +50988,64 @@ var render = function() {
                 var previous = ref.previous
                 var next = ref.next
                 return [
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        outlined: "",
-                        "icon-pack": "fa",
-                        "icon-left": "angle-left",
-                        disabled: previous.disabled
-                      },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return previous.action($event)
-                        }
-                      }
-                    },
-                    [_vm._v("Previous")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        outlined: "",
-                        type: "is-success",
-                        "icon-pack": "fa",
-                        "icon-right": "angle-right",
-                        disabled: next.disabled
-                      },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return next.action($event)
-                        }
-                      }
-                    },
-                    [_vm._v("Next")]
-                  )
+                  _c("div", { staticClass: "columns" }, [
+                    _c("div", { staticClass: "column" }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "column is-two-fifths" },
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: !previous.disabled,
+                                expression: "!previous.disabled"
+                              }
+                            ],
+                            attrs: {
+                              outlined: "",
+                              "icon-pack": "fa",
+                              "icon-left": "angle-left",
+                              disabled: previous.disabled
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return previous.action($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Previous")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              type: "is-primary",
+                              "icon-pack": "fa",
+                              "icon-right": "angle-right",
+                              disabled: next.disabled
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return next.action($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Next Step")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "column" })
+                  ])
                 ]
               }
             }
@@ -50837,120 +51079,159 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "column is-three-fifths" }, [
-                  _c(
-                    "section",
-                    [
-                      _c(
-                        "b-field",
-                        {
-                          attrs: {
-                            label: "What's the name of your establishment?"
-                          }
-                        },
-                        [
-                          _c("b-input", {
-                            attrs: { placeholder: "eg. Fine Oak Cafe" },
-                            model: {
-                              value: _vm.establishment.name,
-                              callback: function($$v) {
-                                _vm.$set(_vm.establishment, "name", $$v)
-                              },
-                              expression: "establishment.name"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-field",
-                        {
-                          attrs: {
-                            label: "Contact email address",
-                            message: "Make sure you have access to this inbox"
-                          }
-                        },
-                        [
-                          _c("b-input", {
+              _c("section", { staticClass: "section" }, [
+                _c("div", { staticClass: "columns" }, [
+                  _c("div", { staticClass: "column" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column is-two-fifths" }, [
+                    _c(
+                      "section",
+                      [
+                        _c(
+                          "b-field",
+                          {
                             attrs: {
-                              type: "email",
-                              placeholder: "info@fineoakcafe.com"
-                            },
-                            model: {
-                              value: _vm.establishment.email_address,
-                              callback: function($$v) {
-                                _vm.$set(
-                                  _vm.establishment,
-                                  "email_address",
-                                  $$v
-                                )
-                              },
-                              expression: "establishment.email_address"
+                              label: "What's the name of your establishment?"
                             }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-field",
-                        {
-                          attrs: {
-                            label: "Contact Person",
-                            message: "Could be the owner,manager, probably you!"
-                          }
-                        },
-                        [
-                          _c("b-input", {
-                            model: {
-                              value: _vm.establishment.contact_name,
-                              callback: function($$v) {
-                                _vm.$set(_vm.establishment, "contact_name", $$v)
+                          },
+                          [
+                            _c("b-input", {
+                              attrs: {
+                                icon: "home",
+                                placeholder: "eg. Fine Oak Cafe"
                               },
-                              expression: "establishment.contact_name"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-field",
-                        { attrs: { label: "Currency" } },
-                        [
-                          _c(
-                            "b-select",
-                            {
-                              attrs: { placeholder: "Select a currency" },
                               model: {
-                                value: _vm.establishment.currency,
+                                value: _vm.establishment.name,
                                 callback: function($$v) {
-                                  _vm.$set(_vm.establishment, "currency", $$v)
+                                  _vm.$set(_vm.establishment, "name", $$v)
                                 },
-                                expression: "establishment.currency"
+                                expression: "establishment.name"
                               }
-                            },
-                            [
-                              _c("option", { attrs: { value: "EUR" } }, [
-                                _vm._v("Euro")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "GBP" } }, [
-                                _vm._v("Pound Sterling")
-                              ])
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-field",
+                          {
+                            attrs: {
+                              label: "Contact email address",
+                              message: "Make sure you have access to this inbox"
+                            }
+                          },
+                          [
+                            _c("b-input", {
+                              attrs: {
+                                type: "email",
+                                icon: "envelope",
+                                placeholder: "info@fineoakcafe.com"
+                              },
+                              model: {
+                                value: _vm.establishment.email_address,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.establishment,
+                                    "email_address",
+                                    $$v
+                                  )
+                                },
+                                expression: "establishment.email_address"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-field",
+                          {
+                            attrs: {
+                              label: "Contact Person",
+                              message:
+                                "Could be the owner,manager, probably you!"
+                            }
+                          },
+                          [
+                            _c("b-input", {
+                              attrs: { icon: "user" },
+                              model: {
+                                value: _vm.establishment.contact_name,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.establishment,
+                                    "contact_name",
+                                    $$v
+                                  )
+                                },
+                                expression: "establishment.contact_name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-field",
+                          { attrs: { label: "Contact Number" } },
+                          [
+                            _c("b-input", {
+                              attrs: { type: "tel", icon: "phone-alt" },
+                              model: {
+                                value: _vm.establishment.contact_number,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.establishment,
+                                    "contact_number",
+                                    $$v
+                                  )
+                                },
+                                expression: "establishment.contact_number"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column" })
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-step-item",
+            {
+              attrs: {
+                step: "2",
+                label: "Address",
+                clickable: _vm.isStepsClickable
+              }
+            },
+            [
+              _c("h1", { staticClass: "title has-text-centered" }, [
+                _vm._v("Address")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
+                _vm._v(
+                  "Let us know where you are so we can improve our service to you"
+                )
+              ]),
+              _vm._v(" "),
+              _c("section", { staticClass: "section" }, [
+                _c("div", { staticClass: "columns" }, [
+                  _c("div", { staticClass: "column" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column is-two-fifths" }, [
+                    _c("div", { staticClass: "columns" }, [
                       _c(
-                        "b-field",
-                        { attrs: { grouped: "" } },
+                        "div",
+                        { staticClass: "column" },
                         [
                           _c(
                             "b-field",
@@ -50971,8 +51252,17 @@ var render = function() {
                               })
                             ],
                             1
-                          ),
-                          _vm._v(" "),
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
                           _c(
                             "b-field",
                             { attrs: { label: "Address 2" } },
@@ -50995,11 +51285,13 @@ var render = function() {
                           )
                         ],
                         1
-                      ),
-                      _vm._v(" "),
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
                       _c(
-                        "b-field",
-                        { attrs: { grouped: "" } },
+                        "div",
+                        { staticClass: "column" },
                         [
                           _c(
                             "b-field",
@@ -51020,8 +51312,17 @@ var render = function() {
                               })
                             ],
                             1
-                          ),
-                          _vm._v(" "),
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
                           _c(
                             "b-field",
                             { attrs: { label: "Eircode" } },
@@ -51043,51 +51344,48 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c(
-                        "b-field",
-                        { attrs: { grouped: "" } },
+                        "div",
+                        { staticClass: "column" },
                         [
                           _c(
                             "b-field",
                             { attrs: { label: "County" } },
                             [
-                              _c("b-input", {
-                                model: {
-                                  value: _vm.establishment.county,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.establishment, "county", $$v)
-                                  },
-                                  expression: "establishment.county"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-field",
-                            { attrs: { label: "Country" } },
-                            [
-                              _c("b-input", {
-                                model: {
-                                  value: _vm.establishment.country,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.establishment, "country", $$v)
-                                  },
-                                  expression: "establishment.country"
-                                }
-                              })
+                              _c(
+                                "b-select",
+                                {
+                                  attrs: { placeholder: "Select County" },
+                                  model: {
+                                    value: _vm.establishment.county,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.establishment, "county", $$v)
+                                    },
+                                    expression: "establishment.county"
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Wicklow" } },
+                                    [_vm._v("Wicklow")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "Dublin" } }, [
+                                    _vm._v("Dublin")
+                                  ])
+                                ]
+                              )
                             ],
                             1
                           )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column" })
+                ])
               ])
             ]
           ),
@@ -51096,7 +51394,7 @@ var render = function() {
             "b-step-item",
             {
               attrs: {
-                step: "2",
+                step: "3",
                 label: "Menus",
                 clickable: _vm.isStepsClickable,
                 type: { "is-success": _vm.isProfileSuccess }
@@ -51109,6 +51407,330 @@ var render = function() {
               _vm._v(" "),
               _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
                 _vm._v("You can have multiple menus or just one!")
+              ]),
+              _vm._v(" "),
+              _c("section", { staticClass: "section" }, [
+                _c("div", { staticClass: "columns" }, [
+                  _c("div", { staticClass: "column" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column is-three-fifths" }, [
+                    _c("p", { staticClass: "has-text-centered" }, [
+                      _vm._v(
+                        "Depending on the time of day, we'll automatically show the correct menu to your customers. Choose the setup that suits you below."
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "tile is-ancestory" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "menu-select-tile tile is-parent cursor-pointer",
+                          class: { active: _vm.menuMode == "single" },
+                          on: {
+                            click: function($event) {
+                              return _vm.setMenuMode("single")
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "outlined box has-text-centered" },
+                            [
+                              _c("h1", { staticClass: "title" }, [
+                                _vm._v("Just One Menu")
+                              ]),
+                              _vm._v(" "),
+                              _c("h2", { staticClass: "subtitle is-6" }, [
+                                _vm._v(
+                                  "\n                    We have one all day menu\n                    "
+                                ),
+                                _c("i", [_vm._v("(optional kids menu)")])
+                              ])
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "menu-select-tile tile is-parent cursor-pointer",
+                          class: { active: _vm.menuMode == "multiple" },
+                          on: {
+                            click: function($event) {
+                              return _vm.setMenuMode("multiple")
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "outlined box has-text-centered" },
+                            [
+                              _c("h1", { staticClass: "title" }, [
+                                _vm._v("Multiple Menus")
+                              ]),
+                              _vm._v(" "),
+                              _c("h2", { staticClass: "subtitle is-6" }, [
+                                _vm._v(
+                                  "Our menu is different on certain days or times"
+                                )
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
+                      _c("div", { staticClass: "column" }),
+                      _vm._v(" "),
+                      _vm.menuMode != null
+                        ? _c(
+                            "div",
+                            { staticClass: "column is-four-fifths" },
+                            [
+                              _vm.menuMode == "single"
+                                ? _c(
+                                    "h1",
+                                    {
+                                      staticClass:
+                                        "title has-text-centered pt-3"
+                                    },
+                                    [_vm._v("Lets give your menu a name")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.menuMode == "multiple"
+                                ? _c(
+                                    "h1",
+                                    {
+                                      staticClass:
+                                        "title has-text-centered pt-3"
+                                    },
+                                    [_vm._v("Lets setup your menus")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm._l(_vm.menus, function(menu, counter) {
+                                return _c(
+                                  "div",
+                                  { key: counter },
+                                  [
+                                    _c(
+                                      "b-field",
+                                      { staticClass: "is-relative" },
+                                      [
+                                        _c("b-input", {
+                                          attrs: {
+                                            placeholder: "Enter menu name",
+                                            size: "is-large",
+                                            "custom-class":
+                                              "has-text-centered mb-4",
+                                            expanded: ""
+                                          },
+                                          model: {
+                                            value: menu.name,
+                                            callback: function($$v) {
+                                              _vm.$set(menu, "name", $$v)
+                                            },
+                                            expression: "menu.name"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm.menus.length > 1 &&
+                                        _vm.menuMode == "multiple"
+                                          ? _c("b-button", {
+                                              staticClass:
+                                                "is-absolute delete-menu-icon is-danger",
+                                              attrs: {
+                                                type: "is-text",
+                                                inverted: "",
+                                                "icon-right": "trash"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.removeMenu(counter)
+                                                }
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _vm.menuMode == "multiple"
+                                      ? _c("div", { staticClass: "columns" }, [
+                                          _c("div", { staticClass: "column" }, [
+                                            _c("p", [
+                                              _vm._v(
+                                                "When is this menu available?"
+                                              )
+                                            ])
+                                          ])
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.menuMode == "multiple"
+                                      ? _c(
+                                          "div",
+                                          { staticClass: "columns mb-3" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "column" },
+                                              [
+                                                _c(
+                                                  "b-field",
+                                                  [
+                                                    _c(
+                                                      "b-switch",
+                                                      {
+                                                        model: {
+                                                          value: menu.allDay,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              menu,
+                                                              "allDay",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "menu.allDay"
+                                                        }
+                                                      },
+                                                      [_vm._v("All Day")]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "column" },
+                                              [
+                                                menu.allDay == false
+                                                  ? _c(
+                                                      "b-field",
+                                                      {
+                                                        attrs: {
+                                                          label: "Starts"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("b-clockpicker", {
+                                                          attrs: {
+                                                            "hour-format": "24"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              menu.startTime,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                menu,
+                                                                "startTime",
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "menu.startTime"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e()
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              { staticClass: "column" },
+                                              [
+                                                menu.allDay == false
+                                                  ? _c(
+                                                      "b-field",
+                                                      {
+                                                        attrs: { label: "End" }
+                                                      },
+                                                      [
+                                                        _c("b-clockpicker", {
+                                                          attrs: {
+                                                            "hour-format": "24"
+                                                          },
+                                                          model: {
+                                                            value: menu.endTime,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                menu,
+                                                                "endTime",
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "menu.endTime"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    )
+                                                  : _vm._e()
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "divider my-5" })
+                                  ],
+                                  1
+                                )
+                              }),
+                              _vm._v(" "),
+                              _vm.menuMode == "multiple"
+                                ? _c(
+                                    "b-button",
+                                    {
+                                      staticClass: "mt-4",
+                                      attrs: {
+                                        type: "is-light",
+                                        expanded: "",
+                                        "icon-right": "plus"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addNewMenu()
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Add Another")]
+                                  )
+                                : _vm._e()
+                            ],
+                            2
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "column" })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "column" })
+                ])
               ])
             ]
           ),
@@ -51117,7 +51739,7 @@ var render = function() {
             "b-step-item",
             {
               attrs: {
-                step: 3,
+                step: 4,
                 label: "Wrapping Up",
                 clickable: _vm.isStepsClickable
               }
@@ -67226,7 +67848,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // import
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_1__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheck"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheckCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faInfoCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationTriangle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleRight"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleLeft"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEye"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEyeSlash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faUpload"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faTrash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faPlus"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowsAlt"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExternalLinkAlt"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_1__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheck"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCheckCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faInfoCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationTriangle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExclamationCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleRight"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleLeft"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faAngleDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEye"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEyeSlash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretDown"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faCaretUp"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faUpload"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faTrash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faPlus"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faArrowsAlt"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faExternalLinkAlt"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faEnvelope"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faHome"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faUser"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__["faPhoneAlt"]);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component('edit-menu', __webpack_require__(/*! ./components/EditMenu.vue */ "./resources/js/components/EditMenu.vue")["default"]);
 Vue.component('nested-draggable', __webpack_require__(/*! ./components/NestedDraggable.vue */ "./resources/js/components/NestedDraggable.vue")["default"]); // Vue.component('modal-editor', require('./components/ModalEditor.vue').default);
@@ -67446,7 +68068,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GetStarted.vue?vue&type=template&id=14050b76& */ "./resources/js/components/GetStarted.vue?vue&type=template&id=14050b76&");
 /* harmony import */ var _GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GetStarted.vue?vue&type=script&lang=js& */ "./resources/js/components/GetStarted.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GetStarted.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -67454,7 +68078,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["render"],
   _GetStarted_vue_vue_type_template_id_14050b76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -67483,6 +68107,22 @@ component.options.__file = "resources/js/components/GetStarted.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GetStarted.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss& ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./GetStarted.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GetStarted.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_GetStarted_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

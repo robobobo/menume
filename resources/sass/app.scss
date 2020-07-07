@@ -100,3 +100,25 @@ https://css-tricks.com/hash-tag-links-padding/ */
 .cursor-pointer{
     cursor: pointer;
 }
+
+.box{
+    &.outlined{
+        border:2px solid $primary;
+    }
+}
+.menu-select-tile{
+    &.active,&:hover{
+      .box{
+        background:$primary;
+        h1,h2{
+          color:$primary-invert;
+        }
+  
+      }
+    }
+  }
+  .divider{
+      width:100%;
+      background:$dark;
+      height:1px;
+  }
