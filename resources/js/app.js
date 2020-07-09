@@ -1,7 +1,7 @@
 require('./bootstrap');
 // import Notifications from 'vue-notification'
 import Buefy from 'buefy'
-import { ValidationProvider, extend } from 'vee-validate';
+import { ValidationProvider, extend, ValidationObserver } from 'vee-validate';
 import "./validation";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -32,6 +32,7 @@ Vue.use(Buefy, {
     defaultIconPack: 'fas',
 });
 Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
 
 
 const app = new Vue({

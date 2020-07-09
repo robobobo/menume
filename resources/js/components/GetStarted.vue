@@ -8,6 +8,7 @@
       :label-position="labelPosition"
       :mobile-mode="mobileMode"
       :class="'pt-5'"
+      :change="stepChange()"
     >
       <b-step-item step="1" label="Details" :clickable="isStepsClickable">
         <h1 class="title has-text-centered">Your Details</h1>
@@ -19,59 +20,71 @@
             <div class="column"></div>
             <div class="column is-two-fifths">
               <section>
-                <validation-provider rules="required" v-slot="{errors, valid}">
-                  <b-field
-                    label="What's the name of your establishment?"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input
-                      icon="home"
-                      placeholder="eg. Fine Oak Cafe"
-                      v-model="establishment.name"
-                    ></b-input>
-                  </b-field>
-                </validation-provider>
+                <validation-observer v-slot="{ invalid }" ref="step1">
+                  <validation-provider rules="required" v-slot="{errors, valid}">
+                    <b-field
+                      label="What's the name of your establishment?"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input
+                        icon="home"
+                        placeholder="eg. Fine Oak Cafe"
+                        v-model="establishment.name"
+                      ></b-input>
+                    </b-field>
+                  </validation-provider>
 
-                <validation-provider rules="required|email" v-slot="{errors, valid}">
-                  <b-field
-                    label="Contact email address (make sure you have access to this inbox)"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input
-                      type="email"
-                      v-model="establishment.email_address"
-                      icon="envelope"
-                      placeholder="info@fineoakcafe.com"
-                    ></b-input>
-                  </b-field>
-                </validation-provider>
+                  <validation-provider rules="required|email" v-slot="{errors, valid}">
+                    <b-field
+                      label="Contact email address (make sure you have access to this inbox)"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input
+                        type="email"
+                        v-model="establishment.email_address"
+                        icon="envelope"
+                        placeholder="info@fineoakcafe.com"
+                      ></b-input>
+                    </b-field>
+                  </validation-provider>
 
-                <validation-provider rules="required" v-slot="{errors, valid}">
-                  <b-field
-                    label="Contact Person"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input icon="user" v-model="establishment.contact_name"></b-input>
-                  </b-field>
-                </validation-provider>
-                <validation-provider rules="required|numeric|min:6" v-slot="{errors, valid}">
-                  <b-field
-                    label="Contact Number"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input icon="phone-alt" v-model="establishment.contact_number"></b-input>
-                  </b-field>
-                </validation-provider>
-                <!-- <b-field label="Currency">
+                  <validation-provider rules="required" v-slot="{errors, valid}">
+                    <b-field
+                      label="Contact Person"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input icon="user" v-model="establishment.contact_name"></b-input>
+                    </b-field>
+                  </validation-provider>
+                  <validation-provider rules="required|numeric|min:6" v-slot="{errors, valid}">
+                    <b-field
+                      label="Contact Number"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input icon="phone-alt" v-model="establishment.contact_number"></b-input>
+                    </b-field>
+                  </validation-provider>
+                  <!-- <b-field label="Currency">
                   <b-select placeholder="Select a currency" v-model="establishment.currency">
                     <option value="EUR">Euro</option>
                     <option value="GBP">Pound Sterling</option>
                   </b-select>
-                </b-field>-->
+                  </b-field>-->
+                  <!-- <button type="submit" :disabled="invalid">Submit</button> -->
+                  <div class="mt-5">
+                    <b-button
+                      type="is-primary"
+                      icon-pack="fa"
+                      icon-right="angle-right"
+                      :disabled="invalid"
+                      @click="goToNextStep()"
+                    >Next Step</b-button>
+                  </div>
+                </validation-observer>
               </section>
             </div>
             <div class="column"></div>
@@ -88,6 +101,7 @@
           <div class="columns">
             <div class="column"></div>
             <div class="column is-two-fifths">
+              <validation-observer v-slot="{ invalid }" ref="step2">
               <div class="columns">
                 <div class="column">
                   <validation-provider rules="required" v-slot="{errors, valid}">
@@ -148,6 +162,14 @@
                   </b-field>
                 </div>-->
               </div>
+                 <b-button
+                    type="is-primary"
+                    icon-pack="fa"
+                    icon-right="angle-right"
+                    :disabled="invalid"
+                    @click="goToNextStep()"
+                  >Next Step</b-button>
+              </validation-observer>
             </div>
             <div class="column"></div>
           </div>
@@ -274,7 +296,7 @@
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
       </b-step-item>
 
-      <template slot="navigation" slot-scope="{previous, next}">
+      <!-- <template slot="navigation" slot-scope="{previous, next}">
         <div class="columns">
           <div class="column"></div>
           <div class="column is-two-fifths">
@@ -291,12 +313,13 @@
               icon-pack="fa"
               icon-right="angle-right"
               :disabled="next.disabled"
+              @click="isStep1Valid()"
               @click.prevent="next.action"
             >Next Step</b-button>
           </div>
           <div class="column"></div>
         </div>
-      </template>
+      </template>-->
     </b-steps>
   </section>
 </template>
@@ -357,6 +380,12 @@ export default {
     },
     setMenuMode: function(mode) {
       this.menuMode = mode;
+    },
+    stepChange: function() {
+      console.log("step changing");
+    },
+    goToNextStep: function() {
+      this.activeStep++;
     }
   }
 };

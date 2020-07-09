@@ -12607,6 +12607,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12657,6 +12680,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     setMenuMode: function setMenuMode(mode) {
       this.menuMode = mode;
+    },
+    stepChange: function stepChange() {
+      console.log("step changing");
+    },
+    goToNextStep: function goToNextStep() {
+      this.activeStep++;
     }
   }
 });
@@ -53736,77 +53765,9 @@ var render = function() {
             rounded: _vm.isRounded,
             "has-navigation": _vm.hasNavigation,
             "label-position": _vm.labelPosition,
-            "mobile-mode": _vm.mobileMode
+            "mobile-mode": _vm.mobileMode,
+            change: _vm.stepChange()
           },
-          scopedSlots: _vm._u([
-            {
-              key: "navigation",
-              fn: function(ref) {
-                var previous = ref.previous
-                var next = ref.next
-                return [
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column" }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "column is-two-fifths" },
-                      [
-                        _c(
-                          "b-button",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: !previous.disabled,
-                                expression: "!previous.disabled"
-                              }
-                            ],
-                            attrs: {
-                              outlined: "",
-                              "icon-pack": "fa",
-                              "icon-left": "angle-left",
-                              disabled: previous.disabled
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return previous.action($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Previous")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              type: "is-primary",
-                              "icon-pack": "fa",
-                              "icon-right": "angle-right",
-                              disabled: next.disabled
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return next.action($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Next Step")]
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "column" })
-                  ])
-                ]
-              }
-            }
-          ]),
           model: {
             value: _vm.activeStep,
             callback: function($$v) {
@@ -53844,191 +53805,255 @@ var render = function() {
                     _c(
                       "section",
                       [
-                        _c("validation-provider", {
-                          attrs: { rules: "required" },
+                        _c("validation-observer", {
+                          ref: "step1",
                           scopedSlots: _vm._u([
                             {
                               key: "default",
                               fn: function(ref) {
-                                var errors = ref.errors
-                                var valid = ref.valid
+                                var invalid = ref.invalid
                                 return [
-                                  _c(
-                                    "b-field",
-                                    {
-                                      attrs: {
-                                        label:
-                                          "What's the name of your establishment?",
-                                        type: {
-                                          "is-danger": errors[0],
-                                          "is-success": valid
-                                        },
-                                        message: errors
-                                      }
-                                    },
-                                    [
-                                      _c("b-input", {
-                                        attrs: {
-                                          icon: "home",
-                                          placeholder: "eg. Fine Oak Cafe"
-                                        },
-                                        model: {
-                                          value: _vm.establishment.name,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.establishment,
-                                              "name",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "establishment.name"
+                                  _c("validation-provider", {
+                                    attrs: { rules: "required" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "default",
+                                          fn: function(ref) {
+                                            var errors = ref.errors
+                                            var valid = ref.valid
+                                            return [
+                                              _c(
+                                                "b-field",
+                                                {
+                                                  attrs: {
+                                                    label:
+                                                      "What's the name of your establishment?",
+                                                    type: {
+                                                      "is-danger": errors[0],
+                                                      "is-success": valid
+                                                    },
+                                                    message: errors
+                                                  }
+                                                },
+                                                [
+                                                  _c("b-input", {
+                                                    attrs: {
+                                                      icon: "home",
+                                                      placeholder:
+                                                        "eg. Fine Oak Cafe"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.establishment.name,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.establishment,
+                                                          "name",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "establishment.name"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
                                         }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ]
-                              }
-                            }
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _c("validation-provider", {
-                          attrs: { rules: "required|email" },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "default",
-                              fn: function(ref) {
-                                var errors = ref.errors
-                                var valid = ref.valid
-                                return [
-                                  _c(
-                                    "b-field",
-                                    {
-                                      attrs: {
-                                        label:
-                                          "Contact email address (make sure you have access to this inbox)",
-                                        type: {
-                                          "is-danger": errors[0],
-                                          "is-success": valid
-                                        },
-                                        message: errors
-                                      }
-                                    },
-                                    [
-                                      _c("b-input", {
-                                        attrs: {
-                                          type: "email",
-                                          icon: "envelope",
-                                          placeholder: "info@fineoakcafe.com"
-                                        },
-                                        model: {
-                                          value:
-                                            _vm.establishment.email_address,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.establishment,
-                                              "email_address",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "establishment.email_address"
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  }),
+                                  _vm._v(" "),
+                                  _c("validation-provider", {
+                                    attrs: { rules: "required|email" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "default",
+                                          fn: function(ref) {
+                                            var errors = ref.errors
+                                            var valid = ref.valid
+                                            return [
+                                              _c(
+                                                "b-field",
+                                                {
+                                                  attrs: {
+                                                    label:
+                                                      "Contact email address (make sure you have access to this inbox)",
+                                                    type: {
+                                                      "is-danger": errors[0],
+                                                      "is-success": valid
+                                                    },
+                                                    message: errors
+                                                  }
+                                                },
+                                                [
+                                                  _c("b-input", {
+                                                    attrs: {
+                                                      type: "email",
+                                                      icon: "envelope",
+                                                      placeholder:
+                                                        "info@fineoakcafe.com"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.establishment
+                                                          .email_address,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.establishment,
+                                                          "email_address",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "establishment.email_address"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
                                         }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ]
-                              }
-                            }
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _c("validation-provider", {
-                          attrs: { rules: "required" },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "default",
-                              fn: function(ref) {
-                                var errors = ref.errors
-                                var valid = ref.valid
-                                return [
-                                  _c(
-                                    "b-field",
-                                    {
-                                      attrs: {
-                                        label: "Contact Person",
-                                        type: {
-                                          "is-danger": errors[0],
-                                          "is-success": valid
-                                        },
-                                        message: errors
-                                      }
-                                    },
-                                    [
-                                      _c("b-input", {
-                                        attrs: { icon: "user" },
-                                        model: {
-                                          value: _vm.establishment.contact_name,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.establishment,
-                                              "contact_name",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "establishment.contact_name"
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  }),
+                                  _vm._v(" "),
+                                  _c("validation-provider", {
+                                    attrs: { rules: "required" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "default",
+                                          fn: function(ref) {
+                                            var errors = ref.errors
+                                            var valid = ref.valid
+                                            return [
+                                              _c(
+                                                "b-field",
+                                                {
+                                                  attrs: {
+                                                    label: "Contact Person",
+                                                    type: {
+                                                      "is-danger": errors[0],
+                                                      "is-success": valid
+                                                    },
+                                                    message: errors
+                                                  }
+                                                },
+                                                [
+                                                  _c("b-input", {
+                                                    attrs: { icon: "user" },
+                                                    model: {
+                                                      value:
+                                                        _vm.establishment
+                                                          .contact_name,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.establishment,
+                                                          "contact_name",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "establishment.contact_name"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
                                         }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ]
-                              }
-                            }
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _c("validation-provider", {
-                          attrs: { rules: "required|numeric|min:6" },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "default",
-                              fn: function(ref) {
-                                var errors = ref.errors
-                                var valid = ref.valid
-                                return [
-                                  _c(
-                                    "b-field",
-                                    {
-                                      attrs: {
-                                        label: "Contact Number",
-                                        type: {
-                                          "is-danger": errors[0],
-                                          "is-success": valid
-                                        },
-                                        message: errors
-                                      }
-                                    },
-                                    [
-                                      _c("b-input", {
-                                        attrs: { icon: "phone-alt" },
-                                        model: {
-                                          value:
-                                            _vm.establishment.contact_number,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.establishment,
-                                              "contact_number",
-                                              $$v
-                                            )
-                                          },
-                                          expression:
-                                            "establishment.contact_number"
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  }),
+                                  _vm._v(" "),
+                                  _c("validation-provider", {
+                                    attrs: { rules: "required|numeric|min:6" },
+                                    scopedSlots: _vm._u(
+                                      [
+                                        {
+                                          key: "default",
+                                          fn: function(ref) {
+                                            var errors = ref.errors
+                                            var valid = ref.valid
+                                            return [
+                                              _c(
+                                                "b-field",
+                                                {
+                                                  attrs: {
+                                                    label: "Contact Number",
+                                                    type: {
+                                                      "is-danger": errors[0],
+                                                      "is-success": valid
+                                                    },
+                                                    message: errors
+                                                  }
+                                                },
+                                                [
+                                                  _c("b-input", {
+                                                    attrs: {
+                                                      icon: "phone-alt"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.establishment
+                                                          .contact_number,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.establishment,
+                                                          "contact_number",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "establishment.contact_number"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          }
                                         }
-                                      })
+                                      ],
+                                      null,
+                                      true
+                                    )
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "mt-5" },
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            type: "is-primary",
+                                            "icon-pack": "fa",
+                                            "icon-right": "angle-right",
+                                            disabled: invalid
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.goToNextStep()
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Next Step")]
+                                      )
                                     ],
                                     1
                                   )
@@ -54072,245 +54097,325 @@ var render = function() {
                 _c("div", { staticClass: "columns" }, [
                   _c("div", { staticClass: "column" }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "column is-two-fifths" }, [
-                    _c("div", { staticClass: "columns" }, [
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
-                          _c("validation-provider", {
-                            attrs: { rules: "required" },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "default",
-                                fn: function(ref) {
-                                  var errors = ref.errors
-                                  var valid = ref.valid
-                                  return [
-                                    _c(
-                                      "b-field",
-                                      {
-                                        attrs: {
-                                          label: "Address 1",
-                                          type: {
-                                            "is-danger": errors[0],
-                                            "is-success": valid
-                                          },
-                                          message: errors
-                                        }
-                                      },
-                                      [
-                                        _c("b-input", {
-                                          model: {
-                                            value: _vm.establishment.address_1,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.establishment,
-                                                "address_1",
-                                                $$v
-                                              )
-                                            },
-                                            expression:
-                                              "establishment.address_1"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          })
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
-                          _c(
-                            "b-field",
-                            { attrs: { label: "Address 2" } },
-                            [
-                              _c("b-input", {
-                                model: {
-                                  value: _vm.establishment.address_2,
-                                  callback: function($$v) {
-                                    _vm.$set(
-                                      _vm.establishment,
-                                      "address_2",
-                                      $$v
-                                    )
-                                  },
-                                  expression: "establishment.address_2"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
-                          _c("validation-provider", {
-                            attrs: { rules: "required" },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "default",
-                                fn: function(ref) {
-                                  var errors = ref.errors
-                                  var valid = ref.valid
-                                  return [
-                                    _c(
-                                      "b-field",
-                                      {
-                                        attrs: {
-                                          label: "Town/City",
-                                          type: {
-                                            "is-danger": errors[0],
-                                            "is-success": valid
-                                          },
-                                          message: errors
-                                        }
-                                      },
-                                      [
-                                        _c("b-input", {
-                                          model: {
-                                            value: _vm.establishment.town_city,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.establishment,
-                                                "town_city",
-                                                $$v
-                                              )
-                                            },
-                                            expression:
-                                              "establishment.town_city"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          })
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
-                          _c(
-                            "b-field",
-                            { attrs: { label: "Eircode" } },
-                            [
-                              _c("b-input", {
-                                model: {
-                                  value: _vm.establishment.postcode,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.establishment, "postcode", $$v)
-                                  },
-                                  expression: "establishment.postcode"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "column" },
-                        [
-                          _c("validation-provider", {
-                            attrs: { rules: "required" },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "default",
-                                fn: function(ref) {
-                                  var errors = ref.errors
-                                  var valid = ref.valid
-                                  return [
-                                    _c(
-                                      "b-field",
-                                      {
-                                        attrs: {
-                                          label: "County",
-                                          type: {
-                                            "is-danger": errors[0],
-                                            "is-success": valid
-                                          },
-                                          message: errors
-                                        }
-                                      },
-                                      [
-                                        _c(
-                                          "b-select",
-                                          {
-                                            attrs: {
-                                              placeholder: "Select County"
-                                            },
+                  _c(
+                    "div",
+                    { staticClass: "column is-two-fifths" },
+                    [
+                      _c("validation-observer", {
+                        ref: "step2",
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function(ref) {
+                              var invalid = ref.invalid
+                              return [
+                                _c("div", { staticClass: "columns" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c("validation-provider", {
+                                        attrs: { rules: "required" },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                var valid = ref.valid
+                                                return [
+                                                  _c(
+                                                    "b-field",
+                                                    {
+                                                      attrs: {
+                                                        label: "Address 1",
+                                                        type: {
+                                                          "is-danger":
+                                                            errors[0],
+                                                          "is-success": valid
+                                                        },
+                                                        message: errors
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("b-input", {
+                                                        model: {
+                                                          value:
+                                                            _vm.establishment
+                                                              .address_1,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.establishment,
+                                                              "address_1",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "establishment.address_1"
+                                                        }
+                                                      })
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "columns" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c(
+                                        "b-field",
+                                        { attrs: { label: "Address 2" } },
+                                        [
+                                          _c("b-input", {
                                             model: {
-                                              value: _vm.establishment.county,
+                                              value:
+                                                _vm.establishment.address_2,
                                               callback: function($$v) {
                                                 _vm.$set(
                                                   _vm.establishment,
-                                                  "county",
+                                                  "address_2",
                                                   $$v
                                                 )
                                               },
-                                              expression: "establishment.county"
+                                              expression:
+                                                "establishment.address_2"
                                             }
-                                          },
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "columns" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c("validation-provider", {
+                                        attrs: { rules: "required" },
+                                        scopedSlots: _vm._u(
                                           [
-                                            _c("option", {
-                                              attrs: { value: "" }
-                                            }),
-                                            _vm._v(" "),
-                                            _c(
-                                              "option",
-                                              { attrs: { value: "Wicklow" } },
-                                              [_vm._v("Wicklow")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "option",
-                                              { attrs: { value: "Dublin" } },
-                                              [_vm._v("Dublin")]
-                                            )
-                                          ]
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                var valid = ref.valid
+                                                return [
+                                                  _c(
+                                                    "b-field",
+                                                    {
+                                                      attrs: {
+                                                        label: "Town/City",
+                                                        type: {
+                                                          "is-danger":
+                                                            errors[0],
+                                                          "is-success": valid
+                                                        },
+                                                        message: errors
+                                                      }
+                                                    },
+                                                    [
+                                                      _c("b-input", {
+                                                        model: {
+                                                          value:
+                                                            _vm.establishment
+                                                              .town_city,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.establishment,
+                                                              "town_city",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "establishment.town_city"
+                                                        }
+                                                      })
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
                                         )
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          })
-                        ],
-                        1
-                      )
-                    ])
-                  ]),
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "columns" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c(
+                                        "b-field",
+                                        { attrs: { label: "Eircode" } },
+                                        [
+                                          _c("b-input", {
+                                            model: {
+                                              value: _vm.establishment.postcode,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.establishment,
+                                                  "postcode",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "establishment.postcode"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c("validation-provider", {
+                                        attrs: { rules: "required" },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                var valid = ref.valid
+                                                return [
+                                                  _c(
+                                                    "b-field",
+                                                    {
+                                                      attrs: {
+                                                        label: "County",
+                                                        type: {
+                                                          "is-danger":
+                                                            errors[0],
+                                                          "is-success": valid
+                                                        },
+                                                        message: errors
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "b-select",
+                                                        {
+                                                          attrs: {
+                                                            placeholder:
+                                                              "Select County"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm.establishment
+                                                                .county,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm.establishment,
+                                                                "county",
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "establishment.county"
+                                                          }
+                                                        },
+                                                        [
+                                                          _c("option", {
+                                                            attrs: { value: "" }
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "option",
+                                                            {
+                                                              attrs: {
+                                                                value: "Wicklow"
+                                                              }
+                                                            },
+                                                            [_vm._v("Wicklow")]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "option",
+                                                            {
+                                                              attrs: {
+                                                                value: "Dublin"
+                                                              }
+                                                            },
+                                                            [_vm._v("Dublin")]
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-button",
+                                  {
+                                    attrs: {
+                                      type: "is-primary",
+                                      "icon-pack": "fa",
+                                      "icon-right": "angle-right",
+                                      disabled: invalid
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.goToNextStep()
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Next Step")]
+                                )
+                              ]
+                            }
+                          }
+                        ])
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "column" })
                 ])
@@ -70800,6 +70905,7 @@ Vue.use(buefy__WEBPACK_IMPORTED_MODULE_0__["default"], {
   defaultIconPack: 'fas'
 });
 Vue.component('ValidationProvider', vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"]);
+Vue.component('ValidationObserver', vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"]);
 var app = new Vue({
   el: '#app'
 });
