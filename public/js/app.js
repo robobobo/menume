@@ -12654,26 +12654,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12689,7 +12669,8 @@ __webpack_require__.r(__webpack_exports__);
         town_city: "",
         postcode: "",
         county: "",
-        country: ""
+        country: "",
+        saved: false
       },
       menus: [{
         name: "",
@@ -12729,10 +12710,40 @@ __webpack_require__.r(__webpack_exports__);
       console.log("step changing");
     },
     goToNextStep: function goToNextStep() {
-      this.activeStep++;
+      var _this = this;
+
+      if (this.activeStep == 0) {
+        this.saveEstablishment(this.establishment).then(function (response) {
+          console.log(response);
+          _this.establishment.id = response.data.data.id;
+          _this.establishment.saved = true;
+          _this.activeStep++;
+        }, function (error) {
+          console.log(error);
+
+          _this.$buefy.toast.open({
+            message: "Whoops! Something has gone wrong, please check your details and try again",
+            type: "is-error"
+          });
+        });
+      }
     },
     goToPreviousStep: function goToPreviousStep() {
       this.activeStep--;
+    },
+    saveEstablishment: function saveEstablishment(establishment) {
+      console.log("here");
+      var savePromise = new Promise(function (resolve, reject) {
+        console.log("boo");
+        axios.post("/api/v1/establishment/", establishment).then(function (response) {
+          console.log(response);
+          resolve(response);
+        })["catch"](function (error) {
+          console.log(error);
+          reject(error);
+        });
+      });
+      return savePromise;
     }
   }
 });
@@ -54002,16 +54013,16 @@ var render = function() {
                                                     model: {
                                                       value:
                                                         _vm.establishment
-                                                          .contact_name,
+                                                          .contact_person,
                                                       callback: function($$v) {
                                                         _vm.$set(
                                                           _vm.establishment,
-                                                          "contact_name",
+                                                          "contact_person",
                                                           $$v
                                                         )
                                                       },
                                                       expression:
-                                                        "establishment.contact_name"
+                                                        "establishment.contact_person"
                                                     }
                                                   })
                                                 ],
@@ -54158,163 +54169,128 @@ var render = function() {
                             fn: function(ref) {
                               var invalid = ref.invalid
                               return [
-                                _c("div", { staticClass: "columns" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "column" },
+                                _c("validation-provider", {
+                                  attrs: { rules: "required" },
+                                  scopedSlots: _vm._u(
                                     [
-                                      _c("validation-provider", {
-                                        attrs: { rules: "required" },
-                                        scopedSlots: _vm._u(
-                                          [
-                                            {
-                                              key: "default",
-                                              fn: function(ref) {
-                                                var errors = ref.errors
-                                                var valid = ref.valid
-                                                return [
-                                                  _c(
-                                                    "b-field",
-                                                    {
-                                                      attrs: {
-                                                        label: "Address 1",
-                                                        type: {
-                                                          "is-danger":
-                                                            errors[0],
-                                                          "is-success": valid
-                                                        },
-                                                        message: errors
-                                                      }
-                                                    },
-                                                    [
-                                                      _c("b-input", {
-                                                        model: {
-                                                          value:
-                                                            _vm.establishment
-                                                              .address_1,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.establishment,
-                                                              "address_1",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "establishment.address_1"
-                                                        }
-                                                      })
-                                                    ],
-                                                    1
-                                                  )
-                                                ]
-                                              }
-                                            }
-                                          ],
-                                          null,
-                                          true
-                                        )
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "columns" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "column" },
-                                    [
-                                      _c(
-                                        "b-field",
-                                        { attrs: { label: "Address 2" } },
-                                        [
-                                          _c("b-input", {
-                                            model: {
-                                              value:
-                                                _vm.establishment.address_2,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.establishment,
-                                                  "address_2",
-                                                  $$v
-                                                )
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          var valid = ref.valid
+                                          return [
+                                            _c(
+                                              "b-field",
+                                              {
+                                                attrs: {
+                                                  label: "Address 1",
+                                                  type: {
+                                                    "is-danger": errors[0],
+                                                    "is-success": valid
+                                                  },
+                                                  message: errors
+                                                }
                                               },
-                                              expression:
-                                                "establishment.address_2"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "columns" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "column" },
-                                    [
-                                      _c("validation-provider", {
-                                        attrs: { rules: "required" },
-                                        scopedSlots: _vm._u(
-                                          [
-                                            {
-                                              key: "default",
-                                              fn: function(ref) {
-                                                var errors = ref.errors
-                                                var valid = ref.valid
-                                                return [
-                                                  _c(
-                                                    "b-field",
-                                                    {
-                                                      attrs: {
-                                                        label: "Town/City",
-                                                        type: {
-                                                          "is-danger":
-                                                            errors[0],
-                                                          "is-success": valid
-                                                        },
-                                                        message: errors
-                                                      }
+                                              [
+                                                _c("b-input", {
+                                                  model: {
+                                                    value:
+                                                      _vm.establishment
+                                                        .address_1,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.establishment,
+                                                        "address_1",
+                                                        $$v
+                                                      )
                                                     },
-                                                    [
-                                                      _c("b-input", {
-                                                        model: {
-                                                          value:
-                                                            _vm.establishment
-                                                              .town_city,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.establishment,
-                                                              "town_city",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "establishment.town_city"
-                                                        }
-                                                      })
-                                                    ],
-                                                    1
-                                                  )
-                                                ]
-                                              }
-                                            }
-                                          ],
-                                          null,
-                                          true
-                                        )
-                                      })
+                                                    expression:
+                                                      "establishment.address_1"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        }
+                                      }
                                     ],
-                                    1
+                                    null,
+                                    true
                                   )
-                                ]),
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "b-field",
+                                  { attrs: { label: "Address 2" } },
+                                  [
+                                    _c("b-input", {
+                                      model: {
+                                        value: _vm.establishment.address_2,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.establishment,
+                                            "address_2",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "establishment.address_2"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c("validation-provider", {
+                                  attrs: { rules: "required" },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          var valid = ref.valid
+                                          return [
+                                            _c(
+                                              "b-field",
+                                              {
+                                                attrs: {
+                                                  label: "Town/City",
+                                                  type: {
+                                                    "is-danger": errors[0],
+                                                    "is-success": valid
+                                                  },
+                                                  message: errors
+                                                }
+                                              },
+                                              [
+                                                _c("b-input", {
+                                                  model: {
+                                                    value:
+                                                      _vm.establishment
+                                                        .town_city,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.establishment,
+                                                        "town_city",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "establishment.town_city"
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                }),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "columns" }, [
                                   _c(
@@ -54528,98 +54504,94 @@ var render = function() {
                 _c("div", { staticClass: "columns" }, [
                   _c("div", { staticClass: "column" }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "column is-three-fifths" }, [
-                    _c("p", { staticClass: "has-text-centered" }, [
-                      _vm._v(
-                        "Depending on the time of day, we'll automatically show the correct menu to your customers. Choose the setup that suits you below."
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "tile is-ancestory" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "menu-select-tile tile is-parent cursor-pointer",
-                          class: { active: _vm.menuMode == "single" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setMenuMode("single")
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "outlined box has-text-centered" },
-                            [
-                              _c("h1", { staticClass: "title" }, [
-                                _vm._v("Just One Menu")
-                              ]),
-                              _vm._v(" "),
-                              _c("h2", { staticClass: "subtitle is-6" }, [
-                                _vm._v(
-                                  "\n                    We have one all day menu\n                    "
-                                ),
-                                _c("i", [_vm._v("(optional kids menu)")])
-                              ])
-                            ]
-                          )
-                        ]
-                      ),
+                  _c(
+                    "div",
+                    { staticClass: "column is-three-fifths" },
+                    [
+                      _c("p", { staticClass: "has-text-centered" }, [
+                        _vm._v(
+                          "Depending on the time of day, we'll automatically show the correct menu to your customers. Choose the setup that suits you below."
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "menu-select-tile tile is-parent cursor-pointer",
-                          class: { active: _vm.menuMode == "multiple" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setMenuMode("multiple")
+                      _c("div", { staticClass: "tile is-ancestory" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "menu-select-tile tile is-parent cursor-pointer",
+                            class: { active: _vm.menuMode == "single" },
+                            on: {
+                              click: function($event) {
+                                return _vm.setMenuMode("single")
+                              }
                             }
-                          }
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "outlined box has-text-centered" },
-                            [
-                              _c("h1", { staticClass: "title" }, [
-                                _vm._v("Multiple Menus")
-                              ]),
-                              _vm._v(" "),
-                              _c("h2", { staticClass: "subtitle is-6" }, [
-                                _vm._v(
-                                  "Our menu is different on certain days or times"
-                                )
-                              ])
-                            ]
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "columns" },
-                      [
-                        _c("div", { staticClass: "column" }),
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "outlined box has-text-centered" },
+                              [
+                                _c("h1", { staticClass: "title" }, [
+                                  _vm._v("Just One Menu")
+                                ]),
+                                _vm._v(" "),
+                                _c("h2", { staticClass: "subtitle is-6" }, [
+                                  _vm._v(
+                                    "\n                    We have one all day menu\n                    "
+                                  ),
+                                  _c("i", [_vm._v("(optional kids menu)")])
+                                ])
+                              ]
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
-                        _c("validation-observer", {
-                          ref: "step3",
-                          scopedSlots: _vm._u([
-                            {
-                              key: "default",
-                              fn: function(ref) {
-                                var invalid = ref.invalid
-                                return [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "menu-select-tile tile is-parent cursor-pointer",
+                            class: { active: _vm.menuMode == "multiple" },
+                            on: {
+                              click: function($event) {
+                                return _vm.setMenuMode("multiple")
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "outlined box has-text-centered" },
+                              [
+                                _c("h1", { staticClass: "title" }, [
+                                  _vm._v("Multiple Menus")
+                                ]),
+                                _vm._v(" "),
+                                _c("h2", { staticClass: "subtitle is-6" }, [
+                                  _vm._v(
+                                    "Our menu is different on certain days or times"
+                                  )
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("validation-observer", {
+                        ref: "step3",
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function(ref) {
+                              var invalid = ref.invalid
+                              return [
+                                _c("div", { staticClass: "columns" }, [
                                   _vm.menuMode != null
                                     ? _c(
                                         "div",
-                                        {
-                                          staticClass: "column is-four-fifths"
-                                        },
+                                        { staticClass: "column is-full" },
                                         [
                                           _vm.menuMode == "single"
                                             ? _c(
@@ -55033,69 +55005,69 @@ var render = function() {
                                         ],
                                         2
                                       )
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "columns mt-5" }, [
-                                    _c(
-                                      "div",
-                                      { staticClass: "column" },
-                                      [
-                                        _c(
-                                          "b-button",
-                                          {
-                                            attrs: {
-                                              type: "is-secondary",
-                                              "icon-pack": "fa",
-                                              "icon-left": "angle-left"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.goToPreviousStep()
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _vm.menuMode != null
+                                  ? _c("div", { staticClass: "columns mt-5" }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "column" },
+                                        [
+                                          _c(
+                                            "b-button",
+                                            {
+                                              attrs: {
+                                                type: "is-secondary",
+                                                "icon-pack": "fa",
+                                                "icon-left": "angle-left"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.goToPreviousStep()
+                                                }
                                               }
-                                            }
-                                          },
-                                          [_vm._v("Previous Step")]
-                                        )
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      { staticClass: "column" },
-                                      [
-                                        _c(
-                                          "b-button",
-                                          {
-                                            attrs: {
-                                              type: "is-primary",
-                                              "icon-pack": "fa",
-                                              "icon-right": "angle-right",
-                                              disabled: invalid
                                             },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.goToNextStep()
+                                            [_vm._v("Previous Step")]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "column" },
+                                        [
+                                          _c(
+                                            "b-button",
+                                            {
+                                              attrs: {
+                                                type: "is-primary",
+                                                "icon-pack": "fa",
+                                                "icon-right": "angle-right",
+                                                disabled: invalid
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.goToNextStep()
+                                                }
                                               }
-                                            }
-                                          },
-                                          [_vm._v("All Done!")]
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ])
-                                ]
-                              }
+                                            },
+                                            [_vm._v("All Done!")]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ]
                             }
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "column" })
-                      ],
-                      1
-                    )
-                  ]),
+                          }
+                        ])
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "column" })
                 ])

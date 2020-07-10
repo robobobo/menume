@@ -37,5 +37,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
     
     Route::get('menu/{menu}','MenuController@show');
     Route::delete('menu-item/{menuItem}','MenuItemController@delete');
+    
+    Route::post('establishment','EstablishmentController@create');
 
 });

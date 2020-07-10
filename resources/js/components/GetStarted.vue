@@ -56,7 +56,7 @@
                       :type="{ 'is-danger': errors[0], 'is-success': valid }"
                       :message="errors"
                     >
-                      <b-input icon="user" v-model="establishment.contact_name"></b-input>
+                      <b-input icon="user" v-model="establishment.contact_person"></b-input>
                     </b-field>
                   </validation-provider>
                   <validation-provider rules="required|numeric|min:6" v-slot="{errors, valid}">
@@ -104,39 +104,29 @@
             <div class="column"></div>
             <div class="column is-two-fifths">
               <validation-observer v-slot="{ invalid }" ref="step2">
-                <div class="columns">
-                  <div class="column">
-                    <validation-provider rules="required" v-slot="{errors, valid}">
-                      <b-field
-                        label="Address 1"
-                        :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                        :message="errors"
-                      >
-                        <b-input v-model="establishment.address_1"></b-input>
-                      </b-field>
-                    </validation-provider>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <b-field label="Address 2">
-                      <b-input v-model="establishment.address_2"></b-input>
-                    </b-field>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <validation-provider rules="required" v-slot="{errors, valid}">
-                      <b-field
-                        label="Town/City"
-                        :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                        :message="errors"
-                      >
-                        <b-input v-model="establishment.town_city"></b-input>
-                      </b-field>
-                    </validation-provider>
-                  </div>
-                </div>
+                <validation-provider rules="required" v-slot="{errors, valid}">
+                  <b-field
+                    label="Address 1"
+                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                    :message="errors"
+                  >
+                    <b-input v-model="establishment.address_1"></b-input>
+                  </b-field>
+                </validation-provider>
+
+                <b-field label="Address 2">
+                  <b-input v-model="establishment.address_2"></b-input>
+                </b-field>
+                <validation-provider rules="required" v-slot="{errors, valid}">
+                  <b-field
+                    label="Town/City"
+                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                    :message="errors"
+                  >
+                    <b-input v-model="establishment.town_city"></b-input>
+                  </b-field>
+                </validation-provider>
+
                 <div class="columns">
                   <div class="column">
                     <b-field label="Eircode">
@@ -231,10 +221,9 @@
                   </div>
                 </div>
               </div>
-              <div class="columns">
-                <div class="column"></div>
-                <validation-observer v-slot="{ invalid }" ref="step3">
-                  <div class="column is-four-fifths" v-if="menuMode != null">
+              <validation-observer v-slot="{ invalid }" ref="step3">
+                <div class="columns">
+                  <div class="column is-full" v-if="menuMode != null">
                     <h1
                       class="title has-text-centered pt-3"
                       v-if="menuMode == 'single'"
@@ -248,25 +237,28 @@
                       v-bind:key="counter"
                       class="has-background-light my-3 px-3 py-3"
                     >
-                     <validation-provider rules="required" v-slot="{errors, valid}">
-                      <b-field class="is-relative" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                          :message="errors">
-                        <b-input
-                          placeholder="Enter menu name"
-                          v-model="menu.name"
-                          size="is-large"
-                          custom-class="has-text-centered mb-4"
-                          expanded
-                        ></b-input>
-                        <b-button
-                          v-if="menus.length > 1 && menuMode == 'multiple'"
-                          type="is-text"
-                          class="is-absolute delete-menu-icon is-danger"
-                          inverted
-                          icon-right="trash"
-                          @click="removeMenu(counter)"
-                        ></b-button>
-                      </b-field>
+                      <validation-provider rules="required" v-slot="{errors, valid}">
+                        <b-field
+                          class="is-relative"
+                          :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                          :message="errors"
+                        >
+                          <b-input
+                            placeholder="Enter menu name"
+                            v-model="menu.name"
+                            size="is-large"
+                            custom-class="has-text-centered mb-4"
+                            expanded
+                          ></b-input>
+                          <b-button
+                            v-if="menus.length > 1 && menuMode == 'multiple'"
+                            type="is-text"
+                            class="is-absolute delete-menu-icon is-danger"
+                            inverted
+                            icon-right="trash"
+                            @click="removeMenu(counter)"
+                          ></b-button>
+                        </b-field>
                       </validation-provider>
                       <div class="columns" v-if="menuMode == 'multiple'">
                         <div class="column">
@@ -280,19 +272,33 @@
                           </b-field>
                         </div>
                         <div class="column">
-                          <validation-provider rules="required" v-slot="{errors, valid}"  v-if="menu.allDay == false" >
-                          <b-field label="Starts" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                      :message="errors">
-                            <b-clockpicker v-model="menu.startTime" hour-format="24"></b-clockpicker>
-                          </b-field>
+                          <validation-provider
+                            rules="required"
+                            v-slot="{errors, valid}"
+                            v-if="menu.allDay == false"
+                          >
+                            <b-field
+                              label="Starts"
+                              :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                              :message="errors"
+                            >
+                              <b-clockpicker v-model="menu.startTime" hour-format="24"></b-clockpicker>
+                            </b-field>
                           </validation-provider>
                         </div>
                         <div class="column">
-                          <validation-provider rules="required" v-slot="{errors, valid}"  v-if="menu.allDay == false" >
-                          <b-field label="End" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                      :message="errors">
-                            <b-clockpicker v-model="menu.endTime" hour-format="24"></b-clockpicker>
-                          </b-field>
+                          <validation-provider
+                            rules="required"
+                            v-slot="{errors, valid}"
+                            v-if="menu.allDay == false"
+                          >
+                            <b-field
+                              label="End"
+                              :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                              :message="errors"
+                            >
+                              <b-clockpicker v-model="menu.endTime" hour-format="24"></b-clockpicker>
+                            </b-field>
                           </validation-provider>
                         </div>
                       </div>
@@ -307,28 +313,27 @@
                       @click="addNewMenu()"
                     >Add Another</b-button>
                   </div>
-                    <div class="columns mt-5">
-                      <div class="column">
-                        <b-button
-                          type="is-secondary"
-                          icon-pack="fa"
-                          icon-left="angle-left"
-                          @click="goToPreviousStep()"
-                        >Previous Step</b-button>
-                      </div>
-                      <div class="column">
-                        <b-button
-                          type="is-primary"
-                          icon-pack="fa"
-                          icon-right="angle-right"
-                          :disabled="invalid"
-                          @click="goToNextStep()"
-                        >All Done!</b-button>
-                      </div>
-                    </div>
-                </validation-observer>
-                <div class="column"></div>
-              </div>
+                </div>
+                <div class="columns mt-5" v-if="menuMode != null">
+                  <div class="column">
+                    <b-button
+                      type="is-secondary"
+                      icon-pack="fa"
+                      icon-left="angle-left"
+                      @click="goToPreviousStep()"
+                    >Previous Step</b-button>
+                  </div>
+                  <div class="column">
+                    <b-button
+                      type="is-primary"
+                      icon-pack="fa"
+                      icon-right="angle-right"
+                      :disabled="invalid"
+                      @click="goToNextStep()"
+                    >All Done!</b-button>
+                  </div>
+                </div>
+              </validation-observer>
             </div>
             <div class="column"></div>
           </div>
@@ -339,31 +344,6 @@
         <h1 class="title has-text-centered">Your QR Codes</h1>
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
       </b-step-item>
-
-      <!-- <template slot="navigation" slot-scope="{previous, next}">
-        <div class="columns">
-          <div class="column"></div>
-          <div class="column is-two-fifths">
-            <b-button
-              outlined
-              icon-pack="fa"
-              icon-left="angle-left"
-              v-show="!previous.disabled"
-              :disabled="previous.disabled"
-              @click.prevent="previous.action"
-            >Previous</b-button>
-            <b-button
-              type="is-primary"
-              icon-pack="fa"
-              icon-right="angle-right"
-              :disabled="next.disabled"
-              @click="isStep1Valid()"
-              @click.prevent="next.action"
-            >Next Step</b-button>
-          </div>
-          <div class="column"></div>
-        </div>
-      </template>-->
     </b-steps>
   </section>
 </template>
@@ -384,7 +364,8 @@ export default {
         town_city: "",
         postcode: "",
         county: "",
-        country: ""
+        country: "",
+        saved: false
       },
       menus: [
         {
@@ -429,10 +410,46 @@ export default {
       console.log("step changing");
     },
     goToNextStep: function() {
-      this.activeStep++;
+      if (this.activeStep == 0) {
+        this.saveEstablishment(this.establishment).then(
+          response => {
+            console.log(response);
+            this.establishment.id = response.data.data.id;
+            this.establishment.saved = true;
+            this.activeStep++;
+          },
+          error => {
+            console.log(error);
+            this.$buefy.toast.open({
+              message:
+                "Whoops! Something has gone wrong, please check your details and try again",
+              type: "is-error"
+            });
+          }
+        );
+      }
     },
     goToPreviousStep: function() {
       this.activeStep--;
+    },
+    saveEstablishment: function(establishment) {
+      console.log("here")
+      
+      var savePromise = new Promise(function(resolve, reject) {
+        console.log("boo")
+        axios
+          .post("/api/v1/establishment/", establishment)
+          .then(response => {
+            console.log(response);
+            resolve(response);
+           
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error)
+          })
+      });
+      return savePromise;
     }
   }
 };
