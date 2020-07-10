@@ -12630,6 +12630,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12686,6 +12730,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToNextStep: function goToNextStep() {
       this.activeStep++;
+    },
+    goToPreviousStep: function goToPreviousStep() {
+      this.activeStep--;
     }
   }
 });
@@ -53763,7 +53810,7 @@ var render = function() {
           attrs: {
             animated: _vm.isAnimated,
             rounded: _vm.isRounded,
-            "has-navigation": _vm.hasNavigation,
+            "has-navigation": false,
             "label-position": _vm.labelPosition,
             "mobile-mode": _vm.mobileMode,
             change: _vm.stepChange()
@@ -54033,30 +54080,32 @@ var render = function() {
                                     )
                                   }),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "mt-5" },
-                                    [
-                                      _c(
-                                        "b-button",
-                                        {
-                                          attrs: {
-                                            type: "is-primary",
-                                            "icon-pack": "fa",
-                                            "icon-right": "angle-right",
-                                            disabled: invalid
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.goToNextStep()
+                                  _c("div", { staticClass: "columns mt-5" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "column" },
+                                      [
+                                        _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              type: "is-primary",
+                                              "icon-pack": "fa",
+                                              "icon-right": "angle-right",
+                                              disabled: invalid
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.goToNextStep()
+                                              }
                                             }
-                                          }
-                                        },
-                                        [_vm._v("Next Step")]
-                                      )
-                                    ],
-                                    1
-                                  )
+                                          },
+                                          [_vm._v("Next Step")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ])
                                 ]
                               }
                             }
@@ -54391,23 +54440,56 @@ var render = function() {
                                   )
                                 ]),
                                 _vm._v(" "),
-                                _c(
-                                  "b-button",
-                                  {
-                                    attrs: {
-                                      type: "is-primary",
-                                      "icon-pack": "fa",
-                                      "icon-right": "angle-right",
-                                      disabled: invalid
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.goToNextStep()
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Next Step")]
-                                )
+                                _c("div", { staticClass: "columns mt-5" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            type: "is-secondary",
+                                            "icon-pack": "fa",
+                                            "icon-left": "angle-left"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.goToPreviousStep()
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Previous Step")]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "column" },
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            type: "is-primary",
+                                            "icon-pack": "fa",
+                                            "icon-right": "angle-right",
+                                            disabled: invalid
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.goToNextStep()
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Next Step")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ])
                               ]
                             }
                           }
@@ -54518,252 +54600,501 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c("div", { staticClass: "column" }),
-                      _vm._v(" "),
-                      _vm.menuMode != null
-                        ? _c(
-                            "div",
-                            { staticClass: "column is-four-fifths" },
-                            [
-                              _vm.menuMode == "single"
-                                ? _c(
-                                    "h1",
-                                    {
-                                      staticClass:
-                                        "title has-text-centered pt-3"
-                                    },
-                                    [_vm._v("Lets give your menu a name")]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.menuMode == "multiple"
-                                ? _c(
-                                    "h1",
-                                    {
-                                      staticClass:
-                                        "title has-text-centered pt-3"
-                                    },
-                                    [_vm._v("Lets setup your menus")]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm._l(_vm.menus, function(menu, counter) {
-                                return _c(
-                                  "div",
-                                  {
-                                    key: counter,
-                                    staticClass:
-                                      "has-background-light my-3 px-3 py-3"
-                                  },
-                                  [
-                                    _c(
-                                      "b-field",
-                                      { staticClass: "is-relative" },
-                                      [
-                                        _c("b-input", {
-                                          attrs: {
-                                            placeholder: "Enter menu name",
-                                            size: "is-large",
-                                            "custom-class":
-                                              "has-text-centered mb-4",
-                                            expanded: ""
-                                          },
-                                          model: {
-                                            value: menu.name,
-                                            callback: function($$v) {
-                                              _vm.$set(menu, "name", $$v)
-                                            },
-                                            expression: "menu.name"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _vm.menus.length > 1 &&
-                                        _vm.menuMode == "multiple"
-                                          ? _c("b-button", {
-                                              staticClass:
-                                                "is-absolute delete-menu-icon is-danger",
-                                              attrs: {
-                                                type: "is-text",
-                                                inverted: "",
-                                                "icon-right": "trash"
+                    _c(
+                      "div",
+                      { staticClass: "columns" },
+                      [
+                        _c("div", { staticClass: "column" }),
+                        _vm._v(" "),
+                        _c("validation-observer", {
+                          ref: "step3",
+                          scopedSlots: _vm._u([
+                            {
+                              key: "default",
+                              fn: function(ref) {
+                                var invalid = ref.invalid
+                                return [
+                                  _vm.menuMode != null
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass: "column is-four-fifths"
+                                        },
+                                        [
+                                          _vm.menuMode == "single"
+                                            ? _c(
+                                                "h1",
+                                                {
+                                                  staticClass:
+                                                    "title has-text-centered pt-3"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Lets give your menu a name"
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _vm.menuMode == "multiple"
+                                            ? _c(
+                                                "h1",
+                                                {
+                                                  staticClass:
+                                                    "title has-text-centered pt-3"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Lets setup your menus"
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _vm._l(_vm.menus, function(
+                                            menu,
+                                            counter
+                                          ) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: counter,
+                                                staticClass:
+                                                  "has-background-light my-3 px-3 py-3"
                                               },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.removeMenu(counter)
-                                                }
+                                              [
+                                                _c("validation-provider", {
+                                                  attrs: { rules: "required" },
+                                                  scopedSlots: _vm._u(
+                                                    [
+                                                      {
+                                                        key: "default",
+                                                        fn: function(ref) {
+                                                          var errors =
+                                                            ref.errors
+                                                          var valid = ref.valid
+                                                          return [
+                                                            _c(
+                                                              "b-field",
+                                                              {
+                                                                staticClass:
+                                                                  "is-relative",
+                                                                attrs: {
+                                                                  type: {
+                                                                    "is-danger":
+                                                                      errors[0],
+                                                                    "is-success": valid
+                                                                  },
+                                                                  message: errors
+                                                                }
+                                                              },
+                                                              [
+                                                                _c("b-input", {
+                                                                  attrs: {
+                                                                    placeholder:
+                                                                      "Enter menu name",
+                                                                    size:
+                                                                      "is-large",
+                                                                    "custom-class":
+                                                                      "has-text-centered mb-4",
+                                                                    expanded: ""
+                                                                  },
+                                                                  model: {
+                                                                    value:
+                                                                      menu.name,
+                                                                    callback: function(
+                                                                      $$v
+                                                                    ) {
+                                                                      _vm.$set(
+                                                                        menu,
+                                                                        "name",
+                                                                        $$v
+                                                                      )
+                                                                    },
+                                                                    expression:
+                                                                      "menu.name"
+                                                                  }
+                                                                }),
+                                                                _vm._v(" "),
+                                                                _vm.menus
+                                                                  .length > 1 &&
+                                                                _vm.menuMode ==
+                                                                  "multiple"
+                                                                  ? _c(
+                                                                      "b-button",
+                                                                      {
+                                                                        staticClass:
+                                                                          "is-absolute delete-menu-icon is-danger",
+                                                                        attrs: {
+                                                                          type:
+                                                                            "is-text",
+                                                                          inverted:
+                                                                            "",
+                                                                          "icon-right":
+                                                                            "trash"
+                                                                        },
+                                                                        on: {
+                                                                          click: function(
+                                                                            $event
+                                                                          ) {
+                                                                            return _vm.removeMenu(
+                                                                              counter
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    )
+                                                                  : _vm._e()
+                                                              ],
+                                                              1
+                                                            )
+                                                          ]
+                                                        }
+                                                      }
+                                                    ],
+                                                    null,
+                                                    true
+                                                  )
+                                                }),
+                                                _vm._v(" "),
+                                                _vm.menuMode == "multiple"
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass: "columns"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "column"
+                                                          },
+                                                          [
+                                                            _c("p", [
+                                                              _vm._v(
+                                                                "When is this menu available?"
+                                                              )
+                                                            ])
+                                                          ]
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _vm.menuMode == "multiple"
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "columns mb-3"
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "column"
+                                                          },
+                                                          [
+                                                            _c(
+                                                              "b-field",
+                                                              [
+                                                                _c(
+                                                                  "b-switch",
+                                                                  {
+                                                                    model: {
+                                                                      value:
+                                                                        menu.allDay,
+                                                                      callback: function(
+                                                                        $$v
+                                                                      ) {
+                                                                        _vm.$set(
+                                                                          menu,
+                                                                          "allDay",
+                                                                          $$v
+                                                                        )
+                                                                      },
+                                                                      expression:
+                                                                        "menu.allDay"
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "All Day"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          ],
+                                                          1
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "column"
+                                                          },
+                                                          [
+                                                            menu.allDay == false
+                                                              ? _c(
+                                                                  "validation-provider",
+                                                                  {
+                                                                    attrs: {
+                                                                      rules:
+                                                                        "required"
+                                                                    },
+                                                                    scopedSlots: _vm._u(
+                                                                      [
+                                                                        {
+                                                                          key:
+                                                                            "default",
+                                                                          fn: function(
+                                                                            ref
+                                                                          ) {
+                                                                            var errors =
+                                                                              ref.errors
+                                                                            var valid =
+                                                                              ref.valid
+                                                                            return [
+                                                                              _c(
+                                                                                "b-field",
+                                                                                {
+                                                                                  attrs: {
+                                                                                    label:
+                                                                                      "Starts",
+                                                                                    type: {
+                                                                                      "is-danger":
+                                                                                        errors[0],
+                                                                                      "is-success": valid
+                                                                                    },
+                                                                                    message: errors
+                                                                                  }
+                                                                                },
+                                                                                [
+                                                                                  _c(
+                                                                                    "b-clockpicker",
+                                                                                    {
+                                                                                      attrs: {
+                                                                                        "hour-format":
+                                                                                          "24"
+                                                                                      },
+                                                                                      model: {
+                                                                                        value:
+                                                                                          menu.startTime,
+                                                                                        callback: function(
+                                                                                          $$v
+                                                                                        ) {
+                                                                                          _vm.$set(
+                                                                                            menu,
+                                                                                            "startTime",
+                                                                                            $$v
+                                                                                          )
+                                                                                        },
+                                                                                        expression:
+                                                                                          "menu.startTime"
+                                                                                      }
+                                                                                    }
+                                                                                  )
+                                                                                ],
+                                                                                1
+                                                                              )
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      null,
+                                                                      true
+                                                                    )
+                                                                  }
+                                                                )
+                                                              : _vm._e()
+                                                          ],
+                                                          1
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "div",
+                                                          {
+                                                            staticClass:
+                                                              "column"
+                                                          },
+                                                          [
+                                                            menu.allDay == false
+                                                              ? _c(
+                                                                  "validation-provider",
+                                                                  {
+                                                                    attrs: {
+                                                                      rules:
+                                                                        "required"
+                                                                    },
+                                                                    scopedSlots: _vm._u(
+                                                                      [
+                                                                        {
+                                                                          key:
+                                                                            "default",
+                                                                          fn: function(
+                                                                            ref
+                                                                          ) {
+                                                                            var errors =
+                                                                              ref.errors
+                                                                            var valid =
+                                                                              ref.valid
+                                                                            return [
+                                                                              _c(
+                                                                                "b-field",
+                                                                                {
+                                                                                  attrs: {
+                                                                                    label:
+                                                                                      "End",
+                                                                                    type: {
+                                                                                      "is-danger":
+                                                                                        errors[0],
+                                                                                      "is-success": valid
+                                                                                    },
+                                                                                    message: errors
+                                                                                  }
+                                                                                },
+                                                                                [
+                                                                                  _c(
+                                                                                    "b-clockpicker",
+                                                                                    {
+                                                                                      attrs: {
+                                                                                        "hour-format":
+                                                                                          "24"
+                                                                                      },
+                                                                                      model: {
+                                                                                        value:
+                                                                                          menu.endTime,
+                                                                                        callback: function(
+                                                                                          $$v
+                                                                                        ) {
+                                                                                          _vm.$set(
+                                                                                            menu,
+                                                                                            "endTime",
+                                                                                            $$v
+                                                                                          )
+                                                                                        },
+                                                                                        expression:
+                                                                                          "menu.endTime"
+                                                                                      }
+                                                                                    }
+                                                                                  )
+                                                                                ],
+                                                                                1
+                                                                              )
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      null,
+                                                                      true
+                                                                    )
+                                                                  }
+                                                                )
+                                                              : _vm._e()
+                                                          ],
+                                                          1
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _c("div", {
+                                                  staticClass: "divider my-5"
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          }),
+                                          _vm._v(" "),
+                                          _vm.menuMode == "multiple"
+                                            ? _c(
+                                                "b-button",
+                                                {
+                                                  staticClass: "mt-4",
+                                                  attrs: {
+                                                    type: "is-light",
+                                                    expanded: "",
+                                                    "icon-right": "plus"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.addNewMenu()
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v("Add Another")]
+                                              )
+                                            : _vm._e()
+                                        ],
+                                        2
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "columns mt-5" }, [
+                                    _c(
+                                      "div",
+                                      { staticClass: "column" },
+                                      [
+                                        _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              type: "is-secondary",
+                                              "icon-pack": "fa",
+                                              "icon-left": "angle-left"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.goToPreviousStep()
                                               }
-                                            })
-                                          : _vm._e()
+                                            }
+                                          },
+                                          [_vm._v("Previous Step")]
+                                        )
                                       ],
                                       1
                                     ),
                                     _vm._v(" "),
-                                    _vm.menuMode == "multiple"
-                                      ? _c("div", { staticClass: "columns" }, [
-                                          _c("div", { staticClass: "column" }, [
-                                            _c("p", [
-                                              _vm._v(
-                                                "When is this menu available?"
-                                              )
-                                            ])
-                                          ])
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.menuMode == "multiple"
-                                      ? _c(
-                                          "div",
-                                          { staticClass: "columns mb-3" },
-                                          [
-                                            _c(
-                                              "div",
-                                              { staticClass: "column" },
-                                              [
-                                                _c(
-                                                  "b-field",
-                                                  [
-                                                    _c(
-                                                      "b-switch",
-                                                      {
-                                                        model: {
-                                                          value: menu.allDay,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              menu,
-                                                              "allDay",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "menu.allDay"
-                                                        }
-                                                      },
-                                                      [_vm._v("All Day")]
-                                                    )
-                                                  ],
-                                                  1
-                                                )
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              { staticClass: "column" },
-                                              [
-                                                menu.allDay == false
-                                                  ? _c(
-                                                      "b-field",
-                                                      {
-                                                        attrs: {
-                                                          label: "Starts"
-                                                        }
-                                                      },
-                                                      [
-                                                        _c("b-clockpicker", {
-                                                          attrs: {
-                                                            "hour-format": "24"
-                                                          },
-                                                          model: {
-                                                            value:
-                                                              menu.startTime,
-                                                            callback: function(
-                                                              $$v
-                                                            ) {
-                                                              _vm.$set(
-                                                                menu,
-                                                                "startTime",
-                                                                $$v
-                                                              )
-                                                            },
-                                                            expression:
-                                                              "menu.startTime"
-                                                          }
-                                                        })
-                                                      ],
-                                                      1
-                                                    )
-                                                  : _vm._e()
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              { staticClass: "column" },
-                                              [
-                                                menu.allDay == false
-                                                  ? _c(
-                                                      "b-field",
-                                                      {
-                                                        attrs: { label: "End" }
-                                                      },
-                                                      [
-                                                        _c("b-clockpicker", {
-                                                          attrs: {
-                                                            "hour-format": "24"
-                                                          },
-                                                          model: {
-                                                            value: menu.endTime,
-                                                            callback: function(
-                                                              $$v
-                                                            ) {
-                                                              _vm.$set(
-                                                                menu,
-                                                                "endTime",
-                                                                $$v
-                                                              )
-                                                            },
-                                                            expression:
-                                                              "menu.endTime"
-                                                          }
-                                                        })
-                                                      ],
-                                                      1
-                                                    )
-                                                  : _vm._e()
-                                              ],
-                                              1
-                                            )
-                                          ]
+                                    _c(
+                                      "div",
+                                      { staticClass: "column" },
+                                      [
+                                        _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              type: "is-primary",
+                                              "icon-pack": "fa",
+                                              "icon-right": "angle-right",
+                                              disabled: invalid
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.goToNextStep()
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("All Done!")]
                                         )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "divider my-5" })
-                                  ],
-                                  1
-                                )
-                              }),
-                              _vm._v(" "),
-                              _vm.menuMode == "multiple"
-                                ? _c(
-                                    "b-button",
-                                    {
-                                      staticClass: "mt-4",
-                                      attrs: {
-                                        type: "is-light",
-                                        expanded: "",
-                                        "icon-right": "plus"
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.addNewMenu()
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Add Another")]
-                                  )
-                                : _vm._e()
-                            ],
-                            2
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "column" })
-                    ])
+                                      ],
+                                      1
+                                    )
+                                  ])
+                                ]
+                              }
+                            }
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "column" })
+                      ],
+                      1
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "column" })

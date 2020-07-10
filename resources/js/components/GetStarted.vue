@@ -4,7 +4,7 @@
       v-model="activeStep"
       :animated="isAnimated"
       :rounded="isRounded"
-      :has-navigation="hasNavigation"
+      :has-navigation="false"
       :label-position="labelPosition"
       :mobile-mode="mobileMode"
       :class="'pt-5'"
@@ -75,14 +75,16 @@
                   </b-select>
                   </b-field>-->
                   <!-- <button type="submit" :disabled="invalid">Submit</button> -->
-                  <div class="mt-5">
-                    <b-button
-                      type="is-primary"
-                      icon-pack="fa"
-                      icon-right="angle-right"
-                      :disabled="invalid"
-                      @click="goToNextStep()"
-                    >Next Step</b-button>
+                  <div class="columns mt-5">
+                    <div class="column">
+                      <b-button
+                        type="is-primary"
+                        icon-pack="fa"
+                        icon-right="angle-right"
+                        :disabled="invalid"
+                        @click="goToNextStep()"
+                      >Next Step</b-button>
+                    </div>
                   </div>
                 </validation-observer>
               </section>
@@ -102,73 +104,85 @@
             <div class="column"></div>
             <div class="column is-two-fifths">
               <validation-observer v-slot="{ invalid }" ref="step2">
-              <div class="columns">
-                <div class="column">
-                  <validation-provider rules="required" v-slot="{errors, valid}">
-                    <b-field
-                      label="Address 1"
-                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                      :message="errors"
-                    >
-                      <b-input v-model="establishment.address_1"></b-input>
+                <div class="columns">
+                  <div class="column">
+                    <validation-provider rules="required" v-slot="{errors, valid}">
+                      <b-field
+                        label="Address 1"
+                        :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                        :message="errors"
+                      >
+                        <b-input v-model="establishment.address_1"></b-input>
+                      </b-field>
+                    </validation-provider>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <b-field label="Address 2">
+                      <b-input v-model="establishment.address_2"></b-input>
                     </b-field>
-                  </validation-provider>
+                  </div>
                 </div>
-              </div>
-              <div class="columns">
-                <div class="column">
-                  <b-field label="Address 2">
-                    <b-input v-model="establishment.address_2"></b-input>
-                  </b-field>
+                <div class="columns">
+                  <div class="column">
+                    <validation-provider rules="required" v-slot="{errors, valid}">
+                      <b-field
+                        label="Town/City"
+                        :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                        :message="errors"
+                      >
+                        <b-input v-model="establishment.town_city"></b-input>
+                      </b-field>
+                    </validation-provider>
+                  </div>
                 </div>
-              </div>
-              <div class="columns">
-                <div class="column">
-                  <validation-provider rules="required" v-slot="{errors, valid}">
-                    <b-field
-                      label="Town/City"
-                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                      :message="errors"
-                    >
-                      <b-input v-model="establishment.town_city"></b-input>
+                <div class="columns">
+                  <div class="column">
+                    <b-field label="Eircode">
+                      <b-input v-model="establishment.postcode"></b-input>
                     </b-field>
-                  </validation-provider>
-                </div>
-              </div>
-              <div class="columns">
-                <div class="column">
-                  <b-field label="Eircode">
-                    <b-input v-model="establishment.postcode"></b-input>
-                  </b-field>
-                </div>
-                <div class="column">
-                  <validation-provider rules="required" v-slot="{errors, valid}">
-                    <b-field
-                      label="County"
-                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                      :message="errors"
-                    >
-                      <b-select placeholder="Select County" v-model="establishment.county">
-                        <option value></option>
-                        <option value="Wicklow">Wicklow</option>
-                        <option value="Dublin">Dublin</option>
-                      </b-select>
-                    </b-field>
-                  </validation-provider>
-                </div>
-                <!-- <div class="column">
+                  </div>
+                  <div class="column">
+                    <validation-provider rules="required" v-slot="{errors, valid}">
+                      <b-field
+                        label="County"
+                        :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                        :message="errors"
+                      >
+                        <b-select placeholder="Select County" v-model="establishment.county">
+                          <option value></option>
+                          <option value="Wicklow">Wicklow</option>
+                          <option value="Dublin">Dublin</option>
+                        </b-select>
+                      </b-field>
+                    </validation-provider>
+                  </div>
+                  <!-- <div class="column">
                   <b-field label="Country" expanded>
                     <b-input v-model="establishment.country"></b-input>
                   </b-field>
-                </div>-->
-              </div>
-                 <b-button
-                    type="is-primary"
-                    icon-pack="fa"
-                    icon-right="angle-right"
-                    :disabled="invalid"
-                    @click="goToNextStep()"
-                  >Next Step</b-button>
+                  </div>-->
+                </div>
+                <div class="columns mt-5">
+                  <div class="column">
+                    <b-button
+                      type="is-secondary"
+                      icon-pack="fa"
+                      icon-left="angle-left"
+                      @click="goToPreviousStep()"
+                    >Previous Step</b-button>
+                  </div>
+                  <div class="column">
+                    <b-button
+                      type="is-primary"
+                      icon-pack="fa"
+                      icon-right="angle-right"
+                      :disabled="invalid"
+                      @click="goToNextStep()"
+                    >Next Step</b-button>
+                  </div>
+                </div>
               </validation-observer>
             </div>
             <div class="column"></div>
@@ -219,70 +233,100 @@
               </div>
               <div class="columns">
                 <div class="column"></div>
-                <div class="column is-four-fifths" v-if="menuMode != null">
-                  <h1
-                    class="title has-text-centered pt-3"
-                    v-if="menuMode == 'single'"
-                  >Lets give your menu a name</h1>
-                  <h1
-                    class="title has-text-centered pt-3"
-                    v-if="menuMode == 'multiple'"
-                  >Lets setup your menus</h1>
-                  <div
-                    v-for="(menu,counter) in menus"
-                    v-bind:key="counter"
-                    class="has-background-light my-3 px-3 py-3"
-                  >
-                    <b-field class="is-relative">
-                      <b-input
-                        placeholder="Enter menu name"
-                        v-model="menu.name"
-                        size="is-large"
-                        custom-class="has-text-centered mb-4"
-                        expanded
-                      ></b-input>
-                      <b-button
-                        v-if="menus.length > 1 && menuMode == 'multiple'"
-                        type="is-text"
-                        class="is-absolute delete-menu-icon is-danger"
-                        inverted
-                        icon-right="trash"
-                        @click="removeMenu(counter)"
-                      ></b-button>
-                    </b-field>
-                    <div class="columns" v-if="menuMode == 'multiple'">
-                      <div class="column">
-                        <p>When is this menu available?</p>
+                <validation-observer v-slot="{ invalid }" ref="step3">
+                  <div class="column is-four-fifths" v-if="menuMode != null">
+                    <h1
+                      class="title has-text-centered pt-3"
+                      v-if="menuMode == 'single'"
+                    >Lets give your menu a name</h1>
+                    <h1
+                      class="title has-text-centered pt-3"
+                      v-if="menuMode == 'multiple'"
+                    >Lets setup your menus</h1>
+                    <div
+                      v-for="(menu,counter) in menus"
+                      v-bind:key="counter"
+                      class="has-background-light my-3 px-3 py-3"
+                    >
+                     <validation-provider rules="required" v-slot="{errors, valid}">
+                      <b-field class="is-relative" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                          :message="errors">
+                        <b-input
+                          placeholder="Enter menu name"
+                          v-model="menu.name"
+                          size="is-large"
+                          custom-class="has-text-centered mb-4"
+                          expanded
+                        ></b-input>
+                        <b-button
+                          v-if="menus.length > 1 && menuMode == 'multiple'"
+                          type="is-text"
+                          class="is-absolute delete-menu-icon is-danger"
+                          inverted
+                          icon-right="trash"
+                          @click="removeMenu(counter)"
+                        ></b-button>
+                      </b-field>
+                      </validation-provider>
+                      <div class="columns" v-if="menuMode == 'multiple'">
+                        <div class="column">
+                          <p>When is this menu available?</p>
+                        </div>
                       </div>
+                      <div class="columns mb-3" v-if="menuMode == 'multiple'">
+                        <div class="column">
+                          <b-field>
+                            <b-switch v-model="menu.allDay">All Day</b-switch>
+                          </b-field>
+                        </div>
+                        <div class="column">
+                          <validation-provider rules="required" v-slot="{errors, valid}"  v-if="menu.allDay == false" >
+                          <b-field label="Starts" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors">
+                            <b-clockpicker v-model="menu.startTime" hour-format="24"></b-clockpicker>
+                          </b-field>
+                          </validation-provider>
+                        </div>
+                        <div class="column">
+                          <validation-provider rules="required" v-slot="{errors, valid}"  v-if="menu.allDay == false" >
+                          <b-field label="End" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors">
+                            <b-clockpicker v-model="menu.endTime" hour-format="24"></b-clockpicker>
+                          </b-field>
+                          </validation-provider>
+                        </div>
+                      </div>
+                      <div class="divider my-5"></div>
                     </div>
-                    <div class="columns mb-3" v-if="menuMode == 'multiple'">
-                      <div class="column">
-                        <b-field>
-                          <b-switch v-model="menu.allDay">All Day</b-switch>
-                        </b-field>
-                      </div>
-                      <div class="column">
-                        <b-field label="Starts" v-if="menu.allDay == false">
-                          <b-clockpicker v-model="menu.startTime" hour-format="24"></b-clockpicker>
-                        </b-field>
-                      </div>
-                      <div class="column">
-                        <b-field label="End" v-if="menu.allDay == false">
-                          <b-clockpicker v-model="menu.endTime" hour-format="24"></b-clockpicker>
-                        </b-field>
-                      </div>
-                    </div>
-                    <div class="divider my-5"></div>
+                    <b-button
+                      v-if="menuMode == 'multiple'"
+                      type="is-light"
+                      expanded
+                      icon-right="plus"
+                      class="mt-4"
+                      @click="addNewMenu()"
+                    >Add Another</b-button>
                   </div>
-                  <b-button
-                    v-if="menuMode == 'multiple'"
-                    type="is-light"
-                    expanded
-                    icon-right="plus"
-                    class="mt-4"
-                    @click="addNewMenu()"
-                  >Add Another</b-button>
-                </div>
+                    <div class="columns mt-5">
+                      <div class="column">
+                        <b-button
+                          type="is-secondary"
+                          icon-pack="fa"
+                          icon-left="angle-left"
+                          @click="goToPreviousStep()"
+                        >Previous Step</b-button>
+                      </div>
+                      <div class="column">
+                        <b-button
+                          type="is-primary"
+                          icon-pack="fa"
+                          icon-right="angle-right"
+                          :disabled="invalid"
+                          @click="goToNextStep()"
+                        >All Done!</b-button>
+                      </div>
+                    </div>
+                </validation-observer>
                 <div class="column"></div>
               </div>
             </div>
@@ -386,6 +430,9 @@ export default {
     },
     goToNextStep: function() {
       this.activeStep++;
+    },
+    goToPreviousStep: function() {
+      this.activeStep--;
     }
   }
 };
