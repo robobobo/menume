@@ -268,21 +268,21 @@
                       <div class="columns mb-3" v-if="menuMode == 'multiple'">
                         <div class="column">
                           <b-field>
-                            <b-switch v-model="menu.allDay">All Day</b-switch>
+                            <b-switch v-model="menu.all_day">All Day</b-switch>
                           </b-field>
                         </div>
                         <div class="column">
                           <validation-provider
                             rules="required"
                             v-slot="{errors, valid}"
-                            v-if="menu.allDay == false"
+                            v-if="menu.all_day == false"
                           >
                             <b-field
                               label="Starts"
                               :type="{ 'is-danger': errors[0], 'is-success': valid }"
                               :message="errors"
                             >
-                              <b-clockpicker v-model="menu.startTime" hour-format="24"></b-clockpicker>
+                              <b-timepicker inline v-model="menu.start_time" :incrementMinutes="15" hour-format="24"></b-timepicker>
                             </b-field>
                           </validation-provider>
                         </div>
@@ -290,14 +290,14 @@
                           <validation-provider
                             rules="required"
                             v-slot="{errors, valid}"
-                            v-if="menu.allDay == false"
+                            v-if="menu.all_day == false"
                           >
                             <b-field
                               label="End"
                               :type="{ 'is-danger': errors[0], 'is-success': valid }"
                               :message="errors"
                             >
-                              <b-clockpicker v-model="menu.endTime" hour-format="24"></b-clockpicker>
+                              <b-timepicker inline v-model="menu.end_time"  :incrementMinutes="15" hour-format="24"></b-timepicker>
                             </b-field>
                           </validation-provider>
                         </div>
@@ -345,6 +345,7 @@
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
       </b-step-item>
     </b-steps>
+    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </section>
 </template>
 
@@ -370,9 +371,9 @@ export default {
       menus: [
         {
           name: "",
-          startTime: null,
-          endTime: null,
-          allDay: true
+          start_time: null,
+          end_time: null,
+          all_day: true
         }
       ],
       menuMode: null,
@@ -387,6 +388,8 @@ export default {
       customNavigation: false,
       isProfileSuccess: false,
 
+      isLoading: false,
+
       prevIcon: "chevron-left",
       nextIcon: "chevron-right",
       labelPosition: "bottom",
@@ -397,7 +400,9 @@ export default {
     addNewMenu: function() {
       this.menus.push({
         name: "",
-        allDay: false
+        all_day: false,
+        start_time: "",
+        end_time: ""
       });
     },
     removeMenu: function(index) {
@@ -410,16 +415,57 @@ export default {
       console.log("step changing");
     },
     goToNextStep: function() {
+      this.isLoading = true;
       if (this.activeStep == 0) {
         this.saveEstablishment(this.establishment).then(
           response => {
             console.log(response);
             this.establishment.id = response.data.data.id;
             this.establishment.saved = true;
+            this.isLoading = false;
             this.activeStep++;
           },
           error => {
             console.log(error);
+            this.$buefy.toast.open({
+              message:
+                "Whoops! Something has gone wrong, please check your details and try again",
+              type: "is-error"
+            });
+            this.isLoading = false;
+          }
+        );
+      } else if (this.activeStep == 1) {
+        this.updateEstablishment(this.establishment).then(
+          response => {
+            console.log(response);
+            this.isLoading = false;
+            this.activeStep++;
+          },
+          error => {
+            console.log(error);
+            this.$buefy.toast.open({
+              message:
+                "Whoops! Something has gone wrong, please check your details and try again",
+              type: "is-error"
+            });
+            this.isLoading = false;
+          }
+        );
+      } else if (this.activeStep == 2) {
+        this.isLoading = true;
+        const promises = [];
+        this.menus.forEach(menu => {
+          menu.establishment_id = this.establishment.id;
+          promises.push(this.saveMenu(menu));
+        });
+        Promise.all(promises).then(
+          response => {
+            this.isLoading = false;
+            this.activeStep++;
+          },
+          reject => {
+            console.log("error",reject);
             this.$buefy.toast.open({
               message:
                 "Whoops! Something has gone wrong, please check your details and try again",
@@ -432,24 +478,53 @@ export default {
     goToPreviousStep: function() {
       this.activeStep--;
     },
-    saveEstablishment: function(establishment) {
-      console.log("here")
-      
+    saveMenu: function(menu) {
       var savePromise = new Promise(function(resolve, reject) {
-        console.log("boo")
+        axios
+          .post("/api/v1/menu/", menu)
+          .then(response => {
+            console.log(response);
+            resolve(response);
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error);
+          });
+      });
+      return savePromise;
+    },
+    saveEstablishment: function(establishment) {
+      var savePromise = new Promise(function(resolve, reject) {
         axios
           .post("/api/v1/establishment/", establishment)
           .then(response => {
             console.log(response);
             resolve(response);
-           
           })
           .catch(error => {
             console.log(error);
-            reject(error)
-          })
+            reject(error);
+          });
       });
       return savePromise;
+    },
+    updateEstablishment: function(establishment) {
+      var updatePromise = new Promise(function(resolve, reject) {
+        axios
+          .post(
+            "/api/v1/establishment/" + establishment.id + "/update",
+            establishment
+          )
+          .then(response => {
+            console.log(response);
+            resolve(response);
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error);
+          });
+      });
+      return updatePromise;
     }
   }
 };

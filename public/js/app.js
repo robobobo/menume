@@ -12654,6 +12654,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12674,9 +12675,9 @@ __webpack_require__.r(__webpack_exports__);
       },
       menus: [{
         name: "",
-        startTime: null,
-        endTime: null,
-        allDay: true
+        start_time: null,
+        end_time: null,
+        all_day: true
       }],
       menuMode: null,
       activeStep: 0,
@@ -12687,6 +12688,7 @@ __webpack_require__.r(__webpack_exports__);
       hasNavigation: true,
       customNavigation: false,
       isProfileSuccess: false,
+      isLoading: false,
       prevIcon: "chevron-left",
       nextIcon: "chevron-right",
       labelPosition: "bottom",
@@ -12697,7 +12699,9 @@ __webpack_require__.r(__webpack_exports__);
     addNewMenu: function addNewMenu() {
       this.menus.push({
         name: "",
-        allDay: false
+        all_day: false,
+        start_time: "",
+        end_time: ""
       });
     },
     removeMenu: function removeMenu(index) {
@@ -12712,14 +12716,52 @@ __webpack_require__.r(__webpack_exports__);
     goToNextStep: function goToNextStep() {
       var _this = this;
 
+      this.isLoading = true;
+
       if (this.activeStep == 0) {
         this.saveEstablishment(this.establishment).then(function (response) {
           console.log(response);
           _this.establishment.id = response.data.data.id;
           _this.establishment.saved = true;
+          _this.isLoading = false;
           _this.activeStep++;
         }, function (error) {
           console.log(error);
+
+          _this.$buefy.toast.open({
+            message: "Whoops! Something has gone wrong, please check your details and try again",
+            type: "is-error"
+          });
+
+          _this.isLoading = false;
+        });
+      } else if (this.activeStep == 1) {
+        this.updateEstablishment(this.establishment).then(function (response) {
+          console.log(response);
+          _this.isLoading = false;
+          _this.activeStep++;
+        }, function (error) {
+          console.log(error);
+
+          _this.$buefy.toast.open({
+            message: "Whoops! Something has gone wrong, please check your details and try again",
+            type: "is-error"
+          });
+
+          _this.isLoading = false;
+        });
+      } else if (this.activeStep == 2) {
+        this.isLoading = true;
+        var promises = [];
+        this.menus.forEach(function (menu) {
+          menu.establishment_id = _this.establishment.id;
+          promises.push(_this.saveMenu(menu));
+        });
+        Promise.all(promises).then(function (response) {
+          _this.isLoading = false;
+          _this.activeStep++;
+        }, function (reject) {
+          console.log("error", reject);
 
           _this.$buefy.toast.open({
             message: "Whoops! Something has gone wrong, please check your details and try again",
@@ -12731,10 +12773,20 @@ __webpack_require__.r(__webpack_exports__);
     goToPreviousStep: function goToPreviousStep() {
       this.activeStep--;
     },
-    saveEstablishment: function saveEstablishment(establishment) {
-      console.log("here");
+    saveMenu: function saveMenu(menu) {
       var savePromise = new Promise(function (resolve, reject) {
-        console.log("boo");
+        axios.post("/api/v1/menu/", menu).then(function (response) {
+          console.log(response);
+          resolve(response);
+        })["catch"](function (error) {
+          console.log(error);
+          reject(error);
+        });
+      });
+      return savePromise;
+    },
+    saveEstablishment: function saveEstablishment(establishment) {
+      var savePromise = new Promise(function (resolve, reject) {
         axios.post("/api/v1/establishment/", establishment).then(function (response) {
           console.log(response);
           resolve(response);
@@ -12744,6 +12796,18 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
       return savePromise;
+    },
+    updateEstablishment: function updateEstablishment(establishment) {
+      var updatePromise = new Promise(function (resolve, reject) {
+        axios.post("/api/v1/establishment/" + establishment.id + "/update", establishment).then(function (response) {
+          console.log(response);
+          resolve(response);
+        })["catch"](function (error) {
+          console.log(error);
+          reject(error);
+        });
+      });
+      return updatePromise;
     }
   }
 });
@@ -54777,18 +54841,18 @@ var render = function() {
                                                                   {
                                                                     model: {
                                                                       value:
-                                                                        menu.allDay,
+                                                                        menu.all_day,
                                                                       callback: function(
                                                                         $$v
                                                                       ) {
                                                                         _vm.$set(
                                                                           menu,
-                                                                          "allDay",
+                                                                          "all_day",
                                                                           $$v
                                                                         )
                                                                       },
                                                                       expression:
-                                                                        "menu.allDay"
+                                                                        "menu.all_day"
                                                                     }
                                                                   },
                                                                   [
@@ -54811,7 +54875,8 @@ var render = function() {
                                                               "column"
                                                           },
                                                           [
-                                                            menu.allDay == false
+                                                            menu.all_day ==
+                                                            false
                                                               ? _c(
                                                                   "validation-provider",
                                                                   {
@@ -54848,26 +54913,29 @@ var render = function() {
                                                                                 },
                                                                                 [
                                                                                   _c(
-                                                                                    "b-clockpicker",
+                                                                                    "b-timepicker",
                                                                                     {
                                                                                       attrs: {
+                                                                                        inline:
+                                                                                          "",
+                                                                                        incrementMinutes: 15,
                                                                                         "hour-format":
                                                                                           "24"
                                                                                       },
                                                                                       model: {
                                                                                         value:
-                                                                                          menu.startTime,
+                                                                                          menu.start_time,
                                                                                         callback: function(
                                                                                           $$v
                                                                                         ) {
                                                                                           _vm.$set(
                                                                                             menu,
-                                                                                            "startTime",
+                                                                                            "start_time",
                                                                                             $$v
                                                                                           )
                                                                                         },
                                                                                         expression:
-                                                                                          "menu.startTime"
+                                                                                          "menu.start_time"
                                                                                       }
                                                                                     }
                                                                                   )
@@ -54895,7 +54963,8 @@ var render = function() {
                                                               "column"
                                                           },
                                                           [
-                                                            menu.allDay == false
+                                                            menu.all_day ==
+                                                            false
                                                               ? _c(
                                                                   "validation-provider",
                                                                   {
@@ -54932,26 +55001,29 @@ var render = function() {
                                                                                 },
                                                                                 [
                                                                                   _c(
-                                                                                    "b-clockpicker",
+                                                                                    "b-timepicker",
                                                                                     {
                                                                                       attrs: {
+                                                                                        inline:
+                                                                                          "",
+                                                                                        incrementMinutes: 15,
                                                                                         "hour-format":
                                                                                           "24"
                                                                                       },
                                                                                       model: {
                                                                                         value:
-                                                                                          menu.endTime,
+                                                                                          menu.end_time,
                                                                                         callback: function(
                                                                                           $$v
                                                                                         ) {
                                                                                           _vm.$set(
                                                                                             menu,
-                                                                                            "endTime",
+                                                                                            "end_time",
                                                                                             $$v
                                                                                           )
                                                                                         },
                                                                                         expression:
-                                                                                          "menu.endTime"
+                                                                                          "menu.end_time"
                                                                                       }
                                                                                     }
                                                                                   )
@@ -55096,7 +55168,20 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("b-loading", {
+        attrs: {
+          "is-full-page": true,
+          active: _vm.isLoading,
+          "can-cancel": false
+        },
+        on: {
+          "update:active": function($event) {
+            _vm.isLoading = $event
+          }
+        }
+      })
     ],
     1
   )
