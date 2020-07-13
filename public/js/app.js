@@ -12669,6 +12669,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12776,13 +12799,14 @@ __webpack_require__.r(__webpack_exports__);
 
           if (menu.all_day == false) {
             // these variables wont be set otherwise
-            menu.start_time = menu.start_time_full.getHours() + ":" + (menu.start_time_full.getMinutes() < 10 ? '0' : '') + menu.start_time_full.getMinutes();
-            menu.end_time = menu.end_time_full.getHours() + ":" + (menu.end_time_full.getMinutes() < 10 ? '0' : '') + menu.end_time_full.getMinutes();
+            menu.start_time = (menu.start_time_full.getHours() < 10 ? '0' : '') + menu.start_time_full.getHours() + ":" + (menu.start_time_full.getMinutes() < 10 ? '0' : '') + menu.start_time_full.getMinutes();
+            menu.end_time = (menu.end_time_full.getHours() < 10 ? '0' : '') + menu.end_time_full.getHours() + ":" + (menu.end_time_full.getMinutes() < 10 ? '0' : '') + menu.end_time_full.getMinutes();
           }
 
           promises.push(_this.saveMenu(menu));
         });
         Promise.all(promises).then(function (response) {
+          console.log("promises", response);
           _this.isLoading = false;
           _this.activeStep++;
         }, function (reject) {
@@ -12801,6 +12825,8 @@ __webpack_require__.r(__webpack_exports__);
     saveMenu: function saveMenu(menu) {
       var savePromise = new Promise(function (resolve, reject) {
         axios.post("/api/v1/menu/", menu).then(function (response) {
+          menu.id = response.data.data.id;
+          menu.qr_code_url = response.data.data.qr_code_url;
           console.log(response);
           resolve(response);
         })["catch"](function (error) {
@@ -12946,6 +12972,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -12969,7 +12997,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     addNewItem: {
       type: Function
-    }
+    },
+    section: null
   },
   components: {
     draggable: vuedraggable__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -55190,6 +55219,97 @@ var render = function() {
               _vm._v(" "),
               _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
                 _vm._v("Bet you didn't think it would be that easy did you?")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column is-three-fifths is-offset-one-fifth" },
+                  [
+                    _c("p", { staticClass: "has-text-centered mt-2" }, [
+                      _vm._v(
+                        "One more thing though, you now need to add sections and items to your menu. "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "But dont worry, we made a really nice drag and drop tool for you to do that"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "has-text-centered mt-2" }, [
+                      _vm._v(
+                        "Just select the edit button by your menu below and you can get started!"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "columns is-multiline" },
+                      _vm._l(_vm.menus, function(menu) {
+                        return _c(
+                          "div",
+                          {
+                            key: menu.id,
+                            staticClass:
+                              "column is-one-half has-text-centered mt-2"
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: "/menu/" + menu.id + "/edit",
+                                  target: "_blank"
+                                }
+                              },
+                              [
+                                _c("div", { staticClass: "card" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "card-image px-1 py-1" },
+                                    [
+                                      _c(
+                                        "figure",
+                                        { staticClass: "is-square image" },
+                                        [
+                                          _c("img", {
+                                            attrs: {
+                                              src: menu.qr_code_url,
+                                              alt: "QR code for" + menu.name
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "card-content" }, [
+                                    _c("p", { staticClass: "title is-5" }, [
+                                      _vm._v(_vm._s(menu.name))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        staticClass: "button is-primary",
+                                        attrs: {
+                                          href: "/menu/" + menu.id + "/edit",
+                                          target: "_blank"
+                                        }
+                                      },
+                                      [_vm._v("Edit Menu")]
+                                    )
+                                  ])
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ]
+                )
               ])
             ]
           )
@@ -55369,7 +55489,9 @@ var render = function() {
                           menu: section.menu_items,
                           "open-edit-modal": _vm.openEditModal,
                           "remove-item": _vm.removeItem,
-                          sectionType: "menu_items"
+                          sectionType: "menu_items",
+                          section: section,
+                          "add-new-item": _vm.addNewItem
                         }
                       })
                     ]
@@ -55472,7 +55594,19 @@ var render = function() {
                     [
                       _c("div", { staticClass: "column" }, [
                         _c("h1", { staticClass: "has-text-centered" }, [
-                          _vm._v("Drag a menu item here")
+                          _vm._v("Drag a menu item here or "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "button is-secondary is-small",
+                              on: {
+                                click: function($event) {
+                                  return _vm.addNewItem(_vm.section)
+                                }
+                              }
+                            },
+                            [_vm._v("Add a new item")]
+                          )
                         ])
                       ])
                     ]

@@ -51,6 +51,8 @@
             :open-edit-modal="openEditModal"
             :remove-item="removeItem"
             :sectionType="'menu_items'"
+            :section="section"
+            :add-new-item="addNewItem"
           />
         </template>
         <template v-else>
@@ -87,7 +89,7 @@
       >
         <div class="columns is-mobile menu-item is-vcentered has-text-centered mx-0">
           <div class="column">
-            <h1 class="has-text-centered">Drag a menu item here</h1>
+            <h1 class="has-text-centered">Drag a menu item here or <div class="button is-secondary is-small" @click="addNewItem(section)">Add a new item</div></h1>
           </div>
         </div>
       </div>
@@ -118,7 +120,8 @@ export default {
     },
     addNewItem: {
       type: Function
-    }
+    },
+    section: null,
   },
   components: {
     draggable

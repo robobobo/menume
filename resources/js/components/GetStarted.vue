@@ -357,6 +357,29 @@
       <b-step-item :step="4" label="Wrapping Up" :clickable="isStepsClickable">
         <h1 class="title has-text-centered">Your QR Codes</h1>
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
+        <div class="columns">
+          <div class="column is-three-fifths is-offset-one-fifth">
+            <p class="has-text-centered mt-2">One more thing though, you now need to add sections and items to your menu. <br>But dont worry, we made a really nice drag and drop tool for you to do that</p>
+            <p class="has-text-centered mt-2">Just select the edit button by your menu below and you can get started!</p>
+            <div class="columns is-multiline">
+              <div class="column is-one-half has-text-centered mt-2" v-for="menu in menus" :key="menu.id">
+                  <a :href="'/menu/' + menu.id +'/edit'"  target="_blank">
+                      <div class="card">
+                        <div class="card-image px-1 py-1">
+                          <figure class="is-square image">
+                            <img :src="menu.qr_code_url" :alt="'QR code for' + menu.name">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <p class="title is-5">{{menu.name}}</p>
+                          <a :href="'/menu/' + menu.id +'/edit'" class="button is-primary" target="_blank">Edit Menu</a>
+                        </div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </b-step-item>
     </b-steps>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
@@ -477,13 +500,14 @@ export default {
           if(menu.all_day == false)
           {
             // these variables wont be set otherwise
-            menu.start_time = menu.start_time_full.getHours()+":"+(menu.start_time_full.getMinutes()<10?'0':'') + menu.start_time_full.getMinutes();
-            menu.end_time = menu.end_time_full.getHours()+":"+(menu.end_time_full.getMinutes()<10?'0':'') + menu.end_time_full.getMinutes()
+            menu.start_time = (menu.start_time_full.getHours()<10?'0':'') + menu.start_time_full.getHours()+":"+(menu.start_time_full.getMinutes()<10?'0':'') + menu.start_time_full.getMinutes();
+            menu.end_time = (menu.end_time_full.getHours()<10?'0':'') + menu.end_time_full.getHours()+":"+(menu.end_time_full.getMinutes()<10?'0':'') + menu.end_time_full.getMinutes();
           }
           promises.push(this.saveMenu(menu));
         });
         Promise.all(promises).then(
           response => {
+            console.log("promises",response);
             this.isLoading = false;
             this.activeStep++;
           },
@@ -506,6 +530,8 @@ export default {
         axios
           .post("/api/v1/menu/", menu)
           .then(response => {
+            menu.id = response.data.data.id
+            menu.qr_code_url = response.data.data.qr_code_url
             console.log(response);
             resolve(response);
           })
