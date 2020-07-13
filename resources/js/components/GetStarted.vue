@@ -19,7 +19,9 @@
           <div class="columns">
             <div class="column"></div>
             <div class="column is-two-fifths">
+           
               <section>
+             
                 <validation-observer v-slot="{ invalid }" ref="step1">
                   <validation-provider rules="required" v-slot="{errors, valid}">
                     <b-field
@@ -282,7 +284,13 @@
                               :type="{ 'is-danger': errors[0], 'is-success': valid }"
                               :message="errors"
                             >
-                              <b-timepicker inline v-model="menu.start_time" :incrementMinutes="15" hour-format="24"></b-timepicker>
+                              <b-timepicker
+                                inline
+                                v-model="menu.start_time_full"
+                                :incrementMinutes="15"
+                                hour-format="24"
+                                :defaultMinutes=0
+                              ></b-timepicker>
                             </b-field>
                           </validation-provider>
                         </div>
@@ -297,7 +305,13 @@
                               :type="{ 'is-danger': errors[0], 'is-success': valid }"
                               :message="errors"
                             >
-                              <b-timepicker inline v-model="menu.end_time"  :incrementMinutes="15" hour-format="24"></b-timepicker>
+                              <b-timepicker
+                                inline
+                                v-model="menu.end_time_full"
+                                :incrementMinutes="15"
+                                hour-format="24"
+                                :defaultMinutes="0"
+                              ></b-timepicker>
                             </b-field>
                           </validation-provider>
                         </div>
@@ -352,6 +366,7 @@
 <script>
 export default {
   name: "get-started",
+ 
   data() {
     return {
       establishment: {
@@ -371,8 +386,10 @@ export default {
       menus: [
         {
           name: "",
-          start_time: null,
-          end_time: null,
+          start_time_full: Date,
+          end_time_full: Date,
+          start_time: "", //H:i format
+          end_time: "", //H:i format
           all_day: true
         }
       ],
@@ -401,8 +418,8 @@ export default {
       this.menus.push({
         name: "",
         all_day: false,
-        start_time: "",
-        end_time: ""
+        start_time_full: null,
+        end_time_full: null,
       });
     },
     removeMenu: function(index) {
@@ -457,6 +474,12 @@ export default {
         const promises = [];
         this.menus.forEach(menu => {
           menu.establishment_id = this.establishment.id;
+          if(menu.all_day == false)
+          {
+            // these variables wont be set otherwise
+            menu.start_time = menu.start_time_full.getHours()+":"+(menu.start_time_full.getMinutes()<10?'0':'') + menu.start_time_full.getMinutes();
+            menu.end_time = menu.end_time_full.getHours()+":"+(menu.end_time_full.getMinutes()<10?'0':'') + menu.end_time_full.getMinutes()
+          }
           promises.push(this.saveMenu(menu));
         });
         Promise.all(promises).then(

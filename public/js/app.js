@@ -12655,6 +12655,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12675,8 +12689,12 @@ __webpack_require__.r(__webpack_exports__);
       },
       menus: [{
         name: "",
-        start_time: null,
-        end_time: null,
+        start_time_full: Date,
+        end_time_full: Date,
+        start_time: "",
+        //H:i format
+        end_time: "",
+        //H:i format
         all_day: true
       }],
       menuMode: null,
@@ -12700,8 +12718,8 @@ __webpack_require__.r(__webpack_exports__);
       this.menus.push({
         name: "",
         all_day: false,
-        start_time: "",
-        end_time: ""
+        start_time_full: null,
+        end_time_full: null
       });
     },
     removeMenu: function removeMenu(index) {
@@ -12755,6 +12773,13 @@ __webpack_require__.r(__webpack_exports__);
         var promises = [];
         this.menus.forEach(function (menu) {
           menu.establishment_id = _this.establishment.id;
+
+          if (menu.all_day == false) {
+            // these variables wont be set otherwise
+            menu.start_time = menu.start_time_full.getHours() + ":" + (menu.start_time_full.getMinutes() < 10 ? '0' : '') + menu.start_time_full.getMinutes();
+            menu.end_time = menu.end_time_full.getHours() + ":" + (menu.end_time_full.getMinutes() < 10 ? '0' : '') + menu.end_time_full.getMinutes();
+          }
+
           promises.push(_this.saveMenu(menu));
         });
         Promise.all(promises).then(function (response) {
@@ -54920,22 +54945,23 @@ var render = function() {
                                                                                           "",
                                                                                         incrementMinutes: 15,
                                                                                         "hour-format":
-                                                                                          "24"
+                                                                                          "24",
+                                                                                        defaultMinutes: 0
                                                                                       },
                                                                                       model: {
                                                                                         value:
-                                                                                          menu.start_time,
+                                                                                          menu.start_time_full,
                                                                                         callback: function(
                                                                                           $$v
                                                                                         ) {
                                                                                           _vm.$set(
                                                                                             menu,
-                                                                                            "start_time",
+                                                                                            "start_time_full",
                                                                                             $$v
                                                                                           )
                                                                                         },
                                                                                         expression:
-                                                                                          "menu.start_time"
+                                                                                          "menu.start_time_full"
                                                                                       }
                                                                                     }
                                                                                   )
@@ -55008,22 +55034,23 @@ var render = function() {
                                                                                           "",
                                                                                         incrementMinutes: 15,
                                                                                         "hour-format":
-                                                                                          "24"
+                                                                                          "24",
+                                                                                        defaultMinutes: 0
                                                                                       },
                                                                                       model: {
                                                                                         value:
-                                                                                          menu.end_time,
+                                                                                          menu.end_time_full,
                                                                                         callback: function(
                                                                                           $$v
                                                                                         ) {
                                                                                           _vm.$set(
                                                                                             menu,
-                                                                                            "end_time",
+                                                                                            "end_time_full",
                                                                                             $$v
                                                                                           )
                                                                                         },
                                                                                         expression:
-                                                                                          "menu.end_time"
+                                                                                          "menu.end_time_full"
                                                                                       }
                                                                                     }
                                                                                   )
