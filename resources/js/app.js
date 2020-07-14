@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
     faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, faEdit, faTrash, faPlus, faArrowsAlt, faExternalLinkAlt, faEnvelope, faHome, faUser, faPhoneAlt);
+import vueCountryRegionSelect from 'vue-country-region-select'
 
 window.Vue = require("vue");
 
@@ -31,6 +32,8 @@ Vue.use(Buefy, {
     defaultIconComponent: 'vue-fontawesome',
     defaultIconPack: 'fas',
 });
+Vue.use(vueCountryRegionSelect)
+
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 

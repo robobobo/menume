@@ -19,9 +19,7 @@
           <div class="columns">
             <div class="column"></div>
             <div class="column is-two-fifths">
-           
               <section>
-             
                 <validation-observer v-slot="{ invalid }" ref="step1">
                   <validation-provider rules="required" v-slot="{errors, valid}">
                     <b-field
@@ -106,38 +104,70 @@
             <div class="column"></div>
             <div class="column is-two-fifths">
               <validation-observer v-slot="{ invalid }" ref="step2">
-                <validation-provider rules="required" v-slot="{errors, valid}">
-                  <b-field
-                    label="Address 1"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input v-model="establishment.address_1"></b-input>
-                  </b-field>
-                </validation-provider>
-
-                <b-field label="Address 2">
-                  <b-input v-model="establishment.address_2"></b-input>
-                </b-field>
-                <validation-provider rules="required" v-slot="{errors, valid}">
-                  <b-field
-                    label="Town/City"
-                    :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                    :message="errors"
-                  >
-                    <b-input v-model="establishment.town_city"></b-input>
-                  </b-field>
-                </validation-provider>
-
-                <div class="columns">
-                  <div class="column">
-                    <b-field label="Eircode">
-                      <b-input v-model="establishment.postcode"></b-input>
-                    </b-field>
+                <div class="field">
+                  <label class="label">Select Your Country</label>
+                  <div class="control has-icons-left">
+                    <div class="select">
+                      <country-select
+                        v-model="establishment.country"
+                        :country="establishment.country"
+                        :white-list="countryWhitelist"
+                      />
+                    </div>
+                     <span class="icon is-left">
+                      <i class="fas fa-globe"></i>
+                    </span>
                   </div>
-                  <div class="column">
-                    <validation-provider rules="required" v-slot="{errors, valid}">
-                      <b-field
+                </div>
+                <div v-show="establishment.country != ''">
+                  <validation-provider rules="required" v-slot="{errors, valid}">
+                    <b-field
+                      label="Address 1"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input v-model="establishment.address_1"></b-input>
+                    </b-field>
+                  </validation-provider>
+
+                  <b-field label="Address 2">
+                    <b-input v-model="establishment.address_2"></b-input>
+                  </b-field>
+                  <validation-provider rules="required" v-slot="{errors, valid}">
+                    <b-field
+                      label="Town/City"
+                      :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                      :message="errors"
+                    >
+                      <b-input v-model="establishment.town_city"></b-input>
+                    </b-field>
+                  </validation-provider>
+
+                  <div class="columns">
+                    <div class="column is-half">
+                      <b-field :label="postcodeLabel">
+                        <b-input v-model="establishment.postcode"></b-input>
+                      </b-field>
+                    </div>
+                    <div class="column is-half">
+                      <validation-provider rules="required" v-slot="{errors, valid}">
+                        <div class="field">
+                          <label class="label">{{countyLabel}}</label>
+                          <div class="control">
+                            <div
+                              class="select"
+                              :class="{ 'is-danger': errors[0], 'is-success': valid }"
+                            >
+                              <region-select
+                                v-model="establishment.county"
+                                :country="establishment.country"
+                                :region="establishment.county"
+                              />
+                            </div>
+                          </div>
+                          <p class="help is-danger">{{errors[0]}}</p>
+                        </div>
+                        <!-- <b-field
                         label="County"
                         :type="{ 'is-danger': errors[0], 'is-success': valid }"
                         :message="errors"
@@ -147,8 +177,9 @@
                           <option value="Wicklow">Wicklow</option>
                           <option value="Dublin">Dublin</option>
                         </b-select>
-                      </b-field>
-                    </validation-provider>
+                        </b-field>-->
+                      </validation-provider>
+                    </div>
                   </div>
                   <!-- <div class="column">
                   <b-field label="Country" expanded>
@@ -289,7 +320,7 @@
                                 v-model="menu.start_time_full"
                                 :incrementMinutes="15"
                                 hour-format="24"
-                                :defaultMinutes=0
+                                :defaultMinutes="0"
                               ></b-timepicker>
                             </b-field>
                           </validation-provider>
@@ -359,23 +390,36 @@
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
         <div class="columns">
           <div class="column is-three-fifths is-offset-one-fifth">
-            <p class="has-text-centered mt-2">One more thing though, you now need to add sections and items to your menu. <br>But dont worry, we made a really nice drag and drop tool for you to do that</p>
-            <p class="has-text-centered mt-2">Just select the edit button by your menu below and you can get started!</p>
+            <p class="has-text-centered mt-2">
+              One more thing though, you now need to add sections and items to your menu.
+              <br />But dont worry, we made a really nice drag and drop tool for you to do that
+            </p>
+            <p
+              class="has-text-centered mt-2"
+            >Just select the edit button by your menu below and you can get started!</p>
             <div class="columns is-multiline">
-              <div class="column is-one-half has-text-centered mt-2" v-for="menu in menus" :key="menu.id">
-                  <a :href="'/menu/' + menu.id +'/edit'"  target="_blank">
-                      <div class="card">
-                        <div class="card-image px-1 py-1">
-                          <figure class="is-square image">
-                            <img :src="menu.qr_code_url" :alt="'QR code for' + menu.name">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <p class="title is-5">{{menu.name}}</p>
-                          <a :href="'/menu/' + menu.id +'/edit'" class="button is-primary" target="_blank">Edit Menu</a>
-                        </div>
-                      </div>
-                  </a>
+              <div
+                class="column is-one-half has-text-centered mt-2"
+                v-for="menu in menus"
+                :key="menu.id"
+              >
+                <a :href="'/menu/' + menu.id +'/edit'" target="_blank">
+                  <div class="card">
+                    <div class="card-image px-1 py-1">
+                      <figure class="is-square image">
+                        <img :src="menu.qr_code_url" :alt="'QR code for' + menu.name" />
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <p class="title is-5">{{menu.name}}</p>
+                      <a
+                        :href="'/menu/' + menu.id +'/edit'"
+                        class="button is-primary"
+                        target="_blank"
+                      >Edit Menu</a>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -389,7 +433,7 @@
 <script>
 export default {
   name: "get-started",
- 
+
   data() {
     return {
       establishment: {
@@ -416,6 +460,7 @@ export default {
           all_day: true
         }
       ],
+      countryWhitelist: ['US','GB','IE'],
       menuMode: null,
       activeStep: 0,
 
@@ -436,13 +481,33 @@ export default {
       mobileMode: "minimalist"
     };
   },
+  computed: {
+    postcodeLabel() {
+      if (this.establishment.country == "IE") {
+        return "Eircode";
+      } else if (this.establishment.country == "UK") {
+        return "Postcode";
+      } else if (this.establishment.country == "US") {
+        return "ZIP";
+      } else {
+        return "Postcode";
+      }
+    },
+    countyLabel() {
+      if (this.establishment.country == "US") {
+        return "State";
+      } else {
+        return "County";
+      }
+    }
+  },
   methods: {
     addNewMenu: function() {
       this.menus.push({
         name: "",
         all_day: false,
         start_time_full: null,
-        end_time_full: null,
+        end_time_full: null
       });
     },
     removeMenu: function(index) {
@@ -497,22 +562,31 @@ export default {
         const promises = [];
         this.menus.forEach(menu => {
           menu.establishment_id = this.establishment.id;
-          if(menu.all_day == false)
-          {
+          if (menu.all_day == false) {
             // these variables wont be set otherwise
-            menu.start_time = (menu.start_time_full.getHours()<10?'0':'') + menu.start_time_full.getHours()+":"+(menu.start_time_full.getMinutes()<10?'0':'') + menu.start_time_full.getMinutes();
-            menu.end_time = (menu.end_time_full.getHours()<10?'0':'') + menu.end_time_full.getHours()+":"+(menu.end_time_full.getMinutes()<10?'0':'') + menu.end_time_full.getMinutes();
+            menu.start_time =
+              (menu.start_time_full.getHours() < 10 ? "0" : "") +
+              menu.start_time_full.getHours() +
+              ":" +
+              (menu.start_time_full.getMinutes() < 10 ? "0" : "") +
+              menu.start_time_full.getMinutes();
+            menu.end_time =
+              (menu.end_time_full.getHours() < 10 ? "0" : "") +
+              menu.end_time_full.getHours() +
+              ":" +
+              (menu.end_time_full.getMinutes() < 10 ? "0" : "") +
+              menu.end_time_full.getMinutes();
           }
           promises.push(this.saveMenu(menu));
         });
         Promise.all(promises).then(
           response => {
-            console.log("promises",response);
+            console.log("promises", response);
             this.isLoading = false;
             this.activeStep++;
           },
           reject => {
-            console.log("error",reject);
+            console.log("error", reject);
             this.$buefy.toast.open({
               message:
                 "Whoops! Something has gone wrong, please check your details and try again",
@@ -530,8 +604,8 @@ export default {
         axios
           .post("/api/v1/menu/", menu)
           .then(response => {
-            menu.id = response.data.data.id
-            menu.qr_code_url = response.data.data.qr_code_url
+            menu.id = response.data.data.id;
+            menu.qr_code_url = response.data.data.qr_code_url;
             console.log(response);
             resolve(response);
           })
