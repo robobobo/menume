@@ -8,7 +8,6 @@
       :label-position="labelPosition"
       :mobile-mode="mobileMode"
       :class="'pt-5'"
-      :change="stepChange()"
     >
       <b-step-item step="1" label="Details" :clickable="isStepsClickable">
         <h1 class="title has-text-centered">Your Details</h1>
@@ -107,7 +106,7 @@
                 <div class="field">
                   <label class="label">Select Your Country</label>
                   <div class="control has-icons-left">
-                    <div class="select">
+                    <div class="select is-fullwidth">
                       <country-select
                         v-model="establishment.country"
                         :country="establishment.country"
@@ -188,14 +187,14 @@
                   </div>-->
                 </div>
                 <div class="columns mt-5">
-                  <div class="column">
+                  <!-- <div class="column">
                     <b-button
                       type="is-secondary"
                       icon-pack="fa"
                       icon-left="angle-left"
                       @click="goToPreviousStep()"
                     >Previous Step</b-button>
-                  </div>
+                  </div> -->
                   <div class="column">
                     <b-button
                       type="is-primary"
@@ -360,14 +359,14 @@
                   </div>
                 </div>
                 <div class="columns mt-5" v-if="menuMode != null">
-                  <div class="column">
+                  <!-- <div class="column">
                     <b-button
                       type="is-secondary"
                       icon-pack="fa"
                       icon-left="angle-left"
                       @click="goToPreviousStep()"
                     >Previous Step</b-button>
-                  </div>
+                  </div> -->
                   <div class="column">
                     <b-button
                       type="is-primary"
@@ -453,8 +452,8 @@ export default {
       menus: [
         {
           name: "",
-          start_time_full: Date,
-          end_time_full: Date,
+          start_time_full: null,
+          end_time_full: null,
           start_time: "", //H:i format
           end_time: "", //H:i format
           all_day: true
@@ -515,9 +514,6 @@ export default {
     },
     setMenuMode: function(mode) {
       this.menuMode = mode;
-    },
-    stepChange: function() {
-      console.log("step changing");
     },
     goToNextStep: function() {
       this.isLoading = true;

@@ -12735,7 +12735,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -12756,8 +12755,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       menus: [{
         name: "",
-        start_time_full: Date,
-        end_time_full: Date,
+        start_time_full: null,
+        end_time_full: null,
         start_time: "",
         //H:i format
         end_time: "",
@@ -12815,9 +12814,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     setMenuMode: function setMenuMode(mode) {
       this.menuMode = mode;
-    },
-    stepChange: function stepChange() {
-      console.log("step changing");
     },
     goToNextStep: function goToNextStep() {
       var _this = this;
@@ -54018,8 +54014,7 @@ var render = function() {
             rounded: _vm.isRounded,
             "has-navigation": false,
             "label-position": _vm.labelPosition,
-            "mobile-mode": _vm.mobileMode,
-            change: _vm.stepChange()
+            "mobile-mode": _vm.mobileMode
           },
           model: {
             value: _vm.activeStep,
@@ -54375,7 +54370,7 @@ var render = function() {
                                     [
                                       _c(
                                         "div",
-                                        { staticClass: "select" },
+                                        { staticClass: "select is-fullwidth" },
                                         [
                                           _c("country-select", {
                                             attrs: {
@@ -54715,30 +54710,6 @@ var render = function() {
                                 ),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "columns mt-5" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "column" },
-                                    [
-                                      _c(
-                                        "b-button",
-                                        {
-                                          attrs: {
-                                            type: "is-secondary",
-                                            "icon-pack": "fa",
-                                            "icon-left": "angle-left"
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.goToPreviousStep()
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Previous Step")]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
                                   _c(
                                     "div",
                                     { staticClass: "column" },
@@ -55318,30 +55289,6 @@ var render = function() {
                                 _vm._v(" "),
                                 _vm.menuMode != null
                                   ? _c("div", { staticClass: "columns mt-5" }, [
-                                      _c(
-                                        "div",
-                                        { staticClass: "column" },
-                                        [
-                                          _c(
-                                            "b-button",
-                                            {
-                                              attrs: {
-                                                type: "is-secondary",
-                                                "icon-pack": "fa",
-                                                "icon-left": "angle-left"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.goToPreviousStep()
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Previous Step")]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
                                       _c(
                                         "div",
                                         { staticClass: "column" },
