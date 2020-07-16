@@ -113,7 +113,7 @@
                         :white-list="countryWhitelist"
                       />
                     </div>
-                     <span class="icon is-left">
+                    <span class="icon is-left">
                       <i class="fas fa-globe"></i>
                     </span>
                   </div>
@@ -194,7 +194,7 @@
                       icon-left="angle-left"
                       @click="goToPreviousStep()"
                     >Previous Step</b-button>
-                  </div> -->
+                  </div>-->
                   <div class="column">
                     <b-button
                       type="is-primary"
@@ -219,16 +219,15 @@
         :type="{'is-success': isProfileSuccess}"
       >
         <h1 class="title has-text-centered">Your Menus</h1>
-        <h5 class="is-size-5 has-text-centered">You can have multiple menus or just one!</h5>
+        <!-- <h5 class="is-size-5 has-text-centered">You can setup as many menus as you need!</h5> -->
         <section class="section">
           <div class="columns">
             <div class="column"></div>
             <div class="column is-three-fifths">
               <p
                 class="has-text-centered"
-              >Depending on the time of day, we'll automatically show the correct menu to your customers. Choose the setup that suits you below.</p>
-
-              <div class="tile is-ancestory">
+              >We've started by adding some default menus, but feel free to add or remove any. (You can always change this in the future too)</p>
+              <!-- <div class="tile is-ancestory">
                 <div
                   class="menu-select-tile tile is-parent cursor-pointer"
                   :class="{'active': menuMode == 'single'}"
@@ -252,18 +251,11 @@
                     <h2 class="subtitle is-6">Our menu is different on certain days or times</h2>
                   </div>
                 </div>
-              </div>
+              </div>-->
               <validation-observer v-slot="{ invalid }" ref="step3">
                 <div class="columns">
-                  <div class="column is-full" v-if="menuMode != null">
-                    <h1
-                      class="title has-text-centered pt-3"
-                      v-if="menuMode == 'single'"
-                    >Lets give your menu a name</h1>
-                    <h1
-                      class="title has-text-centered pt-3"
-                      v-if="menuMode == 'multiple'"
-                    >Lets setup your menus</h1>
+                  <div class="column is-full">
+                    <h1 class="title has-text-centered pt-3">Lets setup your menus</h1>
                     <div
                       v-for="(menu,counter) in menus"
                       v-bind:key="counter"
@@ -276,14 +268,14 @@
                           :message="errors"
                         >
                           <b-input
-                            placeholder="Enter menu name"
+                            placeholder="eg. Drinks Menu"
                             v-model="menu.name"
                             size="is-large"
                             custom-class="has-text-centered mb-4"
                             expanded
                           ></b-input>
                           <b-button
-                            v-if="menus.length > 1 && menuMode == 'multiple'"
+                            v-if="menus.length > 1"
                             type="is-text"
                             class="is-absolute delete-menu-icon is-danger"
                             inverted
@@ -292,12 +284,12 @@
                           ></b-button>
                         </b-field>
                       </validation-provider>
-                      <div class="columns" v-if="menuMode == 'multiple'">
+                      <div class="columns">
                         <div class="column">
                           <p>When is this menu available?</p>
                         </div>
                       </div>
-                      <div class="columns mb-3" v-if="menuMode == 'multiple'">
+                      <div class="columns mb-3">
                         <div class="column">
                           <b-field>
                             <b-switch v-model="menu.all_day">All Day</b-switch>
@@ -349,7 +341,6 @@
                       <div class="divider my-5"></div>
                     </div>
                     <b-button
-                      v-if="menuMode == 'multiple'"
                       type="is-light"
                       expanded
                       icon-right="plus"
@@ -358,7 +349,7 @@
                     >Add Another</b-button>
                   </div>
                 </div>
-                <div class="columns mt-5" v-if="menuMode != null">
+                <div class="columns mt-5">
                   <!-- <div class="column">
                     <b-button
                       type="is-secondary"
@@ -366,7 +357,7 @@
                       icon-left="angle-left"
                       @click="goToPreviousStep()"
                     >Previous Step</b-button>
-                  </div> -->
+                  </div>-->
                   <div class="column">
                     <b-button
                       type="is-primary"
@@ -451,15 +442,31 @@ export default {
       },
       menus: [
         {
-          name: "",
+          name: "Drinks Menu",
+          all_day: true,
           start_time_full: null,
           end_time_full: null,
           start_time: "", //H:i format
           end_time: "", //H:i format
-          all_day: true
+        },
+        {
+          name: "Breakfast Menu",
+          all_day: false,
+          start_time_full: this.defaultTime(true),
+          end_time_full: this.defaultTime(),
+          start_time: "", //H:i format
+          end_time: "", //H:i format
+        },
+        {
+          name: "Kids Menu",
+          all_day: true,
+          start_time_full: null,
+          end_time_full: null,
+          start_time: "", //H:i format
+          end_time: "", //H:i format
         }
       ],
-      countryWhitelist: ['US','GB','IE'],
+      countryWhitelist: ["US", "GB", "IE"],
       menuMode: null,
       activeStep: 0,
 
@@ -509,6 +516,28 @@ export default {
         end_time_full: null
       });
     },
+    setDefaultMenus: function() {
+      this.menus.push(
+        {
+          name: "Drinks Menu",
+          all_day: true,
+          start_time_full: null,
+          end_time_full: null
+        },
+        {
+          name: "Breakfast Menu",
+          all_day: false,
+          start_time_full: null,
+          end_time_full: null
+        },
+        {
+          name: "Kids Menu",
+          all_day: true,
+          start_time_full: null,
+          end_time_full: null
+        }
+      );
+    },
     removeMenu: function(index) {
       this.menus.splice(index, 1);
     },
@@ -542,6 +571,7 @@ export default {
             console.log(response);
             this.isLoading = false;
             this.activeStep++;
+            this.setDefaultMenus();
           },
           error => {
             console.log(error);
@@ -644,14 +674,26 @@ export default {
           });
       });
       return updatePromise;
-    }
+    },
+    defaultTime: function(start) {
+      var time = new Date();
+      time.setMinutes(0);
+      time.setSeconds(0);
+      if(start)
+      {
+        time.setHours(7);
+      }else{
+        time.setHours(11);
+      }
+      return time;
+    },
   }
 };
 </script>
 
 <style lang="scss">
 .delete-menu-icon {
-  right: -50px;
-  top: 5px;
+  right: -55px;
+  top: 7px;
 }
 </style>
