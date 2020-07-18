@@ -22,7 +22,7 @@ class Menu extends JsonResource
             'name' => $this->name,
             'menu_sections' => new MenuSectionCollection($this->menuSections),
             'updated_at' => $this->updated_at,
-            'qr_code_url' => $this->qrCodeURL(),
+            // 'qr_code_url' => $this->qrCodeURL(),
         ];
     }
 }

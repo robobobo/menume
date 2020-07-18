@@ -12,7 +12,7 @@ class Link extends Model
      * @var array
      */
     protected $fillable = [
-        'qr_code_url', 'menu_id', 'url','path'
+        'qr_code_url', 'menu_id', 'url','path', 'establishment_id'
     ];
 
     /**
@@ -34,5 +34,10 @@ class Link extends Model
     public function menu()
     {
         return $this->belongsTo('App\Menu', 'menu_id', 'id');
+    }
+
+    public function establishment()
+    {
+        return $this->belongsTo('App\Establishment','establishment_id','id');
     }
 }

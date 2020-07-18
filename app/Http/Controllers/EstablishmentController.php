@@ -47,7 +47,7 @@ class EstablishmentController extends Controller
      */
     public function show(Establishment $establishment)
     {
-        //
+        return view('establishment.show')->with('establishment',$establishment);
     }
 
     /**

@@ -25077,6 +25077,10 @@ https://css-tricks.com/hash-tag-links-padding/ */
   right: 0;
 }
 
+#all-menus-button {
+  left: 0;
+}
+
 #menuEditor.hide-menu-items .menu_items {
   display: none;
 }

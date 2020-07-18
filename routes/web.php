@@ -22,3 +22,4 @@ Route::get('/menu/{menu}','MenuController@show')->name('menu.show');
 Route::get('/menu/{menu}/edit','MenuController@edit')->name('menu.edit');
 
 Route::get('/getting-started','EstablishmentController@create')->name('establishment.create');
+Route::get('/establishment/{establishment}','EstablishmentController@show')->name('establishment.show');

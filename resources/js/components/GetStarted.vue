@@ -270,7 +270,7 @@
                           <b-input
                             placeholder="eg. Drinks Menu"
                             v-model="menu.name"
-                            size="is-large"
+                            size="is-medium"
                             custom-class="has-text-centered mb-4"
                             expanded
                           ></b-input>
@@ -376,10 +376,13 @@
       </b-step-item>
 
       <b-step-item :step="4" label="Wrapping Up" :clickable="isStepsClickable">
-        <h1 class="title has-text-centered">Your QR Codes</h1>
+        <h1 class="title has-text-centered">Your QR Code</h1>
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
         <div class="columns">
           <div class="column is-three-fifths is-offset-one-fifth">
+            <div class="has-text-centered my-2">
+              <img :src="establishment.qr_code_url" alt="">
+            </div>
             <p class="has-text-centered mt-2">
               One more thing though, you now need to add sections and items to your menu.
               <br />But dont worry, we made a really nice drag and drop tool for you to do that
@@ -387,29 +390,26 @@
             <p
               class="has-text-centered mt-2"
             >Just select the edit button by your menu below and you can get started!</p>
-            <div class="columns is-multiline">
-              <div
-                class="column is-one-half has-text-centered mt-2"
-                v-for="menu in menus"
-                :key="menu.id"
-              >
-                <a :href="'/menu/' + menu.id +'/edit'" target="_blank">
-                  <div class="card">
-                    <div class="card-image px-1 py-1">
-                      <figure class="is-square image">
-                        <img :src="menu.qr_code_url" :alt="'QR code for' + menu.name" />
-                      </figure>
+            <div class="columns">
+              <div class="column is-11 is-offset-1">
+                <div
+                  class="mt-2"
+                  v-for="menu in menus"
+                  :key="menu.id"
+                >
+                  <a :href="'/menu/' + menu.id +'/edit'" target="_blank">
+                    <div class="card">
+                      <div class="card-content">
+                        <p class="title is-5">{{menu.name}}</p>
+                        <a
+                          :href="'/menu/' + menu.id +'/edit'"
+                          class="button is-primary"
+                          target="_blank"
+                        >Edit Menu</a>
+                      </div>
                     </div>
-                    <div class="card-content">
-                      <p class="title is-5">{{menu.name}}</p>
-                      <a
-                        :href="'/menu/' + menu.id +'/edit'"
-                        class="button is-primary"
-                        target="_blank"
-                      >Edit Menu</a>
-                    </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -516,28 +516,28 @@ export default {
         end_time_full: null
       });
     },
-    setDefaultMenus: function() {
-      this.menus.push(
-        {
-          name: "Drinks Menu",
-          all_day: true,
-          start_time_full: null,
-          end_time_full: null
-        },
-        {
-          name: "Breakfast Menu",
-          all_day: false,
-          start_time_full: null,
-          end_time_full: null
-        },
-        {
-          name: "Kids Menu",
-          all_day: true,
-          start_time_full: null,
-          end_time_full: null
-        }
-      );
-    },
+    // setDefaultMenus: function() {
+    //   this.menus.push(
+    //     {
+    //       name: "Drinks Menu",
+    //       all_day: true,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     },
+    //     {
+    //       name: "Breakfast Menu",
+    //       all_day: false,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     },
+    //     {
+    //       name: "Kids Menu",
+    //       all_day: true,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     }
+    //   );
+    // },
     removeMenu: function(index) {
       this.menus.splice(index, 1);
     },
@@ -552,6 +552,7 @@ export default {
             console.log(response);
             this.establishment.id = response.data.data.id;
             this.establishment.saved = true;
+            this.establishment.qr_code_url = response.data.data.qr_code_url;
             this.isLoading = false;
             this.activeStep++;
           },
@@ -571,7 +572,6 @@ export default {
             console.log(response);
             this.isLoading = false;
             this.activeStep++;
-            this.setDefaultMenus();
           },
           error => {
             console.log(error);
@@ -631,7 +631,7 @@ export default {
           .post("/api/v1/menu/", menu)
           .then(response => {
             menu.id = response.data.data.id;
-            menu.qr_code_url = response.data.data.qr_code_url;
+            // menu.qr_code_url = response.data.data.qr_code_url;
             console.log(response);
             resolve(response);
           })

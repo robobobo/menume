@@ -6,6 +6,7 @@
 <section class="section py-1 has-background-dark">
   <div class="container has-text-centered">
     <h3 class="title py-1 has-text-light">
+      <a href="{{route('establishment.show',$menu->establishment)}}" class="button is-link is-absolute" id="all-menus-button">All Menus</a>
       {{$menu->establishment->name}}
       <a href="{{route('menu.edit',$menu)}}" class="button is-link is-absolute" id="menu-edit-button">Edit</a>
     </h3>

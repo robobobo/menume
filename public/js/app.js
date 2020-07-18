@@ -12818,24 +12818,28 @@ __webpack_require__.r(__webpack_exports__);
         end_time_full: null
       });
     },
-    setDefaultMenus: function setDefaultMenus() {
-      this.menus.push({
-        name: "Drinks Menu",
-        all_day: true,
-        start_time_full: null,
-        end_time_full: null
-      }, {
-        name: "Breakfast Menu",
-        all_day: false,
-        start_time_full: null,
-        end_time_full: null
-      }, {
-        name: "Kids Menu",
-        all_day: true,
-        start_time_full: null,
-        end_time_full: null
-      });
-    },
+    // setDefaultMenus: function() {
+    //   this.menus.push(
+    //     {
+    //       name: "Drinks Menu",
+    //       all_day: true,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     },
+    //     {
+    //       name: "Breakfast Menu",
+    //       all_day: false,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     },
+    //     {
+    //       name: "Kids Menu",
+    //       all_day: true,
+    //       start_time_full: null,
+    //       end_time_full: null
+    //     }
+    //   );
+    // },
     removeMenu: function removeMenu(index) {
       this.menus.splice(index, 1);
     },
@@ -12852,6 +12856,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response);
           _this.establishment.id = response.data.data.id;
           _this.establishment.saved = true;
+          _this.establishment.qr_code_url = response.data.data.qr_code_url;
           _this.isLoading = false;
           _this.activeStep++;
         }, function (error) {
@@ -12869,8 +12874,6 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response);
           _this.isLoading = false;
           _this.activeStep++;
-
-          _this.setDefaultMenus();
         }, function (error) {
           console.log(error);
 
@@ -12915,8 +12918,8 @@ __webpack_require__.r(__webpack_exports__);
     saveMenu: function saveMenu(menu) {
       var savePromise = new Promise(function (resolve, reject) {
         axios.post("/api/v1/menu/", menu).then(function (response) {
-          menu.id = response.data.data.id;
-          menu.qr_code_url = response.data.data.qr_code_url;
+          menu.id = response.data.data.id; // menu.qr_code_url = response.data.data.qr_code_url;
+
           console.log(response);
           resolve(response);
         })["catch"](function (error) {
@@ -54885,7 +54888,7 @@ var render = function() {
                                                                 placeholder:
                                                                   "eg. Drinks Menu",
                                                                 size:
-                                                                  "is-large",
+                                                                  "is-medium",
                                                                 "custom-class":
                                                                   "has-text-centered mb-4",
                                                                 expanded: ""
@@ -55251,7 +55254,7 @@ var render = function() {
             },
             [
               _c("h1", { staticClass: "title has-text-centered" }, [
-                _vm._v("Your QR Codes")
+                _vm._v("Your QR Code")
               ]),
               _vm._v(" "),
               _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
@@ -55263,6 +55266,12 @@ var render = function() {
                   "div",
                   { staticClass: "column is-three-fifths is-offset-one-fifth" },
                   [
+                    _c("div", { staticClass: "has-text-centered my-2" }, [
+                      _c("img", {
+                        attrs: { src: _vm.establishment.qr_code_url, alt: "" }
+                      })
+                    ]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "has-text-centered mt-2" }, [
                       _vm._v(
                         "\n            One more thing though, you now need to add sections and items to your menu.\n            "
@@ -55279,72 +55288,51 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "columns is-multiline" },
-                      _vm._l(_vm.menus, function(menu) {
-                        return _c(
-                          "div",
-                          {
-                            key: menu.id,
-                            staticClass:
-                              "column is-one-half has-text-centered mt-2"
-                          },
-                          [
-                            _c(
-                              "a",
-                              {
-                                attrs: {
-                                  href: "/menu/" + menu.id + "/edit",
-                                  target: "_blank"
-                                }
-                              },
-                              [
-                                _c("div", { staticClass: "card" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "card-image px-1 py-1" },
-                                    [
+                    _c("div", { staticClass: "columns" }, [
+                      _c(
+                        "div",
+                        { staticClass: "column is-11 is-offset-1" },
+                        _vm._l(_vm.menus, function(menu) {
+                          return _c(
+                            "div",
+                            { key: menu.id, staticClass: "mt-2" },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  attrs: {
+                                    href: "/menu/" + menu.id + "/edit",
+                                    target: "_blank"
+                                  }
+                                },
+                                [
+                                  _c("div", { staticClass: "card" }, [
+                                    _c("div", { staticClass: "card-content" }, [
+                                      _c("p", { staticClass: "title is-5" }, [
+                                        _vm._v(_vm._s(menu.name))
+                                      ]),
+                                      _vm._v(" "),
                                       _c(
-                                        "figure",
-                                        { staticClass: "is-square image" },
-                                        [
-                                          _c("img", {
-                                            attrs: {
-                                              src: menu.qr_code_url,
-                                              alt: "QR code for" + menu.name
-                                            }
-                                          })
-                                        ]
+                                        "a",
+                                        {
+                                          staticClass: "button is-primary",
+                                          attrs: {
+                                            href: "/menu/" + menu.id + "/edit",
+                                            target: "_blank"
+                                          }
+                                        },
+                                        [_vm._v("Edit Menu")]
                                       )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "card-content" }, [
-                                    _c("p", { staticClass: "title is-5" }, [
-                                      _vm._v(_vm._s(menu.name))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "a",
-                                      {
-                                        staticClass: "button is-primary",
-                                        attrs: {
-                                          href: "/menu/" + menu.id + "/edit",
-                                          target: "_blank"
-                                        }
-                                      },
-                                      [_vm._v("Edit Menu")]
-                                    )
+                                    ])
                                   ])
-                                ])
-                              ]
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ])
                   ]
                 )
               ])
