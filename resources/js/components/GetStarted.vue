@@ -628,7 +628,7 @@ export default {
     saveMenu: function(menu) {
       var savePromise = new Promise(function(resolve, reject) {
         axios
-          .post("/api/v1/menu/", menu)
+          .post("/api/v1/menu", menu)
           .then(response => {
             menu.id = response.data.data.id;
             // menu.qr_code_url = response.data.data.qr_code_url;
@@ -645,7 +645,7 @@ export default {
     saveEstablishment: function(establishment) {
       var savePromise = new Promise(function(resolve, reject) {
         axios
-          .post("/api/v1/establishment/", establishment)
+          .post("/api/v1/establishment", establishment)
           .then(response => {
             console.log(response);
             resolve(response);

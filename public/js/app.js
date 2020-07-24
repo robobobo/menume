@@ -12917,7 +12917,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveMenu: function saveMenu(menu) {
       var savePromise = new Promise(function (resolve, reject) {
-        axios.post("/api/v1/menu/", menu).then(function (response) {
+        axios.post("/api/v1/menu", menu).then(function (response) {
           menu.id = response.data.data.id; // menu.qr_code_url = response.data.data.qr_code_url;
 
           console.log(response);
@@ -12931,7 +12931,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveEstablishment: function saveEstablishment(establishment) {
       var savePromise = new Promise(function (resolve, reject) {
-        axios.post("/api/v1/establishment/", establishment).then(function (response) {
+        axios.post("/api/v1/establishment", establishment).then(function (response) {
           console.log(response);
           resolve(response);
         })["catch"](function (error) {
