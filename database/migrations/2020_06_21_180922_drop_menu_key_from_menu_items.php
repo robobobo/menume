@@ -14,8 +14,8 @@ class DropMenuKeyFromMenuItems extends Migration
     public function up()
     {
         Schema::table('menu_items', function (Blueprint $table) {
-            $table->dropForeign('menu_id');
-            $table->dropColumn('menu_id');
+            // $table->dropForeign('menu_id');
+            // $table->dropColumn('menu_id');
         });
     }
 
