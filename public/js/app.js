@@ -12726,6 +12726,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "get-started",
   data: function data() {
@@ -55259,6 +55260,10 @@ var render = function() {
               _vm._v(" "),
               _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
                 _vm._v("Bet you didn't think it would be that easy did you?")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "is-size-5 has-text-centered" }, [
+                _vm._v("Scan it and see for yourself!")
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "columns" }, [

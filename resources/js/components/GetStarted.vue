@@ -378,6 +378,7 @@
       <b-step-item :step="4" label="Wrapping Up" :clickable="isStepsClickable">
         <h1 class="title has-text-centered">Your QR Code</h1>
         <h5 class="is-size-5 has-text-centered">Bet you didn't think it would be that easy did you?</h5>
+        <h5 class="is-size-5 has-text-centered">Scan it and see for yourself!</h5>
         <div class="columns">
           <div class="column is-three-fifths is-offset-one-fifth">
             <div class="has-text-centered my-2">
