@@ -12023,6 +12023,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -53628,8 +53634,6 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
         _c("p", { staticClass: "control" }, [
           _c(
             "button",
@@ -53775,6 +53779,26 @@ var render = function() {
             1
           ),
           _vm._v(" "),
+          _vm.menu.length < 1
+            ? _c("div", { staticClass: "notification is-info" }, [
+                _vm._v(
+                  "\n        Add a menu section to get started\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "button is-primary",
+                    on: {
+                      click: function($event) {
+                        return _vm.addNewSection()
+                      }
+                    }
+                  },
+                  [_vm._v("Add New Section")]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c("nested-draggable", {
             attrs: {
               menu: _vm.menu,
@@ -53805,16 +53829,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "control" }, [
-      _c("button", { staticClass: "button is-danger" }, [_vm._v("Cancel")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -15,6 +15,8 @@ class EstablishmentController extends Controller
     public function index()
     {
         //
+        $establishments = Establishment::all();
+        return view('establishment.index')->with('establishments',$establishments);
     }
 
     /**

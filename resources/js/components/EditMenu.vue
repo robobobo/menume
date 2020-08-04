@@ -15,9 +15,9 @@
           <span v-else>Show Menu Items</span>
         </button>
       </p>
-      <p class="control">
+      <!-- <p class="control">
         <button class="button is-danger">Cancel</button>
-      </p>
+      </p> -->
       <p class="control">
         <button class="button is-primary" v-on:click="addNewItem()">Add New Item</button>
       </p>
@@ -77,6 +77,11 @@
       >
         <edit-item-form @close="closeEditModal" @cancel="cancelEditModal" :section="modalData"></edit-item-form>
       </b-modal>
+       <div v-if="menu.length < 1 " class="notification is-info">
+          Add a menu section to get started
+                  <button class="button is-primary" v-on:click="addNewSection()">Add New Section</button>
+
+      </div>
       <nested-draggable
         :menu="menu"
         :open-edit-modal="openEditItemModal"
@@ -85,6 +90,7 @@
         :add-new-item="addNewItem"
         :v-if="menuLoaded"
       />
+       
     </div>
       <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
 

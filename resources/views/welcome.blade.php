@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{route('menus')}}">Menus</a>
+                    <a href="{{route('establishments')}}">Establishments</a>
                     <a href="{{route('establishment.create')}}">Get Started</a>
                 </div>
             </div>
